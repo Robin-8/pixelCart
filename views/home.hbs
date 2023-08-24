@@ -1,0 +1,128 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/home.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <title>PixelCart</title>
+</head>
+
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light ">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link text-danger" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="#">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="#">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="#">Contact</a>
+                    </li>
+                </ul>
+                <a class="nav-item nav-link text-danger   ml-auto" href="/logout" id="logout-btn">LogOut</a>
+            </div>
+        </nav>
+
+        <section id="header" class="jumbotron text-left text-white">
+            <div class="container p-5 ">
+                <hr class="my-4">               
+            </div>
+        </section>
+
+        <div class="container-fluid">
+            <div class="row">
+              
+                <h1 class="shop">Shop New Arrivals</h1>
+
+                <section id="gallery">
+                    <div class="container">
+                        <div class="row py-3">
+
+                            {{#each CameraProduct}}
+                             <div class="col-lg-3 col-sm-6 mt-3">
+                                <a href="/productdetails/{{this._id}} " >
+                                    <div class="card">
+                                        <img src="/product-images/{{this._id}}.jpg" alt="product-image"  style="width: 200px; height: 250px;"
+                                            class="img-fluid mx-auto d-block" alt="img">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">{{this.Name}}</h5>
+                                            <p class="card-text">₹{{this.Price}}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            {{/each}}<br><br>
+
+                            {{#each ActionCameraProduct}}
+                            <div class="col-lg-3 col-sm-6 mt-3">
+                                <a href="/productdetails/{{this._id}} " >
+                                    <div class="card">
+                                        <img src="/product-images/{{this._id}}.jpg" alt="product-image"  style="width: 200px; height: 250px;"
+                                            class="img-fluid mx-auto d-block" alt="img">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">{{this.Name}}</h5>
+                                            <p class="card-text">₹{{this.Price}}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            {{/each}}<br><br>
+
+
+                            {{#each SurveillanceCameraProduct}}
+                            <div class="col-lg-3 col-sm-6 mt-3">
+                              <a href="/productdetails/{{this._id}} " >
+                                <div class="card">
+                                    <img src="/product-images/{{this._id}}.jpg" alt="product-image"  style="width: 200px; height: 250px;"
+                                        class="img-fluid mx-auto d-block" alt="img">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">{{this.Name}}</h5>
+                                        <p class="card-text">₹{{this.Price}}</p>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+                             {{/each}}
+                        </div>
+                    </div>
+                </section>
+
+                <br><br><br>
+
+                <div class="container">
+                    <div id="footer" class="row">
+                        <div class="footer text-center">
+                            <p>PixelCart@Gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

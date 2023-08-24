@@ -1,0 +1,93 @@
+
+  
+   <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brands font-weight-bold" href="#"><h3>Admin Panel</h3> </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse ml-5" id="navbarSupportedContents">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/admin">All Products</a>
+        </li>
+        {{!-- <li class="nav-item">
+          <a class="nav-link" href="#">All Orders</a>
+        </li> --}}
+      
+         <li class="nav-item">
+          <a class="nav-link" href="/admin/allUsers">All Users</a>
+        </li>
+      
+         
+       
+      </ul>
+    
+    </div>
+  
+  </div>
+</nav>
+
+
+<section>
+
+    <div class="container">
+      <div class="row mt-5">
+        <a href="/admin/recoverdeletproduct" class="btn btn-success  ">Recover Product</a>
+        <a href="/admin/logout" class="btn btn-danger ml-auto ">LOGOUT</a>
+      </div>
+ <table class="table table-striped mt-5">
+  <thead>
+    <tr>
+      {{!-- <th scope="col">Product ID</th> --}}
+      <th scope="col">Title</th>
+       <th scope="col">
+        <div class="dropdown">
+          <button class="btn  dropdown-toggle" type="button" id="categoryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Category
+          </button>
+          <div class="dropdown-menu" aria-labelledby="categoryDropdown">
+            <a class="dropdown-item" href="/admin/Cameracategory">Camera</a>
+            <a class="dropdown-item" href="/admin/ActionCameracategory">ActionCamera</a>
+            <a class="dropdown-item" href="/admin/SurveillanceCameracategory">SurveillanceCamera</a>
+            {{!-- <a class="dropdown-item" href="/admin/jewellerycategory">SurveillanceCamera</a> --}}
+            <!-- Add more categories as needed -->
+          </div>
+        </div>
+      </th>
+      <th scope="col">Description</th>
+      <th>Delete Status</th>
+      <th scope="col">Price</th>
+      <th>Image</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each products}}
+    <tr>
+      {{!-- <th scope="row">{{this._id}}</th> --}}
+      <td>{{this.Name}}</td>
+      <td>{{this.Category}}</td>
+      <td>{{this.Description}}</td>
+      <td>{{this.Deleted}} </td>
+      <td>{{this.Price}} </td>
+      
+      <td><img style="width:50px;height:50px" src="/product-images/{{this._id}}.jpg" ></td>
+        <td><a href="/admin/admineditproduct?productId={{this._id}} " class="btn btn-primary btn-sm btn-block" >Edit</a>
+    <a href='/admin/admindeleteproduct?productId={{this._id}}' class="btn btn-danger btn-sm btn-block" onclick="return confirm('Confirm to delete Product {{this.name}}')" >Delete</a></td>
+     <a href='/admin/admindelete?productId={{this._id}}' class="btn btn-danger btn-sm btn-block" onclick="return confirm('Confirm to recover the product {{this.name}}')" >Recover</a></td>
+  </tr>
+    </tr>
+    {{/each}}
+   
+  </tbody>
+</table>
+    </div>
+</section>
+
+
+
+
+
+
+   
