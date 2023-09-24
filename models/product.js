@@ -3,34 +3,36 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
   Name: {
     type: String,
-    required: true,
+    required: true
   },
   Category: {
     type: String,
-    required: true,
+    required: true
   },
   Price: {
     type: Number,
-    required: true,
+    required: true
   },
   Description: {
     type: [String],
-    default: [],
+    required:true
   },
-  Images: [{
-    data: Buffer,
-    contentType: {
-      type: String,
-      default: 'image/jpeg',
-    }
-  }],
+  Images: {
+    type: Array,
+    required: true
+  },
+
+  Stock:{
+    type:Number,
+    default:0
+  },
   Deleted:{
     type:Boolean,
     default:false
   },
 });
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = new mongoose.model('Product', productSchema);
 
 
 

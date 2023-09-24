@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/css/icomoon.css">
+	<!-- Ion Icon Fonts-->
+	<link rel="stylesheet" href="/css/ionicons.min.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="/css/magnific-popup.css">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="/css/flexslider.css">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
+	
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="/css/style.css">
+
+	</head>
+	<body>
+		
+	<!-- <div class="colorlib-loader"></div> -->
+
+	<div id="page">
+		<nav class="colorlib-nav" role="navigation">
+			<div class="top-menu">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-7 col-md-9">
+							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
+						</div>
+						<div class="col-sm-5 col-md-3">
+			            
+			         </div>
+		         </div>
+					<div class="row">
+						<div class="col-sm-12 text-left menu-1">
+							<ul>
+								<li class="active"><a href="">Admin Dashbord</a></li>
+							     
+								<li><a href="/admin/allCategory">All Category</a></li>
+							             
+							
+							</ul>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+	
+		
+
+
+<section>
+
+    <div class="container">
+        <div class="row mt-5">
+            <a href="/admin/addCategory" class="btn btn-success  ">Add Category</a>
+            <a href="/admin/logout" class="btn btn-danger ml-auto ">LOGOUT</a>
+        </div>
+        <table class="table table-striped mt-5">
+            <thead>
+                <tr>
+                    {{!-- <th scope="col">Product ID</th> --}}
+
+
+
+    </div>
+    </th>
+    <th scope="col">Name</th>
+    <th>Description</th>
+
+
+
+    </tr>
+    </thead>
+    <tbody>
+        {{#each categories}}
+        <tr>
+            {{!-- <th scope="row">{{this._id}}</th> --}}
+            <td>{{this.category}}</td>
+
+            <td>{{this.description}}</td>
+
+              <td>
+            <a href="/admin/editCategory/{{this._id}}" class="btn btn-primary">Edit</a>
+          
+
+             <form action="/admin/deleteCategory/{{this._id}}" method="POST"
+                onsubmit="return confirm('Are you sure you want to delete this category?');">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+           </td>
+            
+            
+
+        </tr>
+       
+
+        {{/each}}
+
+
+    </tbody>
+    </table>
+    </div>
+</section>

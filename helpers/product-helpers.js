@@ -3,24 +3,61 @@ const Product = require('../models/product');
 
 module.exports = {
   
-  addProduct: (product, callback) => {
-    console.log(product);
-    connectDB().then(() => {
-      Product.create(product)
-        .then((data) => {
-          console.log(data);
-          callback(data._id);
-        })
-        .catch((error) => {
-          console.log('Failed to add product:', error);
-          callback(false);
-        });
-    });
+  addProduct: (productData, imageFiles) => {
+         console.log(productData,'//////////');
+         console.log(imageFiles,'******');
+    return new Promise(async(resolve,reject)=>{
+
+            let imagesArray =[]
+            if(imageFiles && imageFiles.length > 0){
+
+              for(let i=0;i<imageFiles.length ;i++){
+                imagesArray.push(imageFiles[i].filename)
+              }
+
+              const products = new Product({
+               Name:productData.Name,
+               Category:productData.Category,
+               Price:productData.Price,
+               Stock:productData.Stock,
+               Description:productData.Description,
+               Images:imagesArray,
+
+              })
+              console.log(products,"pdsss");
+
+            await products.save().then((productData)=>{
+              console.log(productData,"pdsaaa");
+              resolve(productData)
+            }).catch((error)=>{
+              console.log(error,'///////////');
+            })
+          
+            }
+            
+            
+            
+    })
+    
+    
+    
   },
 
-  getAllProducts: (callback) => {
+  // getAllProducts: (callback) => {
+  //   connectDB().then(() => {
+  //     Product.find()
+  //       .then((products) => {
+  //         callback(products);
+  //       })
+  //       .catch((error) => {
+  //         console.log('Failed to get products:', error);
+  //         callback(null);
+  //       });
+  //   });
+  // },
+  getAllproducts: (callback) => {
     connectDB().then(() => {
-      Product.find()
+      Product.find({ Deleted: false }) 
         .then((products) => {
           callback(products);
         })
@@ -30,52 +67,7 @@ module.exports = {
         });
     });
   },
-
-  getCamera_Products: () => {
-    return new Promise((resolve, reject) => {
-      connectDB().then(() => {
-        Product.find({ Category: 'Camera',Deleted: false })
-          .then((eproducts) => {
-            resolve(eproducts);
-          })
-          .catch((error) => {
-            console.log('Failed to get products:', error);
-            reject(error);
-          });
-      });
-    });
-  },
-
-  getActionCamera_Products: () => {
-    return new Promise((resolve, reject) => {
-      connectDB().then(() => {
-        Product.find({ Category: 'ActionCamera',Deleted: false })
-          .then((clothproducts) => {
-            resolve(clothproducts);
-          })
-          .catch((error) => {
-            console.log('Failed to get products:', error);
-            reject(error);
-          });
-      });
-    });
-  },
-
-  getSurveillanceCamera_Products: () => {
-    return new Promise((resolve, reject) => {
-      connectDB().then(() => {
-        Product.find({ Category: 'SurveillanceCamera',Deleted: false })
-          .then((SurveillanceCameraproducts) => {
-            resolve(SurveillanceCameraproducts);
-          })
-          .catch((error) => {
-            console.log('Failed to get products:', error);
-            reject(error);
-          });
-      });
-    });
-  },
-
+  
   getProductById:(_id)=> {
     return new Promise((resolve, reject) => {
       connectDB().then(() => {

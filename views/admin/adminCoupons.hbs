@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/public/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/public/css/icomoon.css">
+	<!-- Ion Icon Fonts-->
+	<link rel="stylesheet" href="/public/css/ionicons.min.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/public/css/bootstrap.min.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="/public/css/magnific-popup.css">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="/public/css/flexslider.css">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="/public/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/public/css/owl.theme.default.min.css">
+	
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="/public/css/bootstrap-datepicker.css">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="/public/fonts/flaticon/font/flaticon.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="/public/css/style.css">
+
+	</head>
+	<body>
+		
+
+
+	<div id="page">
+		<nav class="colorlib-nav" role="navigation ">
+			<div class="top-menu">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-7 col-md-9">
+							<div id="colorlib-logo"><a href="index.html">Admin Pannel</a></div>
+						</div>
+						<div class="col-sm-5 col-md-3">
+			            <form action="#" class="search-wrap">
+			               <div class="form-group">
+			                  <input type="search" class="form-control search" placeholder="Search">
+			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
+			               </div>
+			            </form>
+			         </div>
+		         </div>
+					<div class="row">
+						<div class="col-sm-12 text-left menu-1" >
+							<ul>
+								<li><a href="index.html">Admin Dashbord</a></li>
+								<li class="has-dropdown">
+									<a href="men.html">All Users</a>
+                                    	<li><a href="about.html">Products</a></li>
+								
+								</li>
+								<li class="active"><a href="women.html">All Category</a></li>
+								<li><a href="about.html">Orders</a></li>
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+		</nav>
+           <a href="/admin/add-coupon"><button type="button" class="btn mb-2 btn-primary">Add Coupon</button></a>
+            <table class="table table-borderless table-striped">
+              <thead>
+                <tr role="row">
+                  <th>Coupon Code</th>
+                  <th>Coupon Description</th>
+                  <th>Discount</th>
+                  <th>Max Discount</th>
+                  <th>Min Amount</th>
+                  <th>Creation Date</th>
+                  <th>Expiration Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each coupons}}
+                <tr>
+                  <th>{{this.couponCode}}</th>
+                  <th>{{this.couponDescription}}</th>
+                  <th>{{this.discount}}</th>
+                  <th>{{this.maxDiscount}}</th>
+                  <th>{{this.minAmount}}</th>
+                  <th>{{formatDate this.creationDate}}</th>
+                  <th>{{formatDate this.expirationDate}}</th>
+               
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>

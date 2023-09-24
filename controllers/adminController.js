@@ -1,15 +1,18 @@
 const { TrustProductsEntityAssignmentsListInstance } = require('twilio/lib/rest/trusthub/v1/trustProducts/trustProductsEntityAssignments');
 const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require("../helpers/user-helpers")
+const product = require('../models/product')
+const mongoose = require('mongoose');
+const Product = require('../models/product')
+
 
 
 const getAdminLogin = async (req, res) => {
   try {
     if (req.session.admin) {
-      productHelpers.getAllProducts((products) => {
+      productHelpers.getAllproducts((products) => {
         if (products) {
           res.render('./admin/adminPanel', { products });
-          console.log(products);
         } else {
           console.log('Failed to retrieve products');
         }
@@ -161,21 +164,36 @@ const adminRecoverDeletePrdt = async (req, res) => {
 
 const adminEditProduct = async (req, res) => {
   try {
-    productHelpers.updateProduct(req.params.id, req.body).then(() => {
-      res.redirect('/admin')
-      if (req.files.Image) {
-        const image = req.files.Image
-        image.mv('./public/product-images/' + req.params.id + '.jpg')
-      }
-    })
+    // Update the product
+    await productHelpers.updateProduct(req.params.id, req.body);
+    // console.log(req.body,'======================>');
+
+    // Handle image upload if it exists
+    if (req.files && req.files.Image) {
+      const image = req.files.Image;
+      image.mv('./public/product-images/' + req.params.id + '.jpg', (err) => {
+        if (err) {
+          console.error('Image upload error:', err);
+          // You can handle the error here, e.g., send an error response to the client
+        } else {
+          // Image uploaded successfully
+          console.log('Image uploaded successfully');
+        }
+      });
+    }
+
+    // Redirect to the admin page
+    res.redirect('/admin');
+  } catch (error) {
+    console.error('Error in adminEditProduct:', error.message);
+    // Handle the error here, e.g., send an error response to the client
   }
-  catch (error) {
-    console.log(error.message);
-  }
-}
+};
+
 
 const adminAddProductPage = async (req, res) => {
   try {
+    
     res.render('admin/add-product')
   }
   catch (error) {
@@ -183,30 +201,17 @@ const adminAddProductPage = async (req, res) => {
   }
 }
 
+
 const adminAddProduct = async (req, res) => {
   try {
-    productHelpers.addProduct(req.body, async (id) => {
-      if (req.files && req.files['images[]']) {
-        const image = req.files['images[]'];
-
-        const movePromise = new Promise((resolve, reject) => {
-          image.mv('./public/product-images/' + id + '.jpg', (err) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve();
-            }
-          });
-        });
-
-        await movePromise.catch((error) => {
-          console.log('Failed to move images:', error);
-          res.status(500).send('Failed to add product');
-        })
-
-        res.render("admin/add-product")
-      }
-    });
+    // console.log(req.body,'mmmmmmm');
+    productHelpers.addProduct(req.body,req.files).then((productData)=>{
+      
+    })
+      
+       res.render("admin/add-product")
+      
+   
   }
   catch (error) {
     console.log(error.message);
@@ -233,49 +238,10 @@ const getAllUsers = async (req, res) => {
   }
 
 }
-
-const getCameras = async (req, res) => {
+const Dashbord = async(req,res)=>{
   try {
-    try {
-      const nproducts = await productHelpers.getCamera_Products();
-      res.render('./admin/adminPanel', { products: nproducts });
-    }
-    catch (error) {
-      console.log('Failed to get products:', error);
-      res.status(500).send('Internal Server Error');
-    }
-  }
-  catch (error) {
-    console.log(error.message);
-  }
-}
-
-const getActionCamera = async (req, res) => {
-  try {
-    try {
-      const Bangleproducts = await productHelpers.getActionCamera_Products();
-      res.render('./admin/adminPanel', { products: Bangleproducts });
-    } catch (error) {
-      console.log('Failed to get products:', error);
-      res.status(500).send('Internal Server Error');
-    }
-  }
-  catch (error) {
-    console.log(error.message);
-  }
-}
-
-const getSurveillanceCamera = async (req, res) => {
-  try {
-    try {
-      const EarRingproducts = await productHelpers.getSurveillanceCamera_Products();
-      res.render('./admin/adminPanel', { products: EarRingproducts });
-    } catch (error) {
-      console.log('Failed to get products:', error);
-      res.status(500).send('Internal Server Error');
-    }
-  }
-  catch (error) {
+    res.render('admin/adminPanel')
+  } catch (error) {
     console.log(error.message);
   }
 }
@@ -293,8 +259,7 @@ module.exports = {
   adminAddProductPage,
   adminAddProduct,
   getAllUsers,
-  getCameras,
-  getActionCamera,
-  getSurveillanceCamera,
+  Dashbord,
+ 
   adminRecoverDeletePrdt
 }

@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/css/icomoon.css">
+	<!-- Ion Icon Fonts-->
+	<link rel="stylesheet" href="/css/ionicons.min.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="/css/magnific-popup.css">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="/css/flexslider.css">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
+	
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="/css/style.css">
+     <style>
+        /* Style for the status dropdown */
+        .status-dropdown {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .status-dropdown ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .status-dropdown ul li {
+            margin-bottom: 5px;
+        }
+
+        /* Style for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Add more styles as needed */
+    </style>
+	</head>
+	<body>
+		
+	<!-- <div class="colorlib-loader"></div> -->
+
+	<div id="page">
+		<nav class="colorlib-nav" role="navigation">
+			<div class="top-menu">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-7 col-md-9">
+							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
+						</div>
+						<div class="col-sm-5 col-md-3">
+			            <form action="#" class="search-wrap">
+			               <div class="form-group">
+			                  <input type="search" class="form-control search" placeholder="Search">
+			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
+			               </div>
+			            </form>
+			         </div>
+		         </div>
+					<div class="row">
+						<div class="col-sm-12 text-left menu-1">
+							<ul>
+								<li class="active"><a href="/admin/adminDashbord">Admin Dashbord</a></li>
+								<li><a href="#">Products</a></li>
+								<li><a href="/admin/allCategory">All Category</a></li>
+             
+							
+							</ul>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+<section>
+
+    <div class="container">
+     
+ <table class="table table-striped mt-5">
+  <thead>
+    <tr>
+      {{!-- <th scope="col">Product ID</th> --}}
+     
+
+      <th scope="col">Time</th>
+      {{!-- <th> Date</th> --}}
+      <th scope="col">Price</th>
+  
+      <th>Status</th>
+      <th>Payment</th>
+      <th>Address</th>
+      <th>Product Details</th>
+   
+    </tr>
+  </thead>
+  <tbody>
+   {{#each orders}}
+  <div class="order">
+    <tr>
+    <td>{{this.createdOn}}</td> <!-- Display createdOn in a table cell -->
+      {{!-- <td>{{this.date}}</td> <!-- Display date in a table cell --> --}}
+      <td>{{this.totalPrice}}</td> <!-- Display status in a table cell -->
+      <td>{{this.status}}</td> <!-- Display totalPrice in a table cell -->
+      <td>{{this.payment}}</td> <!-- Display payment in a table cell -->
+      <td>{{this.address}}</td> 
+       <td>
+ 
+            <a href="/admin/productDetails/{{this._id}}">
+            <button type="submit" class="btn btn-success">Details</button>
+            </a>
+     
+
+
+    </ul>
+  </div>
+  </tr>
+{{/each}}
+
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{{!-- <script>
+    $(document).ready(function () {
+        $(".status-toggle-button").click(function () {
+            $(this).next(".status-dropdown").slideToggle("fast");
+        });
+
+        // Handle status selection
+        $(".status-dropdown a").click(function (e) {
+            e.preventDefault();
+            var selectedStatus = $(this).data("status");
+            // Update the text of the button
+            $(this).closest("th").find(".status-toggle-button").text(selectedStatus);
+            // Close the dropdown
+            $(this).closest(".status-dropdown").slideUp("fast");
+
+            // Get the order ID (you may need to set this dynamically)
+            var userId = '{{this._id}}';
+
+            // Send an AJAX request to update the order status
+            $.ajax({
+                type: "POST",
+                url: "/admin/update-order-status/" + userId, // Replace with your actual route
+                data: { status: selectedStatus },
+                success: function (response) {
+                    if (response.status) {
+                        // Success message or action (optional)
+                    } else {
+                        // Error handling (optional)
+                    }
+                },
+                error: function (error) {
+                    // Error handling (optional)
+                }
+            });
+        });
+    });
+</script> --}}
+
+
+
+

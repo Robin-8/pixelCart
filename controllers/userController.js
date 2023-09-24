@@ -1,5 +1,7 @@
-const productHelpers = require("../helpers/product-helpers")
+const Category = require("../models/categoryModel")
 const userHelper = require("../helpers/user-helpers")
+const  productHelpers = require('../helpers/product-helpers')
+const bcrypt = require('bcrypt')
 
 // twilio otp
 const accountSid = "AC270df992da52b5449497119dc18e587e";
@@ -10,25 +12,20 @@ const client = require("twilio")(accountSid, authToken);
 const landingPage = async (req, res) => {
   try {
     if (req.session.user) {
-      res.redirect('/home')
+      res.redirect('/home');
+      return;
     }
-    const promises = [
-      productHelpers.getCamera_Products(),
-      productHelpers.getActionCamera_Products(),
-      productHelpers.getSurveillanceCamera_Products()
-    ];
 
-    Promise.all(promises)
-      .then(([CameraProduct, ActionCameraProduct, SurveillanceCameraProduct]) => {
-        res.render('LandingPage', { CameraProduct, ActionCameraProduct, SurveillanceCameraProduct });
-      })
-      .catch((error) => {
-        console.log('Failed to retrieve products:', error);
-      });
+    // Fetch all products
+    productHelpers.getAllproducts((products) => {
+      res.render('user/LandingPage', { products });
+    });
   } catch (error) {
-    console.log(error.message);
+    console.log('Error in landingPage:', error.message);
+    res.render('LandingPage', { products: [] });
   }
 };
+
 // to send verification code
 const verify = async (req, res) => {
   try {
@@ -38,7 +35,7 @@ const verify = async (req, res) => {
       .verifications.create({ to: mobileNumber, channel: 'whatsapp' })
       .then((verification) => {
         console.log(verification.status);
-        res.render('verify_otp', { mobileNumber });
+        res.render('user/verify_otp', { mobileNumber });
       })
       .catch((error) => {
         console.log(error);
@@ -59,7 +56,7 @@ const verifys = async (req, res) => {
       .verificationChecks.create({ to: mobile, code: otpCode })
       .then((verificationCheck) => {
         console.log(verificationCheck.status);
-        res.render('signup', { mobile })
+        res.render('user/signup', { mobile })
       })
       .catch((error) => {
         console.log(error);
@@ -94,7 +91,7 @@ const login = async (req, res) => {
     if (req.session.user) {
       res.redirect('/home')
     }
-    res.render('signup&login', { "loginErr": req.session.loginErr })
+    res.render('user/signup&login', { "loginErr": req.session.loginErr })
     req.session.loginErr = false
   } catch (error) {
     console.log(error.message);
@@ -113,6 +110,7 @@ const getuserlogin = async (req, res) => {
     }
     if (user) {
       req.session.user = user[0]
+      // console.log(req.session.user,'jjhjhjgjgj');
       return res.redirect('/home');
     }
   } catch (err) {
@@ -133,45 +131,127 @@ const logout = async (req, res) => {
 
 const home = async (req, res) => {
   try {
-    try {
-      if (req.session.user ) {
-        const promises = [
-          productHelpers.getCamera_Products(),
-          productHelpers.getActionCamera_Products(),
-          productHelpers.getSurveillanceCamera_Products()
-        ];
-        Promise.all(promises)
-          .then(([CameraProduct, ActionCameraProduct, SurveillanceCameraProduct]) => {
-            console.log(SurveillanceCameraProduct);
-            res.render('home', { CameraProduct, ActionCameraProduct, SurveillanceCameraProduct });
-          })
-          .catch((error) => {
-            console.log('Failed to retrieve products:', error);
-          });
-      }
-    } catch (err) {
-      console.log(err);
-      console.log("error occured !!!!!here @get home");
+    if (!req.session.user) {
       res.redirect('/login');
+      return;
     }
+    // Fetch all products
+    productHelpers.getAllproducts((products) => {
+      console.log(products,"hgkahsfdakh")
+      res.render('user/home', { products, });
+    });
   } catch (error) {
-    console.log(error.message);
+    console.log('Error in landingPage:', error.message);
+    res.render('user/home', { products: [] });
   }
-}
-
+};
 const getProductDetails = async (req, res) => {
   try {
     const id = req.params.id
     const product = await productHelpers.getProductById({ _id: id });
+    console.log(product,'vgvybvvbyby');
     if (!product) {
       return res.redirect('/login');
     }
-    res.render('productDetailsPage', { product: product });
+    res.render('user/productDetailsPage', { product: product });
   } catch (err) {
     console.log(err);
     res.redirect('/home');
   }
 }
+const forgetPassword = (req,res)=>{
+  res.render('user/resetPassword')
+};
+
+const resetPasswordOTP = async (req, res) => {
+  try {
+    console.log(req.body);
+    const mobileNumber = req.body.mobileNumber; // Get the mobile number from the form input
+
+    // Generate and send OTP
+    client.verify.v2.services(verifySid)
+      .verifications.create({ to: mobileNumber, channel: 'whatsapp' }) // You can use SMS for password reset
+      .then((verification) => {
+        console.log(verification.status);
+        res.render('verify_otp', { mobileNumber }); // Redirect to OTP verification page
+      })
+      .catch((error) => {
+        console.log(error);
+        res.send('Error occurred during OTP generation');
+      });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const verifyResetPasswordOTP = async (req, res) => {
+  try {
+    const mobile = req.body.mobileNumber;
+    const otpCode = req.body.otp;
+
+    // Verify the OTP
+    client.verify
+      .services(verifySid)
+      .verificationChecks.create({ to: mobile, code: otpCode })
+      .then((verificationCheck) => {
+        if (verificationCheck.status === 'approved') {
+          res.render('resetPassword', { mobile }); // Redirect to the password reset form
+        } else {
+          res.send('OTP verification failed');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        res.send('Error occurred during OTP verification');
+      });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const mobile = req.body.mobileNumber;
+    const newPassword = req.body.newPassword;
+
+    // Implement your password reset logic here, e.g., update the password in your database
+    bcrypt.hash(newPassword,10,(err,hash)=>{
+      if(err){
+        console.log('error passing new password',err);
+      }else{
+        User.findOneAndUpdate({ _id: userId }, { password: hash }, (err, user) =>{
+          if(err){
+            console.log('error updating password in data base',err);
+            res.send('password update error')
+          }else{
+            res.send('password update successfully')
+          }
+        })
+      }
+    })
+
+    res.send('Password reset successful'); // You can also redirect to a login page
+  } catch (error) {
+    console.log(error.message);
+    res.send('Error resetting password');
+  }
+};
+const orderSuccess= async(req,res)=>{
+  try {
+    res.render('user/orderPlaced')      
+  } catch (error) {
+    console.log(error);
+  }
+
+}  
+const razorpay = (req,res)=>{
+  try {
+    res.render('user/razorpay',{razorpay_key:"rzp_test_pGz4qvobcKcY0w"})
+  } catch (error) {
+    console.log('razorpay not working',error);
+  }
+}
+
 
 module.exports = {
   landingPage,
@@ -182,5 +262,12 @@ module.exports = {
   getuserlogin,
   logout,
   home,
-  getProductDetails
+  getProductDetails,
+  forgetPassword,
+  resetPasswordOTP,
+  resetPassword,
+  verifyResetPasswordOTP,
+  orderSuccess,
+  razorpay
+  
 }
