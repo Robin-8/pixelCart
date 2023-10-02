@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
+
+<head>
 	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
-	
+
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="/css/animate.css">
 	<!-- Icomoon Icon Fonts-->
@@ -26,7 +27,7 @@
 	<!-- Owl Carousel -->
 	<link rel="stylesheet" href="/css/owl.carousel.min.css">
 	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
-	
+
 	<!-- Date Picker -->
 	<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
 	<!-- Flaticons  -->
@@ -35,9 +36,10 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="/css/style.css">
 
-	</head>
-	<body>
-		
+</head>
+
+<body>
+
 	<!-- <div class="colorlib-loader"></div> -->
 
 	<div id="page">
@@ -49,14 +51,15 @@
 							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
-			            <form action="#" class="search-wrap">
-			               <div class="form-group">
-			                  <input type="search" class="form-control search" placeholder="Search">
-			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
-			               </div>
-			            </form>
-			         </div>
-		         </div>
+							<form action="#" class="search-wrap">
+								<div class="form-group">
+									<input type="search" class="form-control search" placeholder="Search">
+									<button class="btn btn-primary submit-search text-center" type="submit"><i
+											class="icon-search"></i></button>
+								</div>
+							</form>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
@@ -64,68 +67,81 @@
 								<li><a href="/">Products</a></li>
 								<li><a href="/userDetails">User Profile</a></li>
 								<li class="cart"><a href="/carts"><i class="icon-shopping-cart"></i> Cart</a></li>
-								<li class="cart"><a href="/logout"><i class="icon-switch"></i> Logout</a></li>             
-							
+								<li class="cart"><a href="/logout"><i class="icon-switch"></i> Logout</a></li>
+
 							</ul>
-						
+
 						</div>
 					</div>
 				</div>
 			</div>
 
 
-<section>
+			<section>
 
-    <div class="container">
-     
- <table class="table table-striped mt-5">
-  <thead>
-    <tr>
-      {{!-- <th scope="col">Product ID</th> --}}
-     
-    
-      <th scope="col">Time</th>
-      {{!-- <th> Date</th> --}}
-      <th scope="col">Price</th>
-      <th>Status</th>
-      <th>Payment</th>
+				<div class="container">
 
-      <th>Cancel</th>
-      {{!-- <th>Details</th> --}}
-    </tr>
-  </thead>
-  <tbody>
-   {{#each orders}}
-  <div class="order">
-    <tr>
-    <td>{{this.createdOn}}</td> <!-- Display createdOn in a table cell -->
-      {{!-- <td>{{this.date}}</td> <!-- Display date in a table cell --> --}}
-      <td>{{this.totalPrice}}</td> <!-- Display status in a table cell -->
-      <td>{{this.status}}</td> <!-- Display totalPrice in a table cell -->
-      <td>{{this.payment}}</td> <!-- Display payment in a table cell -->
-   
-       <td>
-        <form action="/cancel-order{{this._id}}" method="post">
-            <button type="submit" class="btn btn-danger">Cancel</button>
-        </form>
-        
-       </td>
-       {{!-- <td>
-        <form action="/details-order{{this._id}}" method="post">
-            <button type="submit" class="btn btn-success">Details</button>
-        </form>
-       </td> --}}
-
-    </ul>
-  </div>
-  </tr>
-{{/each}}
-
-      </tbody>
-    </table>
-  </div>
-</section>
+					<table class="table table-striped mt-5">
+						<thead>
+							<tr>
+								{{!-- <th scope="col">Product ID</th> --}}
 
 
+								<th scope="col">Time</th>
+								{{!-- <th> Date</th> --}}
+								<th scope="col">Price</th>
+								<th>Status</th>
+								<th>Payment</th>
+
+								<th>Cancel</th>
+								{{!-- <th>Details</th> --}}
+							</tr>
+						</thead>
+						<tbody>
+							{{#each orders}}
+							<div class="order">
+								<tr>
+									<td>{{this.createdOn}}</td> <!-- Display createdOn in a table cell -->
+									{{!-- <td>{{this.date}}</td> <!-- Display date in a table cell --> --}}
+									<td>{{this.totalPrice}}</td> <!-- Display status in a table cell -->
+									<td>{{this.status}}</td> <!-- Display totalPrice in a table cell -->
+									<td>{{this.payment}}</td> <!-- Display payment in a table cell -->
+
+									<td>
+										<form action="/cancel-order{{this._id}}" method="post">
+											<button type="submit" class="btn btn-danger cancel-button">Cancel</button>
+										</form>
+									</td>
 
 
+									</ul>
+							</div>
+							</tr>
+							{{/each}}
+
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const cancelButton = document.querySelector(".cancel-button");
+
+        if (cancelButton) {
+            cancelButton.addEventListener("click", function () {
+                // Prevent the form from submitting (optional)
+                event.preventDefault();
+
+                // Change the button text to "Canceled"
+                cancelButton.textContent = "Canceled";
+
+                // You can also disable the button to prevent further clicks
+                cancelButton.disabled = true;
+
+                // If needed, you can submit the form programmatically
+                // this.form.submit(); // Uncomment this line to submit the form
+            });
+        }
+    });
+</script>

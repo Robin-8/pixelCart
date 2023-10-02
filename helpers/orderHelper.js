@@ -147,14 +147,14 @@ const getOrderCount = async (userId) => {
 }
 const getOrders = async (userId) => {
     return new Promise((resolve, reject) => {
-        console.log("in u-h getOrders");
+        
         connectDB()
             .then(async () => {
                 const orders = await Order.find({ userId: userId })
                     .populate('products.product') // Populate the 'product' field within the 'products' array
                     .exec()
                     .then((data) => {
-                        console.log(data, "in u-h getorders");
+                        
                         resolve(data)
                     }).catch((error) => {
                         console.log(error);

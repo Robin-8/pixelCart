@@ -6,6 +6,8 @@ const { response } = require('express')
 const productHelper = require('../helpers/product-helpers');
 const { log } = require('handlebars/runtime');
 // const async = require('hbs/lib/async');
+const couponHelper = require('../helpers/couponHelper')
+
 
 
 const addToCart = async (req,res)=>{
@@ -38,7 +40,8 @@ getCart = async(req,res)=>{
         // if(req.session.user._id){
             const products = await cartHelpers.getCartProducts(req.session.user._id)
              const total =await  cartHelpers.getTotal(req.session.user._id)
-        
+             
+
 
 
 const userId=req.session.user._id;
@@ -50,8 +53,10 @@ const cart= await Cart.findOne({user: userId})
             const data ={
                 products:products,
                 total:total,
+                // coupons
                 
             }
+            console.log(data,"dataaa>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             res.render('user/cart',data)
       
         // }
@@ -88,30 +93,30 @@ const removeCartProduct= async(req,res,next)=>{
 const deleteCart = async (req, res) => {
     try {
         const productId = req.query.id;
-        const cartId = req.session.cartId; // Assuming you have a session variable for cartId
+        const cartId = req.session.cartId;
 
         if (!cartId) {
             return res.status(400).json({ message: "Cart ID not found in session." });
         }
 
-        // Use Mongoose to find the user's cart by its ID
+      
         const cart = await Cart.findOne({ _id: cartId });
 
         if (!cart) {
             return res.status(404).json({ message: "Cart not found." });
         }
 
-        // Find the index of the product in the cart's products array
+       
         const productIndex = cart.products.findIndex((product) => product.item.equals(productId));
 
         if (productIndex === -1) {
             return res.status(404).json({ message: "Product not found in cart." });
         }
 
-        // Remove the product from the products array
+
         cart.products.splice(productIndex, 1);
 
-        // Save the updated cart
+        
         await cart.save();
 
         res.redirect('/carts') 

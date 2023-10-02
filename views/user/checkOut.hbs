@@ -9,6 +9,31 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
 
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+		integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+		crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+	{{!--
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script> --}}
+
+	{{!--
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script> --}}
+	{{!--
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script> --}}
+
+
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="/css/animate.css">
 	<!-- Icomoon Icon Fonts-->
@@ -40,7 +65,7 @@
 
 <body>
 
-	<div class="colorlib-loader"></div>
+	{{!-- <div class="colorlib-loader"></div> --}}
 
 	<div id="page">
 		<nav class="colorlib-nav" role="navigation">
@@ -254,7 +279,36 @@
 								</div>
 							</div>
 						</form>
+						<div>
+							{{#if coupons}}
+							<div class="col-lg-12">
+								<div class="card mb-3 border shadow-0">
+									<div class="card-body">
+										<form>
+											<button type="button" id="availableCoupon"
+												class="btn btn-outline-primary mt-2" data-bs-toggle="modal"
+												data-bs-target="#modalCoupon">Available Coupons</button>
+											<div class="form-group">
+												<label class="form-label">Have coupon?</label>
+												<div class="input-group">
+													<input type="text" class="form-control border mb-1" id="coupon"
+														name="coupon" placeholder="Coupon code" />
+													<a onclick="applyCoupon('{{total}}', '{{userData.wallet}}')"
+														id="applyButton" class="btn btn-light border">Apply</a>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+							{{else}}
+							<input type="hidden" class="form-control border" id="coupon" name="coupon" value="0"
+								placeholder="Coupon code" />
+							{{/if}}
+						</div>
 					</div>
+
+
 
 					<div class="col-lg-4">
 						<div class="row">
@@ -262,16 +316,21 @@
 								<div class="cart-detail">
 									<h2>Cart Total</h2>
 									<ul>
-										<li>
-
-											<ul>
-												<li><span>1 x Product Name</span> <span>$78.00</span></li>
-											</ul>
-										</li>
-										<li><span>Shipping</span> <span>$0.00</span></li>
+										<li><span>Wallet Amount</span>
+											<p class="mb-2 text-danger fw-bold" style="padding-left: 14%;">
+												{{this.wallet.balance}}</p>
+										<li><span>Discount</span>
+											<p class="mb-2 text-danger fw-bold" id="discount"
+												style="padding-left: 14%;"></p>
 										<li><span>Order Total</span>
 											<p class="mb-2 text-danger fw-bold" id="totalValue"
 												style="padding-left: 14%;">{{this.total}}</p>
+											<div id="useWallet" class="form-check" style="padding-bottom: 10%;">
+												<input type="checkbox" class="form-check-input" id="exampleCheck1"
+													onclick="walletRadioClick(this)">
+												<label class="form-check-label" for="exampleCheck1">Use wallet</label>
+											</div>
+
 									</ul>
 								</div>
 							</div>
@@ -300,11 +359,12 @@
 										<div>
 											<h6 href="#" class="nav-link"
 												style="margin: 0%; padding: 0%; text-transform: capitalize; width: 130px;">
-												{{this.product.Price}}
+												{{ formatPrice this.product.Price}}
 											</h6>
 										</div>
 									</div>
 									{{/each}}
+									</li>
 								</div>
 							</div>
 
@@ -330,19 +390,81 @@
 									</div>
 								</div>
 							</div>
+
+
+							<div class="modal fade top" id="modalCoupon" tabindex="-1" aria-labelledby="myModalLabel"
+								aria-hidden="true" data-bs-backdrop="true">
+								<div class="modal-dialog modal-frame modal-top modal-notify modal-success"
+									role="document">
+									<!-- Content -->
+									<div class="modal-content">
+										<!-- Body -->
+
+										<div class="modal-body">
+											{{#each coupons}}
+
+											<div
+												class="row d-flex justify-content-center align-items-center border rounded">
+												<div class="col-12 col-md-12 d-flex">
+													<div
+														class="code-container col-3 col-md-3 d-flex align-items-center">
+														<p>
+															<span class="badge" id="couponCode{{@index}}"
+																style="color: black;">
+																{{this.couponDescription}}
+															</span>
+															<input type="text" value="{{this.couponCode}}"
+																id="myInput{{@index}}" style="border: none;" readonly>
+														</p>
+													</div>
+													<div
+														class="content-copy-container col-9 col-md-9 d-flex align-items-center">
+														<p class="pt-3 mx-4">
+															<strong class="ml-5"> &#8377;{{this.discount}}
+																discount</strong>.
+														</p>
+														<button type="button" id="coupon-btn" data-id="{{this._id}}"
+															class="btn btn-success copy-button ms-auto"
+															data-index="{{@index}}" onclick="myFunction('{{@index}}')">
+															<svg xmlns="http://www.w3.org/2000/svg" width="16"
+																height="16" fill="currentColor"
+																class="bi bi-clipboard-minus" viewBox="0 0 16 16">
+																<path fill-rule="evenodd"
+																	d="M5.5 9.5A.5.5 0 0 1 6 9h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z" />
+																<path
+																	d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+																<path
+																	d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+															</svg>
+														</button>
+													</div>
+												</div>
+											</div>
+											{{/each}}
+
+											<div class="close-container d-flex justify-content-end mt-2">
+												<button type="button" class="btn btn-outline-success"
+													data-bs-dismiss="modal">No,
+													thanks</button>
+											</div>
+										</div>
+									</div>
+									<!--/.Content-->
+								</div>
+							</div>
+
 							<div class="row">
 								<div class="col-md-12 text-center">
 
 
 
-									<button type="button" id="placeorder">Place Order</button>
+									<button type="button" id="" onclick="placeOrder()">Place Order</button>
 									</p>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12 text-center">
-									{{!-- <p><a href="#" id="getDataButton" class="btn btn-primary py-3 px-4">Place an
-											order</a> --}}
+
 								</div>
 							</div>
 						</div>
@@ -463,9 +585,30 @@
 		<!-- Main -->
 		<script src="js/main.js"></script>
 		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+			media="screen">
 
 
 		<script>
+			$(document).ready(function () {
+				$('#modalCoupon').modal({
+					show: false
+				});
+			});
+		</script>
+
+
+
+
+
+
+		<script>
+			let total = parseInt('{{this.total}}')
+			let walletBalance = parseInt('{{this.wallet.balance}}')
+			if (walletBalance >= total) {
+				alert("HIi")
+				document.getElementById('useWallet').hidden = true
+			}
 			let addressId
 			function handleClick(element) {
 				addressId = element.value;
@@ -488,15 +631,71 @@
 		</script>
 
 		<script>
-			const placeorder = document.querySelector('#placeorder');
-			console.log(placeorder)
-			placeorder.addEventListener('click', function () {
-				console.log('helllllllllllo')
-				placeOrder()
-			})
 
+			function applyCoupon(total, wallet) {
+
+				const coupon = document.getElementById('coupon').value
+
+				alert("Enterrr")
+
+				$.ajax({
+					url: '/user_applaycoupon',
+					method: 'post',
+					data: {
+						couponCode: coupon,
+						cartTotal: total,
+					},
+					success: (response) => {
+						console.log(response, 'response here')
+						document.getElementById('coupon').readOnly = true;
+						document.getElementById('availableCoupon').style.display = 'none';
+						document.getElementById('applyButton').disabled = true;
+						const total = parseInt(document.getElementById('totalValue').innerText);
+
+
+						const discount = parseInt(document.getElementById('discount').value)
+
+						console.log(total, response.discount, discount)
+						document.getElementById('discount').innerContent = discount + parseInt(response.discount);
+						document.getElementById('totalValue').innerText = total - parseInt(response.discount)
+
+						const tot = parseInt(document.getElementById('totalValue').innerHTML);
+						if (tot >= wallet) {
+							// Enable the button
+							document.getElementById('walletButton').disabled = false;
+							document.getElementById('walletButton').innerHTML = "Use wallet";
+						} else {
+							// Disable the button and display "Insufficient Funds"
+							document.getElementById('walletButton').disabled = true;
+							document.getElementById('walletButton').innerHTML = "Insufficient Funds";
+						}
+					}
+				})
+			}
+
+			function myFunction(index) {
+				var copyText = document.getElementById("myInput" + index);
+				copyText.select();
+				copyText.setSelectionRange(0, 99999)
+				navigator.clipboard.writeText(copyText.value)
+					.then(function () {
+						console.log("Text copied to clipboard: " + copyText.value);
+						var noThanksButton = document.querySelector('.close-container button');
+						if (noThanksButton) {
+							noThanksButton.click();
+						}
+					})
+					.catch(function (err) {
+						console.error("Failed to copy text: " + err);
+					});
+			}
+
+
+		</script>
+		<script>
+			let discount = JSON.parse(localStorage.getItem('discountAmount'))
+			console.log(discount)
 			function placeOrder() {
-				console.log('inplaceorder')
 				var payment = $('.payment:checked').val()
 				var address = $('.address-radio').val()
 				if (!payment) {
@@ -515,11 +714,14 @@
 						timer: 3000,
 					})
 				}
+				let totalValue = parseInt(document.getElementById('totalValue').innerHTML)
 				$.ajax({
 					url: '/checkout',
 					method: 'post',
 					data: {
 						paymentMethod: payment,
+						discount: discount,
+						total: totalValue,
 					},
 					success: (response) => {
 						console.log(response, 'response')
@@ -574,7 +776,7 @@
 					data: {
 						payment,
 						order,
-						orderId 
+						orderId
 					},
 					method: 'post',
 					success: (response) => {
@@ -588,6 +790,35 @@
 			}
 
 		</script>
+		<script>
+
+			function walletRadioClick(radioButton) {
+				let originalTotal = parseFloat('{{this.total}}');
+				const totalElement = document.getElementById('totalValue');
+				const total = parseFloat(totalElement.textContent);
+				let lastTotal = total;
+				console.log('total====', total);
+
+				const wallet = parseFloat('{{this.wallet.balance}}');
+				const useWalletButton = document.getElementById('useWallet'); // Assuming your button has an ID like 'useWalletButton'
+
+				if (radioButton.checked) {
+					if (originalTotal < wallet) {
+						totalElement.textContent = 1;
+					} else {
+						totalElement.textContent = total - wallet;
+					}
+
+					// Disable the "Use wallet" button
+					useWalletButton.disabled = true;
+				} else {
+					totalElement.textContent = lastTotal;
+					// Enable the "Use wallet" button
+					useWalletButton.disabled = false;
+				}
+			}
+		</script>
+
 
 
 
@@ -595,3 +826,63 @@
 </body>
 
 </html>
+
+
+<script>
+
+	{
+		{
+			!-- function getCouponData(buttonElement) {
+				var data = buttonElement.getAttribute("data-id");
+				console.log(data)
+			} --}
+	}
+
+	const couponBtns = document.querySelectorAll('#coupon-btn')
+	couponBtns.forEach((btn, index) => {
+		btn.addEventListener('click', function () {
+			const id = btn.getAttribute('data-id')
+			console.log(id)
+
+
+
+			// Define the URL for your POST request
+			const url = `/getCoupon/${id}`;
+
+			// Create an object with the data you want to send in the request body
+
+
+			// Create the request headers
+			const headers = {
+				'Content-Type': 'application/json', // Adjust the content type as needed
+				// You may also need to include authentication headers or other headers as required
+			};
+
+			// Create the fetch options object
+			const options = {
+				method: 'GET', // HTTP method
+				headers: headers, // Request headers
+			};
+
+			fetch(url, options)
+				.then(response => {
+
+					return response.json(); // Parse the response body as JSON
+				})
+				.then(data => {
+					// Handle the JSON data returned in the response
+					console.log(data.response.discount)
+					document.getElementById('discount').textContent = data.response.discount
+
+					localStorage.setItem('discountAmount', JSON.stringify(data.response.discount))
+
+				})
+				.catch(error => {
+					// Handle any errors that occurred during the fetch
+					console.error('Fetch error:', error);
+				});
+		})
+	})
+
+
+</script>

@@ -9,44 +9,44 @@
 	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
 	
 	<!-- Animate.css -->
-	<link rel="stylesheet" href="/public/css/animate.css">
+	<link rel="stylesheet" href="/css/animate.css">
 	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="/public/css/icomoon.css">
+	<link rel="stylesheet" href="/css/icomoon.css">
 	<!-- Ion Icon Fonts-->
-	<link rel="stylesheet" href="/public/css/ionicons.min.css">
+	<link rel="stylesheet" href="/css/ionicons.min.css">
 	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="/public/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
 
 	<!-- Magnific Popup -->
-	<link rel="stylesheet" href="/public/css/magnific-popup.css">
+	<link rel="stylesheet" href="/css/magnific-popup.css">
 
 	<!-- Flexslider  -->
-	<link rel="stylesheet" href="/public/css/flexslider.css">
+	<link rel="stylesheet" href="/css/flexslider.css">
 
 	<!-- Owl Carousel -->
-	<link rel="stylesheet" href="/public/css/owl.carousel.min.css">
-	<link rel="stylesheet" href="/public/css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
 	
 	<!-- Date Picker -->
-	<link rel="stylesheet" href="/public/css/bootstrap-datepicker.css">
+	<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
 	<!-- Flaticons  -->
-	<link rel="stylesheet" href="/public/fonts/flaticon/font/flaticon.css">
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
 
 	<!-- Theme style  -->
-	<link rel="stylesheet" href="/public/css/style.css">
+	<link rel="stylesheet" href="/css/style.css">
 
 	</head>
 	<body>
 		
-
+	<!-- <div class="colorlib-loader"></div> -->
 
 	<div id="page">
-		<nav class="colorlib-nav" role="navigation ">
+		<nav class="colorlib-nav" role="navigation">
 			<div class="top-menu">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="index.html">Admin Pannel</a></div>
+							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
 			            <form action="#" class="search-wrap">
@@ -58,28 +58,37 @@
 			         </div>
 		         </div>
 					<div class="row">
-						<div class="col-sm-12 text-left menu-1" >
+						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li><a href="index.html">Admin Dashbord</a></li>
-								<li class="has-dropdown">
-									<a href="men.html">All Users</a>
-                                    	<li><a href="about.html">Products</a></li>
-								
-								</li>
-								<li class="active"><a href="women.html">All Category</a></li>
-								<li><a href="about.html">Orders</a></li>
-								
+								<li class="active"><a href="/">Home</a></li>
+								<li><a href="/">Products</a></li>
+								<li><a href="/userDetails">User Profile</a></li>
+								<li class="cart"><a href="/carts"><i class="icon-shopping-cart"></i> Cart</a></li>
+								<li class="cart"><a href="/logout"><i class="icon-switch"></i> Logout</a></li>             
+							
 							</ul>
+						
 						</div>
 					</div>
 				</div>
 			</div>
+	
+		<div class="colorlib-intro">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12 text-center">
+						<h2 class="intro">It started with a simple idea: Create quality, well-designed products that I wanted myself.</h2>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		</nav>
-           <a href="/admin/add-coupon"><button type="button" class="btn mb-2 btn-primary">Add Coupon</button></a>
+           <a href="/admin/addCoupon"><button type="button" class="btn mb-2 btn-primary">Add Coupon</button></a>
             <table class="table table-borderless table-striped">
               <thead>
-                <tr role="row">
+				
+                <tr role="row" >
                   <th>Coupon Code</th>
                   <th>Coupon Description</th>
                   <th>Discount</th>
@@ -98,10 +107,21 @@
                   <th>{{this.discount}}</th>
                   <th>{{this.maxDiscount}}</th>
                   <th>{{this.minAmount}}</th>
-                  <th>{{formatDate this.creationDate}}</th>
-                  <th>{{formatDate this.expirationDate}}</th>
-               
-                </tr>
+                  <th>{{this.creationDate}}</th>
+                  <th>{{this.expirationDate}}</th>
+
+				    <td>
+                    <a href="/admin/admineditcoupon?couponId={{this._id}}"><button type="button"
+                        class="btn mb-2 btn-primary">Edit</button></a>
+                    {{#if this.isDeleted}}
+                    <a href='/admin/adminrecovercoupon?couponId={{this._id}}'><button type="button"
+                        class="btn mb-2 btn-success">Recover</button></a>
+                    {{else}}
+                    <a href='/admin/admindeletecoupon?couponId={{this._id}}'><button type="button"
+                        class="btn mb-2 btn-danger">Delete</button></a>
+                    {{/if}}
+                  </td>
+                 </tr>
                 {{/each}}
               </tbody>
             </table>

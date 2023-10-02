@@ -46,7 +46,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
+							<div id="colorlib-logo"><a href="index.html">Adminal Pannel</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
 			            <form action="#" class="search-wrap">
@@ -59,13 +59,16 @@
 		         </div>
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
-							<ul>
-								<li class="active"><a href="/">Home</a></li>
-								<li><a href="/">Products</a></li>
-								<li><a href="/userDetails">User Profile</a></li>
-								<li class="cart"><a href="/carts"><i class="icon-shopping-cart"></i> Cart</a></li>
-								<li class="cart"><a href="/logout"><i class="icon-switch"></i> Logout</a></li>             
-							
+						<ul>
+								<li><a href="index.html">Admin Dashbord</a></li>
+								<li class="has-dropdown">
+									<a href="admin/allCategory">All Users</a>
+                                    	<li><a href="about.html">Products</a></li>
+								
+								</li>
+								
+								<li><a href="about.html">Orders</a></li>
+								
 							</ul>
 						
 						</div>
@@ -73,22 +76,14 @@
 				</div>
 			</div>
 	
-		<div class="colorlib-intro">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-12 text-center">
-						<h2 class="intro">It started with a simple idea: Create quality, well-designed products that I wanted myself.</h2>
-					</div>
-				</div>
-			</div>
-		</div>
+	
 <body>
 	<div class="card shadow mb-4">
               <div class="card-body">
 				<div class="container d-flex justify-content-center">
                 <div class="row col-10">
                   <div class="col-md-12">
-                    <form action="/admin/addCoupon" method="POST" enctype="multipart/form-data">
+                    <form action="/admin/addCoupon" method="POST" >
                       <div class="form-group mb-3">
                         <label for="simpleinput">Coupon Code</label>
                         <input type="text" name="couponCode" id="simpleinput" class="form-control" required/>

@@ -1,7 +1,9 @@
 const Category = require("../models/categoryModel")
 const userHelper = require("../helpers/user-helpers")
 const  productHelpers = require('../helpers/product-helpers')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const async = require("hbs/lib/async");
+const categoryHelpers = require('../helpers/ca')
 
 // twilio otp
 const accountSid = "AC270df992da52b5449497119dc18e587e";
@@ -145,6 +147,25 @@ const home = async (req, res) => {
     res.render('user/home', { products: [] });
   }
 };
+
+const productListing = async (req, res) => {
+  try {
+    const categoryName = await productHelpers.getAllName();
+    const categories = await 
+    if (!req.session.user) {
+      res.redirect('/login');
+      return;
+    }
+    // Fetch all products
+    productHelpers.getAllProductList((products) => {
+
+      res.render('user/productList', { products });
+    });
+  } catch (error) {
+    console.log('Error in landingPage:', error.message);
+    res.render('user/home', { products: [] });
+  }
+};
 const getProductDetails = async (req, res) => {
   try {
     const id = req.params.id
@@ -252,6 +273,60 @@ const razorpay = (req,res)=>{
   }
 }
 
+const fillterProduct =  async(req,res)=>{
+
+  
+    const productCategory = req.body.productCategory;
+    const productRange = req.body.productRange;
+    let sort = req.body.sort
+    let serarch = req.body.search;
+    let rangeFilter =[]
+    const filter = {isDeleated:false}
+    if(serarch){
+      const regex = new RegExp('^' + serarch, 'i');
+      filter.name = regex
+    }
+    if(productCategory){
+      filter.category = {$in:productCategory}
+    }
+    if(productRange){
+      for(let i = 0;i<productRange.length;i++){
+        if(productRange[i] == 'lt15000'){
+          rangeFilter.push({price:{$lte : 15000}})
+        }
+        if(productRange){
+          rangeFilter.push({price:{$gt:15000,$lte : 40000}})
+        }
+        if(productRange){
+          rangeFilter.push({price:{$gt:40000,$lte:80000}})
+        }
+        if(productRange){
+          rangeFilter.push({price:{$gt:80000,$lte:150000}})
+        }
+        if(productRange){
+          rangeFilter.push({price:{$gt:150000,$lte:200000}})
+        }
+        if(productRange){
+          rangeFilter.push({price:{$gt:200000}})
+        }
+      }
+      filter.$or = rangeFilter
+    }
+    if(sort){
+      if(sort =='HL'){
+        sort = {price:-1}
+      }
+      if(sort == 'LH'){
+        sort = {price:1}
+      }
+      if(sort == 'NA'){
+        sort = {date:-1}
+      }
+    }else{
+      sort = {date:-1}
+    }
+}
+
 
 module.exports = {
   landingPage,
@@ -268,6 +343,8 @@ module.exports = {
   resetPassword,
   verifyResetPasswordOTP,
   orderSuccess,
-  razorpay
+  razorpay,
+  productListing,
+  fillterProduct
   
 }

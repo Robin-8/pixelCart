@@ -127,19 +127,19 @@
                     <h2 class="text-center">Add Category</h2>
                     <br><br>
 
-                    <form action="/admin/addCategory" method="POST" enctype="multipart/form-data"
-                        class="form-container">
-                        <input type="text" name="name" placeholder="Product Name" required>
-                        <input type="text" name="description" placeholder="Description" required>
-                        <button type="submit">Submit</button>
+                    <form method="POST" action="/admin/addCategory">
+                        <label for="name">Category Name:</label>
+                        <input type="text" name="name" id="name" required>
+
+                        <label for="description">Category Description:</label>
+                        <textarea name="description" id="description" required></textarea>
+
+                        <button type="submit">Add Category</button>
                     </form>
 
 
 
 
-
-                    {{!-- <label for="">Images</Label>
-                    <input type="file" name="Images[]" class="form-control"> --}}
 
 
 

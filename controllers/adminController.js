@@ -7,6 +7,7 @@ const Product = require('../models/product')
 
 
 
+
 const getAdminLogin = async (req, res) => {
   try {
     if (req.session.admin) {
@@ -205,6 +206,7 @@ const adminAddProductPage = async (req, res) => {
 const adminAddProduct = async (req, res) => {
   try {
     // console.log(req.body,'mmmmmmm');
+   
     productHelpers.addProduct(req.body,req.files).then((productData)=>{
       
     })

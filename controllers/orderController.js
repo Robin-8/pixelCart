@@ -9,28 +9,41 @@ const { response } = require('express')
 const { deleteAddress } = require('./profileController')
 const Order=require('../models/orderModel')
 const { format } = require('date-fns');
+const couponHelper = require('../helpers/couponHelper')
+const walletHelper = require ('../helpers/walletHelper')
 
 
 
 
 const placeOrder = async(req,res)=>{
+    console.log(req.body)
     try {
         const userId=req.session.user._id;
       const cart = await Cart.findOne({user:userId})
+      const coupons = await couponHelper.adminGetAllCoupons()
 
-    //   console.log(cart,"this is cart data");
-
+      
         const promises = [
+
             cartHelper.getTotal(req.session.user._id),
             cartHelper.getSubTotal(req.session.user._id),
             orderHelpler.getAddress(req.session.user._id),
-            cartHelper.getCartProducts(req.session.user._id)
+            cartHelper.getCartProducts(req.session.user._id),
+            walletHelper.getWallet(req.session.user._id)
+            
+            
+           
 
         ];
 
-        Promise.all(promises).then(([total,subTotal,address,cartItems])=>{
+        Promise.all(promises).then(([total,subTotal,address,cartItems,wallet])=>{
+           if(address.length){
+            res.render('user/checkOut',{total,subTotal,address,cartItems,wallet,cart,coupons})
+           }else{
+            console.log('no address');
+              res.render('user/checkOut',{Noaddress:true,total,subTotal,wallet,cart,coupons})
+           }
            
-            res.render('user/checkOut',{total,subTotal,address,cartItems,cart})
 
         })
         .catch((error)=>{
@@ -47,7 +60,6 @@ const checkOut = async (req, res) => {
     try {
 
         const userId = req.session.user._id;
-        console.log('this is data formajax>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ');
 
         const user = await User.findById(userId);
         console.log('this is user data ', user);
@@ -56,22 +68,25 @@ const checkOut = async (req, res) => {
 
 
         const a = req.body;
-        console.log('this is user data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ', a);
-        const total = await cartHelper.getTotal(req.session.user._id)
+        const total = req.body.total
+      const {discount}=req.body
+      console.log(discount)
+      
         const order = new Order({
 
             createdOn: Date.now(),
-            totalPrice: total,
+            totalPrice: total-discount,
             product: cart.products,
             userId: userId,
             payment: a.paymentMethod,
             address: a.addressId,
             status: 'pending',
+           
+            
         })
 
-        console.log(order, 'body is here///////');
         const saveOrder = await order.save()
-        console.log(saveOrder,'dbsavedorder')
+      
 
 
 
@@ -191,6 +206,7 @@ const verifyOrderPayment = (details) => {
 const getAllOrders =async(req,res)=>{
     try {
         const orders = await orderHelpler.allOrders()
+        orders.sort((a, b) => b.createdOn - a.createdOn);
         console.log(orders);
         res.render('admin-order',{orders})
     } catch (error) {
@@ -235,9 +251,9 @@ const orderDetails = async (req, res) => {
         // Retrieve the user's orders using the getOrders function
         const userId = req.session.user._id; // Assuming you can access the user's ID from the session
         const orders = await orderHelpler.getOrders(userId);
-
+        // context.orders.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
         // Render the orderDetails view and pass the orders data
-        res.render('user/orderDetails', { orders });
+        res.render('user/orderDetails', { orders, });
     } catch (error) {
         console.log('Order details error:', error);
         // Handle errors here (e.g., render an error page or send an error response)

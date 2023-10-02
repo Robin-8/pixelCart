@@ -67,9 +67,17 @@ router.get('/ChangeStatuscancelled',orderController.ChangeStatuscancelled)
 
 
 // admin coupon ----------------------------------------
-router.get('admin-coupons',couponController.adminCoupons)
+router.get('/admin-coupons',couponController.adminCoupons)
 router.get('/addCoupon',couponController.adminAddCouponPage)
 router.post('/addCoupon',couponController.adminAddCoupon)
+
+router.get('/admineditcoupon',couponController.adminGetCopons)
+router.post('/edit-coupon/:id',couponController.adminEditCoupon)
+router.get('/admindeletecoupon',couponController.adminDeleatCoupon)
+router.get('/adminrecovercoupon',couponController.adminReverCopon)
+
+
+
  
 module.exports = router;
 

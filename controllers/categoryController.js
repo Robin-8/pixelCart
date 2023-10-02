@@ -28,7 +28,9 @@ const createCategory = async(req,res)=>{
 
 const  getAllCategory = async (req, res) => {
     try {
+        
       const categories = await Category.find();
+     
       console.log('Categories:', categories); // Add this line to see the fetched categories
       res.render('admin/adminPanelCat', { categories }); 
     } catch (error) {
@@ -49,6 +51,7 @@ const getEditCategory = async(req,res)=>{
 
 const postEditCategory = async (req, res) => {
     try {
+        console.log(req.body,'body here]]]');
         const categoryId = req.params.categoryId;
         const { name, description } = req.body;
         await Category.findByIdAndUpdate(categoryId, { name, description });
