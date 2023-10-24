@@ -56,7 +56,7 @@ const cart= await Cart.findOne({user: userId})
                 // coupons
                 
             }
-            console.log(data,"dataaa>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+          
             res.render('user/cart',data)
       
         // }
@@ -90,36 +90,43 @@ const removeCartProduct= async(req,res,next)=>{
    }
 }
 
+
+
+
 const deleteCart = async (req, res) => {
     try {
         const productId = req.query.id;
-        const cartId = req.session.cartId;
+        console.log(req.query,'this is query');
+        const userId = req.session.user._id; 
+        console.log(userId,'user id here');
+       
 
-        if (!cartId) {
-            return res.status(400).json({ message: "Cart ID not found in session." });
+        if (!userId) {
+            return res.status(400).json({ message: "User ID not found in session." });
         }
 
-      
-        const cart = await Cart.findOne({ _id: cartId });
+        // Find the user's cart
+        const cart = await Cart.findOne({user:userId });
+        console.log(cart,'this cart====');
 
         if (!cart) {
             return res.status(404).json({ message: "Cart not found." });
         }
 
-       
+        // Find the index of the product in the cart
         const productIndex = cart.products.findIndex((product) => product.item.equals(productId));
 
         if (productIndex === -1) {
             return res.status(404).json({ message: "Product not found in cart." });
         }
 
-
+        // Remove the product from the cart
         cart.products.splice(productIndex, 1);
 
-        
+        // Save the updated cart
         await cart.save();
 
-        res.redirect('/carts') 
+        res.redirect('/carts');
 
     } catch (error) {
         console.log('Error in deleteCart: ', error);

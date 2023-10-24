@@ -1,12 +1,15 @@
 const connectDB = require("../config/connection");
 const Product = require('../models/product');
+const Category = require('../controllers/categoryController');
+const async = require("hbs/lib/async");
+const { product } = require("./handleBarHelper");
 
 
 module.exports = {
 
-  addProduct: (productData, imageFiles) => {
-    console.log(productData, '//////////');
-    console.log(imageFiles, '******');
+  addProduct: async (productData, imageFiles) => {
+    
+
     return new Promise(async (resolve, reject) => {
 
       let imagesArray = []
@@ -25,10 +28,10 @@ module.exports = {
           Images: imagesArray,
 
         })
-        console.log(products, "pdsss");
+        
 
         await products.save().then((productData) => {
-          console.log(productData, "pdsaaa");
+        
           resolve(productData)
         }).catch((error) => {
           console.log(error, '///////////');
@@ -40,17 +43,10 @@ module.exports = {
 
     })
 
-
+  
 
   },
-  getAllName: async () => {
-    try {
-      await connectDB()
-      return await Category.distinct('name')
-    } catch (error) {
-      console.log(error, 'cannot find name in category');
-    }
-  },
+
   getAllProductsEvenDeleted: async () => {
     try {
       await connectDB()
@@ -83,18 +79,20 @@ module.exports = {
   //       });
   //   });
   // },
-  getAllproducts: (callback) => {
-    connectDB().then(() => {
-      Product.find({ Deleted: false }).limit(4)
-        .then((products) => {
-          callback(products);
-        })
-        .catch((error) => {
-          console.log('Failed to get products:', error);
-          callback(null);
-        });
-    });
+ getAllproducts : async () => {
+    try {
+      await connectDB(); // Assuming this function establishes a database connection
+      const products = await Product.find({ Deleted: false }).exec();
+      console.log(product,'productss==');
+     
+      return products;
+    } catch (error) {
+      console.log('Failed to get products:', error);
+      throw error; // Throw the error to be caught by the caller
+    }
   },
+  
+  
 
   getAllProductList: (callback) => {
     connectDB().then(() => {
@@ -201,6 +199,21 @@ module.exports = {
           reject(error);
         });
     });
-  }
+  },
+
+  getFilterName: async (filter,sort) => {
+    return new Promise((resolve, reject) => {
+      connectDB().then(() => {
+        Product.find(filter).sort(sort)
+          .then((products) => {
+            resolve(products);
+          })
+          .catch((error) => {
+            console.error(error);
+            reject(error);
+          });
+      });
+    });
+  },
 };
 

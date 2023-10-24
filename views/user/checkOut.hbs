@@ -73,9 +73,9 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
+							<div id="colorlib-logo"><a href="index.html" style="color: black;">Camera Shutter</a></div>
 						</div>
-						<div class="col-sm-5 col-md-3">
+						{{!-- <div class="col-sm-5 col-md-3">
 							<form action="#" class="search-wrap">
 								<div class="form-group">
 									<input type="search" class="form-control search" placeholder="Search">
@@ -83,7 +83,7 @@
 											class="icon-search"></i></button>
 								</div>
 							</form>
-						</div>
+						</div> --}}
 					</div>
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
@@ -91,8 +91,8 @@
 								<li><a href="/">Home</a></li>
 
 
-								<li><a href="about.html">About</a></li>
-								<li><a href="contact.html">Contact</a></li>
+								<li><a href="about.html" style="color: black;">About</a></li>
+								<li><a href="contact.html" style="color: black;">Contact</a></li>
 								<li class="cart"><a href="/carts"><i class="icon-shopping-cart"></i> Cart [0]</a></li>
 							</ul>
 						</div>
@@ -127,7 +127,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col">
-						<p class="bread"><span><a href="/">Home</a></span> / <span>Checkout</span></p>
+						<p class="bread"><span><a href="/">Home</a></span> / <span style="color: black;">Checkout</span>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -137,7 +138,7 @@
 		<div class="colorlib-product">
 			<div class="container">
 				<div class="row row-pb-lg">
-					<div class="col-sm-10 offset-md-1">
+					{{!-- <div class="col-sm-10 offset-md-1">
 						<div class="process-wrap">
 							<div class="process text-center active">
 								<p><span>01</span></p>
@@ -152,7 +153,7 @@
 								<h3>Order Complete</h3>
 							</div>
 						</div>
-					</div>
+					</div> --}}
 				</div>
 				{{#each address}}
 				<div class="col-lg-4 mb-3">
@@ -321,7 +322,7 @@
 												{{this.wallet.balance}}</p>
 										<li><span>Discount</span>
 											<p class="mb-2 text-danger fw-bold" id="discount"
-												style="padding-left: 14%;"></p>
+												style="padding-left: 14%;">{{this.discount}}</p>
 										<li><span>Order Total</span>
 											<p class="mb-2 text-danger fw-bold" id="totalValue"
 												style="padding-left: 14%;">{{this.total}}</p>
@@ -606,13 +607,14 @@
 			let total = parseInt('{{this.total}}')
 			let walletBalance = parseInt('{{this.wallet.balance}}')
 			if (walletBalance >= total) {
-				alert("HIi")
-				document.getElementById('useWallet').hidden = true
+				
+				document.getElementById('useWallet').hidden = false
 			}
 			let addressId
 			function handleClick(element) {
 				addressId = element.value;
 				console.log('selected value here', addressId)
+
 
 				$.ajax({
 					url: '/changePrimaryAddress',
@@ -636,7 +638,7 @@
 
 				const coupon = document.getElementById('coupon').value
 
-				alert("Enterrr")
+				
 
 				$.ajax({
 					url: '/user_applaycoupon',
@@ -662,12 +664,18 @@
 						const tot = parseInt(document.getElementById('totalValue').innerHTML);
 						if (tot >= wallet) {
 							// Enable the button
-							document.getElementById('walletButton').disabled = false;
-							document.getElementById('walletButton').innerHTML = "Use wallet";
+							{
+								{{!-- {
+									!--document.getElementById('walletButton').disabled = false;
+									document.getElementById('walletButton').innerHTML = "Use wallet"; --} --}}
+							}
 						} else {
 							// Disable the button and display "Insufficient Funds"
-							document.getElementById('walletButton').disabled = true;
-							document.getElementById('walletButton').innerHTML = "Insufficient Funds";
+							{
+								{{!-- {
+									!--document.getElementById('walletButton').disabled = true;
+									document.getElementById('walletButton').innerHTML = "Insufficient Funds"; --} --}}
+							}
 						}
 					}
 				})
@@ -696,9 +704,13 @@
 			let discount = JSON.parse(localStorage.getItem('discountAmount'))
 			console.log(discount)
 			function placeOrder() {
+				localStorage.removeItem('discountAmount')
+				console.log('hello')
+				
 				var payment = $('.payment:checked').val()
 				var address = $('.address-radio').val()
-				if (!payment) {
+
+				if (!payment&&!address) {
 					Swal.fire({
 						title: ' NO PAYMENT FOUND!',
 						text: 'please select your Payemnt.',
@@ -713,8 +725,9 @@
 						icon: 'error',
 						timer: 3000,
 					})
-				}
-				let totalValue = parseInt(document.getElementById('totalValue').innerHTML)
+				} else{
+                  	let totalValue = parseInt(document.getElementById('totalValue').innerHTML)
+						console.log("succeeded ")
 				$.ajax({
 					url: '/checkout',
 					method: 'post',
@@ -736,6 +749,8 @@
 						}
 					}
 				});
+				}
+			
 			}
 			function razorpayPayment(order, razorpayId) {
 				console.log("here2")
@@ -807,7 +822,9 @@
 						totalElement.textContent = 1;
 					} else {
 						totalElement.textContent = total - wallet;
+						wallet = 0;
 					}
+
 
 					// Disable the "Use wallet" button
 					useWalletButton.disabled = true;

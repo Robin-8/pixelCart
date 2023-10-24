@@ -1,9 +1,12 @@
 const Category = require("../models/categoryModel")
 const userHelper = require("../helpers/user-helpers")
-const  productHelpers = require('../helpers/product-helpers')
+const productHelpers = require('../helpers/product-helpers')
 const bcrypt = require('bcrypt');
 const async = require("hbs/lib/async");
-const categoryHelpers = require('../helpers/ca')
+const categoryHelper = require('../helpers/categoryHelper')
+const categoryController = require('../controllers/categoryController')
+const bannerHelper = require("../helpers/bannerHelper")
+
 
 // twilio otp
 const accountSid = "AC270df992da52b5449497119dc18e587e";
@@ -18,15 +21,16 @@ const landingPage = async (req, res) => {
       return;
     }
 
-    // Fetch all products
-    productHelpers.getAllproducts((products) => {
-      res.render('user/LandingPage', { products });
-    });
+    // Fetch all products using await
+    const products = await productHelpers.getAllproducts();
+
+    res.render('user/LandingPage', { products });
   } catch (error) {
     console.log('Error in landingPage:', error.message);
     res.render('LandingPage', { products: [] });
   }
 };
+
 
 // to send verification code
 const verify = async (req, res) => {
@@ -79,7 +83,7 @@ const signup = async (req, res) => {
     userHelper.addUser(user, stat => {
       if (stat === "DONE") {
         console.log("signup done");
-        res.render('login', { email })
+        res.render('./user/login', { email })
       } else if (stat === "USER_ALREADY_EXISTS")
         res.redirect("/login")
     })
@@ -104,7 +108,7 @@ const getuserlogin = async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password
-    console.log("at post login");
+   
     const user = await userHelper.getUsers({ email: email, password: password });
     if (!user) {
       req.session.loginErr = true
@@ -112,12 +116,12 @@ const getuserlogin = async (req, res) => {
     }
     if (user) {
       req.session.user = user[0]
-      // console.log(req.session.user,'jjhjhjgjgj');
+
       return res.redirect('/home');
     }
   } catch (err) {
     console.log(err);
-    console.log("error occured !!!!!here @post login");
+
     res.redirect('/login');
   }
 }
@@ -137,29 +141,38 @@ const home = async (req, res) => {
       res.redirect('/login');
       return;
     }
+
     // Fetch all products
-    productHelpers.getAllproducts((products) => {
-      console.log(products,"hgkahsfdakh")
-      res.render('user/home', { products, });
-    });
+    const products = await productHelpers.getAllproducts();
+    const banner = await bannerHelper.userGetBanner();
+   
+   
+    res.render('user/home', { products ,banner});
   } catch (error) {
     console.log('Error in landingPage:', error.message);
     res.render('user/home', { products: [] });
   }
 };
 
+
+
+
 const productListing = async (req, res) => {
   try {
-    const categoryName = await productHelpers.getAllName();
-    const categories = await 
+    const name = await categoryController.getAllName();
+    const categories = await Category.find();
+    const categoryNames = categories.map(category => category.name);
+
+
     if (!req.session.user) {
       res.redirect('/login');
       return;
     }
     // Fetch all products
     productHelpers.getAllProductList((products) => {
+      
 
-      res.render('user/productList', { products });
+      res.render('user/productList', { products, name, categories });
     });
   } catch (error) {
     console.log('Error in landingPage:', error.message);
@@ -170,7 +183,7 @@ const getProductDetails = async (req, res) => {
   try {
     const id = req.params.id
     const product = await productHelpers.getProductById({ _id: id });
-    console.log(product,'vgvybvvbyby');
+ 
     if (!product) {
       return res.redirect('/login');
     }
@@ -180,7 +193,7 @@ const getProductDetails = async (req, res) => {
     res.redirect('/home');
   }
 }
-const forgetPassword = (req,res)=>{
+const forgetPassword = (req, res) => {
   res.render('user/resetPassword')
 };
 
@@ -236,15 +249,15 @@ const resetPassword = async (req, res) => {
     const newPassword = req.body.newPassword;
 
     // Implement your password reset logic here, e.g., update the password in your database
-    bcrypt.hash(newPassword,10,(err,hash)=>{
-      if(err){
-        console.log('error passing new password',err);
-      }else{
-        User.findOneAndUpdate({ _id: userId }, { password: hash }, (err, user) =>{
-          if(err){
-            console.log('error updating password in data base',err);
+    bcrypt.hash(newPassword, 10, (err, hash) => {
+      if (err) {
+        console.log('error passing new password', err);
+      } else {
+        User.findOneAndUpdate({ _id: userId }, { password: hash }, (err, user) => {
+          if (err) {
+            console.log('error updating password in data base', err);
             res.send('password update error')
-          }else{
+          } else {
             res.send('password update successfully')
           }
         })
@@ -257,74 +270,99 @@ const resetPassword = async (req, res) => {
     res.send('Error resetting password');
   }
 };
-const orderSuccess= async(req,res)=>{
+const orderSuccess = async (req, res) => {
   try {
-    res.render('user/orderPlaced')      
+    res.render('user/orderPlaced')
   } catch (error) {
     console.log(error);
   }
 
-}  
-const razorpay = (req,res)=>{
+}
+const razorpay = (req, res) => {
   try {
-    res.render('user/razorpay',{razorpay_key:"rzp_test_pGz4qvobcKcY0w"})
+    res.render('user/razorpay', { razorpay_key: "rzp_test_pGz4qvobcKcY0w" })
   } catch (error) {
-    console.log('razorpay not working',error);
+    console.log('razorpay not working', error);
   }
 }
 
-const fillterProduct =  async(req,res)=>{
+const fillterProduct = async (req, res) => {
 
-  
-    const productCategory = req.body.productCategory;
-    const productRange = req.body.productRange;
-    let sort = req.body.sort
-    let serarch = req.body.search;
-    let rangeFilter =[]
-    const filter = {isDeleated:false}
-    if(serarch){
-      const regex = new RegExp('^' + serarch, 'i');
-      filter.name = regex
-    }
-    if(productCategory){
-      filter.category = {$in:productCategory}
-    }
-    if(productRange){
-      for(let i = 0;i<productRange.length;i++){
-        if(productRange[i] == 'lt15000'){
-          rangeFilter.push({price:{$lte : 15000}})
-        }
-        if(productRange){
-          rangeFilter.push({price:{$gt:15000,$lte : 40000}})
-        }
-        if(productRange){
-          rangeFilter.push({price:{$gt:40000,$lte:80000}})
-        }
-        if(productRange){
-          rangeFilter.push({price:{$gt:80000,$lte:150000}})
-        }
-        if(productRange){
-          rangeFilter.push({price:{$gt:150000,$lte:200000}})
-        }
-        if(productRange){
-          rangeFilter.push({price:{$gt:200000}})
-        }
+  const productCategory = req.body.productCategory;
+  const productRange = req.body.productRange;
+  let sort = req.body.sort
+  let serarch = req.body.search;
+  let rangeFilter = []
+  const filter = { Deleted: false }
+  if (serarch) {
+    const regex = new RegExp('^' + serarch, 'i');
+    filter.name = regex
+  }
+  if (productCategory) {
+    filter.Category = { $in: productCategory }
+  }
+  console.log(productRange)
+  if (productRange) {
+    for (let i = 0; i < productRange.length; i++) {
+      const el = productRange[i]
+      if (el === 'lt15000') {
+        rangeFilter.push({ Price: { $lte: 15000 } })
       }
-      filter.$or = rangeFilter
+      if (el === 'lt40000') {
+        rangeFilter.push({ Price: { $gt: 15000, $lte: 40000 } })
+      }
+      if (el === 'lt80000') {
+        rangeFilter.push({ Price: { $gt: 40000, $lte: 80000 } })
+      }
+      if (el === 'lt150000') {
+        rangeFilter.push({ Price: { $gt: 80000, $lte: 150000 } })
+      }
+      if (el === 'lt200000') {
+        rangeFilter.push({ Price: { $gt: 150000, $lte: 200000 } })
+      }
+      if (el === 'gt200000'){
+        rangeFilter.push({Pruce:{$gt:200000}})
+      }
     }
-    if(sort){
-      if(sort =='HL'){
-        sort = {price:-1}
-      }
-      if(sort == 'LH'){
-        sort = {price:1}
-      }
-      if(sort == 'NA'){
-        sort = {date:-1}
-      }
-    }else{
-      sort = {date:-1}
+  }
+
+  if (rangeFilter.length)
+    filter.$or = rangeFilter
+
+  console.log(filter)
+  if (sort) {
+    if (sort == 'HL') {
+      sort = { Price: -1 }
     }
+    if (sort == 'LH') {
+      sort = { Price: 1 }
+    }
+    if (sort == 'NA') {
+      sort = { date: -1 }
+    }
+  } else {
+    sort = { date: -1 }
+  }
+  const products = await productHelpers.getFilterName(filter, sort);
+  console.log(products)
+  const itemsPerPage = 6;
+  let currentPage = parseInt(req.body.page);
+  if (isNaN(currentPage)) {
+    currentPage = 1;
+  }
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedProducts = products.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i);
+  }
+  if (products.length) {
+    res.json({ products: paginatedProducts, currentPage, totalPages, pages })
+  } else {
+    res.json({ noProducts: true })
+  }
 }
 
 
@@ -346,5 +384,5 @@ module.exports = {
   razorpay,
   productListing,
   fillterProduct
-  
+
 }

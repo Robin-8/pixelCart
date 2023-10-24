@@ -1,15 +1,15 @@
-const isLogin = async (req, res, next) => {
+const isLogin = (req, res, next) => {
     try {
-        if (!req.session.user_id) {
-            // If the user is not logged in, redirect to the login form
-            res.redirect('/admin'); // Redirect to the login form
-        } else {
-            next();
-        }
+      if (!req.session.admin) {
+        res.redirect("/admin");
+      } else {
+        next();
+      }
     } catch (error) {
-        console.log(error.message);
+      console.log(error);
     }
-};
+  };
+  
 
 const isLogout = async (req, res, next) => {
     try {

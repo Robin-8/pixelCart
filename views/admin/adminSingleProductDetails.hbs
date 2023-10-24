@@ -36,7 +36,6 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="/css/style.css">
     
-
 	</head>
 	<body>
 		
@@ -48,7 +47,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
+							<div id="colorlib-logo"><a href="index.html">Admin Pannel</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
 			            <form action="#" class="search-wrap">
@@ -61,22 +60,26 @@
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li><a href="/adminDashbord">Admin Dashboard</a></li>
-								<li><a href="/admin/allCategory">All Category</a></li>
+										<li class="active"><a href="/admin">Admin Dashboard</a></li>
 								<li><a href="/admin/allUsers">All Users</a></li>
+								<li><a href="/admin/allCategory">All Category</a></li>
+								<li><a href="/admin/admin-orderList">Orders</a></li>
+								<li><a href="/admin/admin-coupons">Coupons</a></li>
+									<li><a href="/admin/admin-orderList">OrderList</a></li>
 
 								
 							</ul>
 							<div class="dropdown">
+								
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
    Status
   </button>
   <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
     <li><a class="dropdown-item active" href="#">pending</a></li>
-    <li><a class="dropdown-item" href="/admin/ChangeStatusDelivered?id={{order._id}}">Delivered</a></li>
-    <li><a class="dropdown-item" href="/admin/ChangeStatuscancelled?id={{order._id}}"> cancelled</a></li>
-     <li><a class="dropdown-item" href="/admin/ChangeStatusShipped?id={{order._id}}"> Shipped</a></li>
-     <li><a class="dropdown-item" href="/admin/ChangeStatusReturned?id={{order._id}}">Returned</a></li>
+    <li><a class="dropdown-item" href="/admin/ChangeStatusDelivered?id={{orders.[0]._id}}">Delivered</a></li>
+    <li><a class="dropdown-item" href="/admin/ChangeStatuscancelled?id={{orders.[0]._id}}"> cancelled</a></li>
+     <li><a class="dropdown-item" href="/admin/ChangesStatusShipped?id={{orders.[0]._id}}"> Shipped</a></li>
+     <li><a class="dropdown-item" href="/admin/ChangeStatusReturned?id={{orders.[0]._id}}">Returned</a></li>
     
   </ul>
 </div>
@@ -105,40 +108,37 @@
 		
 
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-center row">
-        <div class="col-md-10">
-            <div class="rounded">
-
-                <div class="table-responsive table-borderless">
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <th>Time</th>
-                                <td>{{order.createdOn}}</td>
-                            </tr>
-                            <tr>
-                                <th>Price</th>
-                                <td>{{order.totalPrice}}</td>
-                            </tr>
-                            <tr>
-								
-                                <th>Status</th>
-                                <td>{{order.status}}</td>
-								
-                            </tr>
-                            <tr>
-                                <th>Payment</th>
-                                <td>{{order.payment}}</td>
-                            </tr>
-                            <tr>
-                                <th>Address</th>
-                                <td>{{order.address}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+ <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-10">
+                <div class="rounded">
+                    <div class="table-responsive table-borderless">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Time</th>
+                                    <td>{{formatDate orders.[0].createdOn}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Price</th>
+                                    <td>{{orders.[0].totalPrice}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td>{{orders.[0].status}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment</th>
+                                    <td>{{orders.[0].payment}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Product</th>
+                                    <td>{{orders.[0].ProductDetails.[0].Name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

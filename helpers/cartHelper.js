@@ -209,6 +209,7 @@ const addToCart= (proId, userId) => {
         })
     });
   }
+
   const getSubTotal =(userId)=>{
     // console.log('chkkk sub total');
       return new Promise(async (resolve, reject) => {
@@ -295,9 +296,6 @@ const addToCart= (proId, userId) => {
     })
   }
 
-
-
-
   module.exports={
      addToCart,
      getCartProducts,
@@ -306,5 +304,7 @@ const addToCart= (proId, userId) => {
      getSubTotal,
      getCartCount,
      getCartProductList,
-     getTotal
+     getTotal,
+
+
   }

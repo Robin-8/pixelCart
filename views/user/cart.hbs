@@ -88,7 +88,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="index.html">Camers Shutter</a></div>
+							<div id="colorlib-logo"><a href="index.html" style="color: black;">Camers Shutter</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
 							<form action="#" class="search-wrap">
@@ -103,10 +103,10 @@
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li><a href="/">Home</a></li>
+								<li><a href="/" style="color: black;">Home</a></li>
 
 
-								<li><a href="about.html">CONTACT</a></li>
+								<li><a href="about.html" style="color: black;">CONTACT</a></li>
 
 								<li class="cart"><a href="/"><i class="icon-shopping-cart"></i> Cart [0]</a>
 								</li>
@@ -152,24 +152,7 @@
 
 		<div class="colorlib-product">
 			<div class="container">
-				<div class="row row-pb-lg">
-					<div class="col-md-10 offset-md-1">
-						<div class="process-wrap">
-							<div class="process text-center active">
-								<p><span>01</span></p>
-								<h3>Shopping Cart</h3>
-							</div>
-							<div class="process text-center">
-								<p><span>02</span></p>
-								<h3>Checkout</h3>
-							</div>
-							<div class="process text-center">
-								<p><span>03</span></p>
-								<h3>Order Complete</h3>
-							</div>
-						</div>
-					</div>
-				</div>
+				
 				<div class="row row-pb-lg">
 					<div class="col-md-12">
 						<div class="product-name d-flex">
@@ -239,7 +222,7 @@
 							</div>
 							<div class="one-eight text-center">
 								<div class="display-tc">
-									<span id="{{this.product._id}}1" class="price">$120.00</span>
+									<span id="{{this.product._id}}1" class="price">{{this.product.Price}}</span>
 								</div>
 							</div>
 							<div class="one-eight text-center">
@@ -482,7 +465,7 @@
 
 					if (response.removeProduct) {
 
-						alert("product Removed from cart")
+					
 						location.reload()
 					}
 					else if (response.outOfStock) {

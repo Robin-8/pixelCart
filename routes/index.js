@@ -27,10 +27,10 @@ router.post('/signup', userController.signup)
 router.get('/login', userController.login)
 router.post('/login', userController.getuserlogin)
 
-router.get('/home', userController.home)
-router.get('/productList', userController.productListing)
+router.get('/home', auth.isLogin,userController.home)
+router.get('/productList', auth.isLogin,userController.productListing)
 
-router.get('/logout', userController.logout)
+router.get('/logout',auth.isLogin,userController.logout)
 
 router.get('/productdetails/:id', userController.getProductDetails)
 // router.post('/resetpassword',varificationController.resetUserPassword)
@@ -40,35 +40,35 @@ router.get('/productdetails/:id', userController.getProductDetails)
 
 
 
-router.get('/addToCart/:id', cartController.addToCart)
-router.get('/carts', cartController.getCart)
+router.get('/addToCart/:id',auth.isLogin, cartController.addToCart)
+router.get('/carts', auth.isLogin,cartController.getCart)
 router.post('/changeProuductQuantity', cartController.changeQuantity)
 router.get('/removeCartProduct', cartController.removeCartProduct)
 router.get('/deleteCart', cartController.deleteCart)
 
-router.get('/addAddress', profileController.addAddress)
-router.post('/addNewAddress', profileController.addNewAddress)
+router.get('/addAddress',auth.isLogin, profileController.addAddress)
+router.post('/addNewAddress', auth.isLogin,profileController.addNewAddress)
 router.get('/manageAddress', profileController.manageAddress)
-router.get('/userDetails', profileController.userDetails)
-router.get('/editAddress', profileController.editAddress)
-router.post('/editAddress', profileController.updateAddress)
-router.get('/deleteAddress', profileController.deleteAddress)
+router.get('/userDetails', auth.isLogin,profileController.userDetails)
+router.get('/editAddress',auth.isLogin, profileController.editAddress)
+router.post('/editAddress',auth.isLogin, profileController.updateAddress)
+router.get('/deleteAddress', auth.isLogin,profileController.deleteAddress)
 
 
 router.get('/addToWishList/:id', wishListController.addToWishlist)
 
 
-router.get('/getProfilePage', profileController.getUserProfilePage)
-router.post('/changePrimaryAddress', profileController.changePrimaryAddress)
-router.post('/checkout', orderController.checkOut)
+router.get('/getProfilePage',auth.isLogin, profileController.getUserProfilePage)
+router.post('/changePrimaryAddress',auth.isLogin, profileController.changePrimaryAddress)
+router.post('/checkout',auth.isLogin, orderController.checkOut)
 router.post('/addresscheckout', profileController.addresscheckout)
 router.get('/orderSuccess', userController.orderSuccess)
-router.get('/placeOrder', orderController.placeOrder)
+router.get('/placeOrder', auth.isLogin,orderController.placeOrder)
 router.post('/verifyPayment', orderController.varifyPayments)
 router.get('/successOrder', successOrder)
-router.get('/orderDetails', orderController.orderDetails)
-router.post('/cancel-order:orderId', orderController.cancelOrder)
-router.get('/razorpay', userController.razorpay)
+router.get('/orderDetails', auth.isLogin,orderController.orderDetails)
+router.get('/cancel-order',auth.isLogin, orderController.cancelOrder)
+router.get('/razorpay', auth.isLogin,userController.razorpay)
 
 
 // couponss

@@ -40,3 +40,49 @@
 
 
 </section>
+<script>
+    // Function to trim whitespace from a string
+    function trimInput(input) {
+        return input.trim();
+    }
+
+    // Function to validate the form
+    function validateForm() {
+        // Get form inputs by their IDs
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var mobile = document.getElementById("mobile").value;
+        var password = document.getElementById("password").value;
+
+        // Trim the input values
+        name = trimInput(name);
+        email = trimInput(email);
+        mobile = trimInput(mobile);
+        password = trimInput(password);
+
+        // Validate email format
+        var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+
+        // Check if any of the required fields are empty
+        if (
+            name === "" ||
+            email === "" ||
+            mobile === "" ||
+            password === ""
+        ) {
+            alert("Please fill in all required fields.");
+            return false; // Prevent form submission
+        }
+
+        // You can add additional validation rules here if needed
+
+        return true; // Allow form submission
+    }
+
+    // Attach the validateForm function to the form's onsubmit event
+    document.querySelector('form[action="/admin/add-user"]').onsubmit = validateForm;
+</script>

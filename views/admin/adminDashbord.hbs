@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family>Rokkitt:100,300,400,700" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/css/icomoon.css">
+	<!-- Ion Icon Fonts-->
+	<link rel="stylesheet" href="/css/ionicons.min.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="/css/magnific-popup.css">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="/css/flexslider.css">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
+
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+	<style>
+		.custom-card {
+			border: 1px solid black;
+			/* Set the border color and width as needed */
+		}
+	</style>
+
+	<div id="page">
+		<nav class="colorlib-nav" role="navigation">
+			<div class="top-menu">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-7 col-md-9">
+							<div id="colorlib-logo"><a href="index.html">Admin Pannel</a></div>
+						</div>
+						<div class="col-sm-5 col-md-3">
+							<form action="#" class="search-wrap">
+							</form>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 text-left menu-1">
+							<ul>
+								<li class="active"><a href="/admin">Dashboard</a></li>
+								<li><a href="/admin/allUsers">All Users</a></li>
+								<li><a href="/admin/allCategory">All Category</a></li>
+								<li><a href="/admin/admin-orderList">Orders</a></li>
+								<li><a href="/admin/admin-coupons">Coupons</a></li>
+								<li><a href="/admin/admin-orderList">OrderList</a></li>
+
+
+								<a class="nav-link" href="/admin/totalSaleExcel">Total Sale</a>
+                <a class="nav-link" href="/admin/todayRevenueExcel">Today Revenue</a>
+                <a class="nav-link" href="/admin/allProductExcel">All Product</a>
+                <a class="nav-link" href="/admin/allOrderStatusExcel">All OrderStatus</a>
+                <a class="nav-link"  href="/admin/orderDetailPDF">Order View</a>
+
+									
+								</select>
+                                 <label for="start">Start Date:</label>
+                  <input type="date" id="start" name="start" required>
+                
+                  <label for="end">End Date:</label>
+                  <input type="date" id="end" name="end" required>
+                
+                  <a style="color: aliceblue;" class="nav-link" href="/admin/customDate">
+                  <button id="customDateLink" class="Btn">
+                    <svg class="svgIcon" viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path></svg>
+                    <span class="icon2"></span>
+                    <span class="tooltip">Download</span>
+                 </button>
+                </a>
+
+
+
+
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		 <script>
+                  const customDateLink = document.getElementById('customDateLink');
+                  const startDateInput = document.getElementById('start');
+                  const endDateInput = document.getElementById('end');
+                
+                  customDateLink.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent the default link behavior
+                
+                    const startDate = startDateInput.value;
+                    const endDate = endDateInput.value;
+                
+                    setTimeout(() => {
+                      const url = `/admin/customDate?start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate)}`;
+                      window.open(url, '_blank');
+                    }, 1000); 
+                  });
+                </script>
+
+		<div class="row" style="margin-top: 3rem; padding-left: 4rem;">
+			<div class="col-lg-3">
+				<div class="card card-body mb-4" style="color: black;">
+					<article class="icontext">
+						<span class="icon icon-sm rounded-circle bg-primary-light"><i
+								class="text-primary material-icons md-monetization_on"></i></span>
+						<div class="text">
+							<h6 class="mb-1 card-title">Revenue</h6>
+							<span>₹{{orders.totalPriceSum}}</span>
+							<span class="text-sm">
+							</span>
+						</div>
+					</article>
+				</div>
+			</div>
+			<div class="col-lg-2">
+				<div class="card card-body mb-4">
+					<article class="icontext">
+						<span class="icon icon-sm rounded-circle bg-success-light"><i
+								class="text-success material-icons md-local_shipping"></i></span>
+						<div class="text">
+							<h6 class="mb-1 card-title">Orders</h6> <span>{{orders.count}}</span>
+							<span class="text-sm">
+							</span>
+						</div>
+					</article>
+				</div>
+			</div>
+
+			<div class="col-lg-3">
+
+				<div class="card card-body mb-4">
+					<article class="icontext">
+						<span class="icon icon-sm rounded-circle bg-warning-light"><i
+								class="text-warning material-icons md-qr_code"></i></span>
+						<div class="text">
+							<h6 class="mb-1 card-title">Products</h6> <span>{{productsCount}}</span>
+							<span class="text-sm">
+
+							</span>
+						</div>
+					</article>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="card card-body mb-4">
+					<article class="icontext">
+						<span class="icon icon-sm rounded-circle bg-info-light"><i
+								class="text-info material-icons md-shopping_basket"></i></span>
+						<div class="text">
+							<h6 class="mb-1 card-title">Online Earning</h6> <span>₹{{codPay}}</span>
+							<span class="text-sm">
+								from {{onlinePay.count}} orders
+							</span>
+						</div>
+					</article>
+				</div>
+			</div>
+		</div>
+
+
+		<div style="display: flex; justify-content: center; align-items: flex-start; padding-left:50px">
+			<div style="width: 50%; text-align: center;">
+				<div id="chart-container">
+					<h3 style="color: black;">Total Month Sale</h3>
+					<canvas id="myChart" style="width: 100%;"></canvas>
+				</div>
+			</div>
+			<div style="width: 50%; text-align: center; margin-left: 10px;">
+				<div id="chart-container-2">
+					<h3 style="color: black;">COD or Online</h3>
+					<canvas id="myChart-2" style="width: 100%; max-width: 600px;"></canvas>
+				</div>
+			</div>
+		</div>
+
+		<div id="chart-container-3" style="width: 50%; margin-top: 50px; text-align: center;">
+			<h3 style="color: black;"></h3>
+			<canvas id="myChart-3" style="width: 50%; margin:auto"></canvas>
+		</div>
+
+	</div>
+
+
+
+
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+	<script>
+		const xValues = ["jan", "feb", "mar", "apr", "may", "june", "july", 'aug', "sep", "oct", "nov", "dec"];
+		const monthlySalesArray = JSON.parse('{{monthlySalesArrayJSON}}');
+
+
+		document.addEventListener('DOMContentLoaded', function () {
+
+			new Chart("myChart", {
+				type: "line",
+				data: {
+					labels: xValues,
+					datasets: [{
+						data: monthlySalesArray,
+						borderColor: "red",
+						fill: false
+					}]
+				},
+				options: {
+					legend: { display: false }
+				}
+			});
+		});
+
+		const codCount = JSON.parse('{{paymentBar}}');
+
+
+
+		const xValues2 = ["COD", "ONLINE",];
+		const yValues2 = codCount;
+		const barColors2 = ["red", "green", 'white'];
+
+
+		new Chart("myChart-2", {
+			type: "bar",
+			data: {
+				labels: xValues2,
+				datasets: [{
+					backgroundColor: barColors2,
+					data: yValues2
+				}]
+			},
+			options: {
+				legend: { display: false },
+				title: {
+					display: true,
+					text: ""
+				}
+			}
+		});
+		const xValues3 = ["Italy", "France"];
+		const yValues3 = [55, 49];
+		const barColors3 = [
+			"#b91d47",
+			"#00aba9",
+
+		];
+
+		new Chart("myChart-3", {
+			type: "pie",
+			data: {
+				labels: xValues3,
+				datasets: [{
+					backgroundColor: barColors3,
+					data: yValues3
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: "World Wide Wine Production 2018"
+				}
+			}
+		});
+
+	</script>
+
+
+
+</body>
+
+</html>

@@ -1,22 +1,30 @@
-const mongoose=require('mongoose')
+const mongoose = require('mongoose')
 
-const walletSchema= new mongoose.Schema({
+const walletSchema = new mongoose.Schema({
 
-    userId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        required:true
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
-    balance:{
-        type:Number,     
-        default:0                                
+    balance: {
+        type: Number,
+        default: 0
     },
-    history:{
-        type:String,
-        status:String
-    }
+    history: [
+        {
+            description: {
+                type: String,
+                required:true
+            },
+            price:{
+                type:Number,
+                required:true
+            }
+
+        }]
 })
 
-const Wallet=mongoose.model('Wallet',walletSchema)
+const Wallet = mongoose.model('Wallet', walletSchema)
 
-module.exports=Wallet;
+module.exports = Wallet;

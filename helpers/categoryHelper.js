@@ -1,4 +1,20 @@
+const mongoose = require('mongoose')
+
 const Category = require('../models/categoryModel')
-const Product = require('../models/product')
 
 
+
+getAllCategories =async () => {
+    try {
+      
+      return await Category.find().sort({ _id: -1 });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+  module.exports ={
+    getAllCategories,
+  
+  }

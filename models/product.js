@@ -15,26 +15,24 @@ const productSchema = new mongoose.Schema({
   },
   Description: {
     type: [String],
-    required:true
+    required: true
   },
-  
   Images: {
     type: Array,
     required: true
   },
-
-  Stock:{
-    type:Number,
-    default:0
+  Stock: {
+    type: Number,
+    default: 0
   },
-  Deleted:{
-    type:Boolean,
-    default:false
+  Deleted: {
+    type: Boolean,
+    default: false
   },
+  OfferPrice:{
+      type:Number,
+      default:0
+  }
 });
 
-module.exports = new mongoose.model('Product', productSchema);
-
-
-
-
+module.exports = mongoose.model('Product', productSchema);

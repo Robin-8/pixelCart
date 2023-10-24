@@ -34,7 +34,9 @@
 
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="/css/style.css">
-     <style>
+     
+	</head>
+    <style>
         /* Style for the status dropdown */
         .status-dropdown {
             display: none;
@@ -73,7 +75,6 @@
 
         /* Add more styles as needed */
     </style>
-	</head>
 	<body>
 		
 	<!-- <div class="colorlib-loader"></div> -->
@@ -84,23 +85,23 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
+							<div id="colorlib-logo"><a href="index.html">Admin Pannel</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
-			            <form action="#" class="search-wrap">
-			               <div class="form-group">
-			                  <input type="search" class="form-control search" placeholder="Search">
-			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
-			               </div>
+			           
+			            
 			            </form>
 			         </div>
 		         </div>
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li class="active"><a href="/admin/adminDashbord">Admin Dashbord</a></li>
-								<li><a href="#">Products</a></li>
+										<li class="active"><a href="/admin">Admin Dashboard</a></li>
+								<li><a href="/admin/allUsers">All Users</a></li>
 								<li><a href="/admin/allCategory">All Category</a></li>
+								<li><a href="/admin/admin-orderList">Orders</a></li>
+								<li><a href="/admin/admin-coupons">Coupons</a></li>
+									<li><a href="/admin/admin-orderList">OrderList</a></li>
              
 							
 							</ul>
@@ -127,7 +128,7 @@
   
       <th>Status</th>
       <th>Payment</th>
-      <th>Address</th>
+      
       <th>Product Details</th>
    
     </tr>
@@ -136,12 +137,12 @@
    {{#each orders}}
   <div class="order">
     <tr>
-    <td>{{this.createdOn}}</td> <!-- Display createdOn in a table cell -->
+    <td>{{formatDate this.createdOn}}</td> <!-- Display createdOn in a table cell -->
       {{!-- <td>{{this.date}}</td> <!-- Display date in a table cell --> --}}
       <td>{{this.totalPrice}}</td> <!-- Display status in a table cell -->
       <td>{{this.status}}</td> <!-- Display totalPrice in a table cell -->
       <td>{{this.payment}}</td> <!-- Display payment in a table cell -->
-      <td>{{this.address}}</td> 
+      
        <td>
  
             <a href="/admin/productDetails/{{this._id}}">
@@ -155,48 +156,29 @@
   </tr>
 {{/each}}
 
+
+
       </tbody>
     </table>
+    	{{#if totalpages}}
+					<div class="pagination">
+						{{#if (gt currentpage 1)}}
+						<button><a href="?page={{sub currentpage 1}}">Previous</a></button>
+						{{/if}}
+
+						{{#each pages}}
+						<button><a href="?page={{this}}">{{this}}</a></button>
+						{{/each}}
+
+						{{#if (lt currentpage totalpages)}}
+						<button><a href="?page={{add currentpage 1}}">Next</a></button>
+						{{/if}}
+					</div>
+					{{/if}}
   </div>
 </section>
 
-{{!-- <script>
-    $(document).ready(function () {
-        $(".status-toggle-button").click(function () {
-            $(this).next(".status-dropdown").slideToggle("fast");
-        });
 
-        // Handle status selection
-        $(".status-dropdown a").click(function (e) {
-            e.preventDefault();
-            var selectedStatus = $(this).data("status");
-            // Update the text of the button
-            $(this).closest("th").find(".status-toggle-button").text(selectedStatus);
-            // Close the dropdown
-            $(this).closest(".status-dropdown").slideUp("fast");
-
-            // Get the order ID (you may need to set this dynamically)
-            var userId = '{{this._id}}';
-
-            // Send an AJAX request to update the order status
-            $.ajax({
-                type: "POST",
-                url: "/admin/update-order-status/" + userId, // Replace with your actual route
-                data: { status: selectedStatus },
-                success: function (response) {
-                    if (response.status) {
-                        // Success message or action (optional)
-                    } else {
-                        // Error handling (optional)
-                    }
-                },
-                error: function (error) {
-                    // Error handling (optional)
-                }
-            });
-        });
-    });
-</script> --}}
 
 
 

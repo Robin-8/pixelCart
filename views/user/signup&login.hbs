@@ -3,33 +3,29 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width-device-width,initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="sie-edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link href="https://unpkg.com/ionicons@4.2.2/dist/css/ionicons.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/stylesheets/signupstyle.css">
     <title>Slider Form</title>
 </head>
 
 <body>
-
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form action="/verify" method="post">
+            <form action="/verify" method="post" onsubmit="return validateMobile()">
                 <h1>Create Account</h1>
-            
-                <input type="text" name="mobileNumber" placeholder="Mobile">
-                
+                <input type="text" name="mobileNumber" id="mobileNumber" placeholder="Mobile">
                 <button>Verify</button>
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="/login" method="POST">
-            {{#if loginErr}}
-            <p class="text-white">Invalid UserName or Password</p>
-            {{/if}}
+            <form action="/login" method="POST" onsubmit="return validateEmail()">
+                {{#if loginErr}}
+                <p class="text-white">Invalid UserName or Password</p>
+                {{/if}}
                 <h1>Log In</h1>
-             
-                <input type="email" name="email" placeholder="Email">
+                <input type="email" name="email" id="email" placeholder="Email">
                 <input type="password" name="password" placeholder="Password">
                 <button>Log In</button>
             </form>
@@ -38,11 +34,11 @@
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
                     <h1>Welcome Back</h1>
-                    <p>To keep connected with us please login </p>
+                    <p>To keep connected with us, please login</p>
                     <button class="ghost" id="signIn">Log In</button>
                 </div>
                 <div class="overlay-panel overlay-right">
-                    <h1>Get Started </h1>
+                    <h1>Get Started</h1>
                     <p>Please Enter your Mobile number</p>
                     <button class="ghost" id="signUp">Sign Up</button>
                     <a href="/forgetpassword">Forget password</a>
@@ -52,6 +48,39 @@
     </div>
     <script src="/javascripts/signup.js"></script>
     <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
+    <script>
+{{!--   
+        function validateMobile() {
+            var mobileInput = document.getElementById("mobileNumber");
+            var mobileValue = mobileInput.value;
+
+            
+            if (!/^[1-9][0-9]*$/.test(mobileValue)) {
+                alert("Please enter a valid mobile number.");
+                return false;
+            }
+
+           
+
+            return true; 
+        } --}}
+
+        function validateEmail() {
+            var emailInput = document.getElementById("email");
+            var emailValue = emailInput.value;
+
+           
+            var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailRegex.test(emailValue)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            
+
+            return true; 
+        }
+    </script>
 </body>
 
 </html>

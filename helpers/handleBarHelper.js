@@ -6,6 +6,27 @@ module.exports = {
         // Handle the case where the array is empty or not an array
         return array;
     },
+    selectSecond: function(array) {
+        if (Array.isArray(array) && array.length > 0) {
+          return array[1];
+        }
+        // Handle the case where the array is empty or not an array
+        return array;
+    },
+    selectThird: function(array) {
+        if (Array.isArray(array) && array.length > 0) {
+          return array[2];
+        }
+        // Handle the case where the array is empty or not an array
+        return array;
+    },
+    selectFourth: function(array) {
+        if (Array.isArray(array) && array.length > 0) {
+          return array[3];
+        }
+        // Handle the case where the array is empty or not an array
+        return array;
+    },
     formatPrice: function (price) {
         return (
             "₹" + Number(price).toLocaleString("en-IN", { maximumFractionDigits: 2 })
@@ -251,4 +272,24 @@ module.exports = {
         }
         return 0;
     },
+
+    calculateDiscountedPrice: function (product) {
+        // Check if the product has an offer
+        if (product.Offer.startDate && product.Offer.endDate) {
+          const currentDate = new Date();
+          // Check if the current date is within the offer period
+          if (
+            currentDate >= product.Offer.startDate &&
+            currentDate <= product.Offer.endDate
+          ) {
+            // Calculate the discount amount based on the discountPercentage
+            const discount = (product.Offer.discountPercentage / 100) * product.Price;
+            // Calculate the discounted price by subtracting the discount amount from the original price
+            return product.Price - discount;
+          }
+        }
+        // Return null if there's no discount
+        return null;
+      }
+      
 };

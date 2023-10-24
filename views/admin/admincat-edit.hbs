@@ -1,30 +1,79 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brands font-weight-bold" href="#"><h3>Admin Panel</h3> </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse ml-5" id="navbarSupportedContents">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/admin">All Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">All Orders</a>
-        </li>
-      
-         <li class="nav-item">
-          <a class="nav-link" href="/admin/allUsers">All Users</a>
-        </li>
-      
-         
-       
-      </ul>
-    
-    </div>
-     
-  </div>
-</nav>
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/css/icomoon.css">
+	<!-- Ion Icon Fonts-->
+	<link rel="stylesheet" href="/css/ionicons.min.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="/css/magnific-popup.css">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="/css/flexslider.css">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
+	
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="/css/style.css">
+
+	</head>
+	<body>
+		
+	<!-- <div class="colorlib-loader"></div> -->
+
+	<div id="page">
+		<nav class="colorlib-nav" role="navigation">
+			<div class="top-menu">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-7 col-md-9">
+							<div id="colorlib-logo"><a href="index.html">Admin Pannel</a></div>
+						</div>
+						<div class="col-sm-5 col-md-3">
+			            <form action="#" class="search-wrap">
+			               <div class="form-group">
+			                  <input type="search" class="form-control search" placeholder="Search">
+			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
+			               </div>
+			            </form>
+			         </div>
+		         </div>
+					<div class="row">
+						<div class="col-sm-12 text-left menu-1">
+							<ul>
+									<li class="active"><a href="/admin">Admin Dashboard</a></li>
+								<li><a href="/admin/allUsers">All Users</a></li>
+								<li><a href="/admin/allCategory">All Category</a></li>
+								<li><a href="/admin/admin-orderList">Orders</a></li>
+								<li><a href="/admin/admin-coupons">Coupons</a></li>
+									<li><a href="/admin/admin-orderList">OrderList</a></li>
+							            
+							
+							</ul>
+						
+						</div>
+					</div>
+				</div>
+			</div>
 
 
 
@@ -38,18 +87,16 @@
     
     <h2 class="text-center">Edit Catgory</h2>
 
-<form action="/admin/admincat-edit/{{categories._id}}"method="POST" enctype="multipart/form-data" >
-<label for="">Name</label>
- <input type "text" name="name" value="{{categories.name}}" class="form-control">
+<form action="/admin/admincat-edit/{{categories._id}}" method="POST">
+  <label for="">Name</label>
+  <input type="text" name="name" value="{{categories.name}}" class="form-control">
 
-<label for="">Description</label>
-<input type="text" name="description" value="{{categories.description}}"" class="form-control">
+  <label for="">Description</label>
+  <input type="text" name="description" value="{{categories.description}}" class="form-control">
 
-
-
-<button type="submit" class="btn btn-success mt-4">Submit</button>
-
+  <button type="submit" class="btn btn-success mt-4">Submit</button>
 </form>
+
 
 
 </div>

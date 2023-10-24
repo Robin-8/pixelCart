@@ -11,7 +11,10 @@ const Order=require('../models/orderModel')
 const { format } = require('date-fns');
 const couponHelper = require('../helpers/couponHelper')
 const walletHelper = require ('../helpers/walletHelper')
-
+const Wallet = require('../models/wallerModel')
+const user = require('../models/user')
+const Product = require('../models/product')
+const Mongodb = require('mongodb')
 
 
 
@@ -37,6 +40,7 @@ const placeOrder = async(req,res)=>{
         ];
 
         Promise.all(promises).then(([total,subTotal,address,cartItems,wallet])=>{
+           
            if(address.length){
             res.render('user/checkOut',{total,subTotal,address,cartItems,wallet,cart,coupons})
            }else{
@@ -76,7 +80,7 @@ const checkOut = async (req, res) => {
 
             createdOn: Date.now(),
             totalPrice: total-discount,
-            product: cart.products,
+            products: cart.products,
             userId: userId,
             payment: a.paymentMethod,
             address: a.addressId,
@@ -86,8 +90,10 @@ const checkOut = async (req, res) => {
         })
 
         const saveOrder = await order.save()
-      
 
+       
+        console.log(saveOrder,"===========")
+        
 
 
 
@@ -154,53 +160,14 @@ const verifyOrderPayment = (details) => {
                 console.log("Verify FAILED");
                 reject();
             }
-        })
-    };
+     })
+    };
 
 
 
 
    
     
-
-
-
-
-    // try {
-    //     console.log('body is ',req.body);
-    //     const user = req.session.user
-
-    //     let products = await cartHelper.getCartProductList(user._id)
-    //     let totalPrice = await cartHelper.getTotal(user._id)
-    //     let amountPaid = req.body.total;
-    //     let paymentMethod=req.body.paymentMethod;
-
-    //     let delivaryAddress = await profileHelper.fetchPrimaryAddress(req.session.user._id,req.body.addressId)
-    //     console.log(delivaryAddress,"add");
-    //     let obj={
-    //         products:products,
-    //         totalPrice:totalPrice,
-    //         amountPaid:amountPaid,
-    //         paymentMethod:paymentMethod,
-    //         delivaryAddress:delivaryAddress,
-    //         user_Id:user._id,
-    //         userName:user.lname
-    //     }
-    //     console.log(obj,"objj");
-    //    // await orderHelpler.placeOrder(paymentMethod,products,totalPrice,amountPaid,delivaryAddress,user._id,user.Name).then(async(orderId)=>{
-    //     await orderHelpler.placeOrder(obj).then(async(orderId)=>{
-    //         console.log(orderId,"oid");
-
-    // console.log("entr");
-    //         if (req.body.paymentMethod == COD) {
-    //             console.log("success");
-    //             console.log('cod is her');
-    //             res.json({cod:true})
-    //         }
-    //     })
-    // } catch (error) {
-    //     console.log(error);
-    // }
    
 } 
 const getAllOrders =async(req,res)=>{
@@ -248,27 +215,47 @@ const successOrder= async (req,res)=>{
 
 const orderDetails = async (req, res) => {
     try {
-        // Retrieve the user's orders using the getOrders function
-        const userId = req.session.user._id; // Assuming you can access the user's ID from the session
-        const orders = await orderHelpler.getOrders(userId);
-        // context.orders.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
-        // Render the orderDetails view and pass the orders data
-        res.render('user/orderDetails', { orders, });
+      const userId = req.session.user._id; // Assuming you can access the user's ID from the session
+    //   const orders = await orderHelpler.getOrders(userId);
+    const orders = await Order.find({userId:userId})
+      // Use Mongoose's populate method to populate the 'products' field in each order
+    //   await Order.populate(orders, { path: 'products.product' });
+  
+      orders.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+        
+      const itemsPerPage = 5;
+      const currentpage = parseInt(req.query.page) || 1;
+      const startIndex = (currentpage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const totalpages = Math.ceil(orders.length / itemsPerPage);
+      const pages = Array.from({ length: totalpages }, (_, i) => i + 1); // Create an array of page numbers
+      const currentproduct = orders.slice(startIndex, endIndex);
+        console.log("Current pages=>" , currentproduct)
+      res.render('user/orderDetails', {
+        orders: currentproduct,
+        currentpage,
+        totalpages,
+        pages, // Pass the array of page numbers
+      });
     } catch (error) {
-        console.log('Order details error:', error);
-        // Handle errors here (e.g., render an error page or send an error response)
+      // Handle errors
+      console.log(error)
+      res.redirect('/login')
     }
-};
+  };
+  
+
 const cancelOrder = async (req, res) => {
     try {
-      const orderId = req.params.orderId;
+      const orderId = req.query.id
+      console.log('this sihh  the order',orderId);
       const updatedOrder = await orderHelpler.cancelOrder(orderId)
   
       // Check if the order was successfully cancelled
       if (!updatedOrder) {
         return res.status(404).json({ error: 'Order not found' });
       }
-         res.redirect('/orderDetails')
+         res.json({status:true});
       // Send a response to indicate success
     //   res.json({ message: 'Order cancelled successfully', order: updatedOrder });
     } catch (error) {
@@ -279,9 +266,21 @@ const cancelOrder = async (req, res) => {
 
   const adminOrderDtails = async (req, res) => {
     try {
-        const orders = await Order.find();
+       // Fetch orders in descending order of createdOn
+      const orders = await Order.find({}).sort({ createdOn: -1 });
+
+        const products = await Product.find();
+        const itemsPerPage = 5;
+        const currentpage = parseInt(req.query.page) || 1;
+        const startIndex = (currentpage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const totalpages = Math.ceil(orders.length / itemsPerPage);
+        const pages = Array.from({ length: totalpages }, (_, i) => i + 1); // Create an array of page numbers
+        const currentproduct = orders.slice(startIndex, endIndex);
+        
         console.log(orders,"ods");
-        res.render('admin/adminOrderDetails',{ orders });
+      
+        res.render('admin/adminOrderDetails',{ orders:currentproduct,pages,currentpage,totalpages,products });
     } catch (error) {
         console.log('order not found', error);
     }
@@ -297,25 +296,38 @@ const statusUpdateOrder = async(req,res)=>{
         res.status(500).json({ status: false, error: 'Failed to update order status' });
     }
 }
-const adminOrderDetails = async(req,res)=>{
-   
+const adminOrderDetails = async (req, res) => {
     try {
-        const orderId = req.params.orderId
-        const order = await Order.findById(orderId).populate('products')
-        // console.log(order,'order here');
-        if(!order){
-            console.log('order not found');
-            res.redirect("/admin-orderList")
-        }else{
-            res.render('admin/adminSingleProductDetails',{order})
-        }
-    } catch (error) {
-        console.log(error,'cannot find oreder');
-    }
+      const orderId = req.params.orderId;
+      const oid = new Mongodb.ObjectId(orderId)
+    //   const order = await Order.findById(orderId).populate('products.product');
+    let orders = await Order.aggregate([
+        {$match:{_id:oid}},
+        {$unwind:'$products'},
+        // {$project:{
+        //     proId:{'$toObjectId':'$products._id'},
+        // }},
+        {$lookup:{
+            from:'products',
+            localField:'products.item', 
+            foreignField:'_id',
+            as:'ProductDetails',
+        }},
+
+    ])
+
  
-
-}
-
+      if (!orders) {
+        console.log('Order not found');
+        res.redirect('/admin-orderList');
+      } else {
+        res.render('admin/adminSingleProductDetails', { orders });
+      }
+    } catch (error) {
+      console.log('Error: ', error);
+    }
+  };
+  
 
 
 
@@ -323,11 +335,12 @@ const ChangeStatusDelivered=async(req,res)=>{
     try {
         
 const id=req.query.id;
+console.log('this is id ',id);
 
 const ordeData= await Order.findByIdAndUpdate(id,{
     status:"Delivered"
 },{new:true})
-console.log('this is order data',ordeData);
+console.log(ordeData,"????");
 
 res.redirect('/admin/admin-orderList')
 
@@ -337,21 +350,52 @@ res.redirect('/admin/admin-orderList')
     }
 }
 
-const ChangeStatuscancelled = async(req,res)=>{
+const ChangeStatuscancelled = async (req, res) => {
     try {
-        const id = req.query.id
-        const orderData = await Order.findByIdAndUpdate(id,{status:'Cancelled'},{new:true})
-        console.log('this is order data',orderData);
-        res.redirect('/admin/admin-orderList')
+        const id = req.query.id;
+
+        const orderData = await Order.findById(id);
+        orderData.status = 'Cancelled';
+        await orderData.save();
+
+        const userId = orderData.userId;
+
+        if (orderData.payment === 'ONLINE' || orderData.payment === 'Wallet') {
+            const wallet = await Wallet.findOne({ userId: userId });
+
+            if (wallet) {
+                wallet.history.push({
+                    description: 'refund for product',
+                    price: orderData.totalPrice
+                });
+                wallet.balance += orderData.totalPrice;
+                await wallet.save();
+            } else {
+                await Wallet.create({
+                    userId: userId,
+                    balance: orderData.totalPrice,
+                    history: {
+                        description: 'refund for product',
+                        price: orderData.totalPrice
+                    }
+                });
+            }
+        }
+
+        console.log('Order data for Cancelled status:', orderData);
+        res.redirect('/admin/admin-orderList');
     } catch (error) {
-        console.log('this error happence in ChangeStatuseCancelled',error);
+        console.log('Error in ChangeStatusCancelled:', error);
     }
-}
+};
+
 const ChangeStatusShipped = async(req,res)=>{
     try {
         const id = req.query.id
-        const orderData = await Order.findByIdAndUpdate(id,{status:'Cancelled'},{new:true})
-        console.log('this is orderData',orderData);
+        const orderData = await Order.findByIdAndUpdate(id,{status:'Shipped'},{new:true})
+        console.log(orderData,'this is orderData=====');
+       
+       
         res.redirect('/admin/admin-orderList')
     } catch (error) {
         console.log('this error happence in ChangeStatusShipped',error);
@@ -360,7 +404,32 @@ const ChangeStatusShipped = async(req,res)=>{
 const ChangeStatusReturned = async(req,res)=>{
     try {
         const id = req.query.id
-        const orderData =await Order.findByIdAndUpdate(id,{status:'Returned'},{new:true})
+       
+
+        const orderData =await Order.findById(id)
+        orderData.status='Returned'
+       await orderData.save()
+        const userId = orderData.userId
+        if(orderData.payment == 'ONLINE'|| orderData.payment =='Wallet'){
+         const wallet = await Wallet.findOne({userId:userId})
+         if(wallet){
+            wallet.history.push({
+                description:'refund for product',
+                price:orderData.totalPrice
+            })
+            wallet.balance += orderData.totalPrice
+             await wallet.save() 
+         }else{
+          await  wallet.create({
+                userId:userId,
+                balance:orderData.totalPrice,
+                history:{
+                    description:'refund for product',
+                    price:orderData.totalPrice
+                }
+            })
+         }
+        }
         console.log('this is order data',orderData);
         res.redirect('/admin/admin-orderList')
     } catch (error) {

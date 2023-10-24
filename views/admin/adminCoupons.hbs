@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
+
+<head>
 	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
-	
+
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="/css/animate.css">
 	<!-- Icomoon Icon Fonts-->
@@ -26,7 +27,7 @@
 	<!-- Owl Carousel -->
 	<link rel="stylesheet" href="/css/owl.carousel.min.css">
 	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
-	
+
 	<!-- Date Picker -->
 	<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
 	<!-- Flaticons  -->
@@ -35,9 +36,10 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="/css/style.css">
 
-	</head>
-	<body>
-		
+</head>
+
+<body>
+
 	<!-- <div class="colorlib-loader"></div> -->
 
 	<div id="page">
@@ -46,82 +48,80 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
+							<div id="colorlib-logo"><a href="index.html">Admin Pannel</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
-			            <form action="#" class="search-wrap">
-			               <div class="form-group">
-			                  <input type="search" class="form-control search" placeholder="Search">
-			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
-			               </div>
-			            </form>
-			         </div>
-		         </div>
+							<form action="#" class="search-wrap">
+
+							</form>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li class="active"><a href="/">Home</a></li>
-								<li><a href="/">Products</a></li>
-								<li><a href="/userDetails">User Profile</a></li>
-								<li class="cart"><a href="/carts"><i class="icon-shopping-cart"></i> Cart</a></li>
-								<li class="cart"><a href="/logout"><i class="icon-switch"></i> Logout</a></li>             
-							
+										<li class="active"><a href="/admin">Admin Dashboard</a></li>
+								<li><a href="/admin/allUsers">All Users</a></li>
+								<li><a href="/admin/allCategory">All Category</a></li>
+								<li><a href="/admin/admin-orderList">Orders</a></li>
+								<li><a href="/admin/admin-coupons">Coupons</a></li>
+									<li><a href="/admin/admin-orderList">OrderList</a></li>
+
+
 							</ul>
-						
+
 						</div>
 					</div>
 				</div>
 			</div>
-	
-		<div class="colorlib-intro">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-12 text-center">
-						<h2 class="intro">It started with a simple idea: Create quality, well-designed products that I wanted myself.</h2>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		</nav>
-           <a href="/admin/addCoupon"><button type="button" class="btn mb-2 btn-primary">Add Coupon</button></a>
-            <table class="table table-borderless table-striped">
-              <thead>
-				
-                <tr role="row" >
-                  <th>Coupon Code</th>
-                  <th>Coupon Description</th>
-                  <th>Discount</th>
-                  <th>Max Discount</th>
-                  <th>Min Amount</th>
-                  <th>Creation Date</th>
-                  <th>Expiration Date</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {{#each coupons}}
-                <tr>
-                  <th>{{this.couponCode}}</th>
-                  <th>{{this.couponDescription}}</th>
-                  <th>{{this.discount}}</th>
-                  <th>{{this.maxDiscount}}</th>
-                  <th>{{this.minAmount}}</th>
-                  <th>{{this.creationDate}}</th>
-                  <th>{{this.expirationDate}}</th>
 
-				    <td>
-                    <a href="/admin/admineditcoupon?couponId={{this._id}}"><button type="button"
-                        class="btn mb-2 btn-primary">Edit</button></a>
-                    {{#if this.isDeleted}}
-                    <a href='/admin/adminrecovercoupon?couponId={{this._id}}'><button type="button"
-                        class="btn mb-2 btn-success">Recover</button></a>
-                    {{else}}
-                    <a href='/admin/admindeletecoupon?couponId={{this._id}}'><button type="button"
-                        class="btn mb-2 btn-danger">Delete</button></a>
-                    {{/if}}
-                  </td>
-                 </tr>
-                {{/each}}
-              </tbody>
-            </table>
+
+
+		</nav>
+		<a href="/admin/addCoupon"><button type="button" class="btn mb-2 btn-primary">Add Coupon</button></a>
+		<table class="table table-borderless table-striped">
+			<thead>
+
+				<tr role="row">
+					<th> Code</th>
+					<th> Description</th>
+					<th>Discount</th>
+					<th>Max Discount</th>
+					<th>Min Amount</th>
+					<th>Creation Date</th>
+					<th>Expiration Date</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each coupons}}
+				<tr>
+					<th>{{this.couponCode}}</th>
+					<th>{{this.couponDescription}}</th>
+					<th>{{this.discount}}</th>
+					<th>{{this.maxDiscount}}</th>
+					<th>{{this.minAmount}}</th>
+					<th>{{formatDate this.creationDate}}</th>
+					<th>{{formatDate this.expirationDate}}</th>
+
+					<td>
+						<a href="/admin/admineditcoupon?couponId={{this._id}}"><button type="button"
+								class="btn mb-2 btn-primary">Edit</button></a>
+						{{#if this.isDeleted}}
+						<a href='/admin/adminrecovercoupon?couponId={{this._id}}'><button type="button"
+								class="btn mb-2 btn-success">Recover</button></a>
+						{{else}}
+						<a href='/admin/admindeletecoupon?couponId={{this._id}}'><button type="button"
+								class="btn mb-2 btn-danger">Delete</button></a>
+						{{/if}}
+					</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+
+		<script>
+			function formatDate(dateString) {
+				const options = { year: 'numeric', month: 'short', day: 'numeric' };
+				return new Date(dateString).toLocaleDateString(undefined, options);
+			}
+		</script>

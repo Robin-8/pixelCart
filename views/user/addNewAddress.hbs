@@ -46,7 +46,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
+							<div id="colorlib-logo"><a href="index.html" style="color: black;">Camera Shutter</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
 			            <form action="#" class="search-wrap">
@@ -60,11 +60,11 @@
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li><a href="/">Home</a></li>
+								<li><a href="/" style="color: black;">Home</a></li>
 								
 							
-								<li><a href="about.html">About</a></li>
-								<li><a href="contact.html">Contact</a></li>
+								<li><a href="about.html" style="color: black;">About</a></li>
+								<li><a href="contact.html" style="color: black;">Contact</a></li>
 								<li class="cart"><a href="/carts"><i class="icon-shopping-cart"></i> Cart [0]</a></li>
 							</ul>
 						</div>
@@ -290,6 +290,73 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="/js/jquery.stellar.min.js"></script>
 	<!-- Main -->
 	<script src="/js/main.js"></script>
+
+	<script>
+    
+    function trimInput(input) {
+        return input.trim();
+    }
+
+    // Function to validate the form
+    function validateForm() {
+        // Get form inputs by their IDs
+        var fname = document.getElementById("fname").value;
+        var lname = document.getElementById("lname").value;
+        var address1 = document.getElementById("address1").value;
+        var towncity = document.getElementById("towncity").value;
+        var pincode = document.getElementById("pincode").value;
+        var email = document.getElementById("email").value;
+        var mobile = document.getElementById("mobile").value;
+
+        
+        fname = trimInput(fname);
+        lname = trimInput(lname);
+        address1 = trimInput(address1);
+        towncity = trimInput(towncity);
+        pincode = trimInput(pincode);
+        email = trimInput(email);
+        mobile = trimInput(mobile);
+
+        
+        if (
+            fname.trim() === "" ||
+            lname.trim() === "" ||
+            address1.trim() === "" ||
+            towncity.trim() === "" ||
+            pincode.trim() === "" ||
+            email.trim() === "" ||
+            mobile.trim() === ""
+        ) {
+            alert("Please fill in all required fields.");
+            return false; 
+        }
+
+        
+        if (!isValidMobileNumber(mobile)) {
+            alert("Please enter a valid mobile number.");
+            return false; 
+        }
+
+       
+
+        return true; 
+    }
+
+    // Function to validate a mobile number
+    function isValidMobileNumber(number) {
+       
+        if (/^\d+$/.test(number)) {
+            
+            return number.length === 10;
+        }
+        return false;
+    }
+
+    // Attach the validateForm function to the form's onsubmit event
+    document.querySelector(".colorlib-form").onsubmit = validateForm;
+</script>
+
+
 
 	</body>
 </html>

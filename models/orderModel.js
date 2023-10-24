@@ -10,21 +10,10 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  // date: {
-  //   required: true,
-  //   type: Date,
-  //   default: Date.now
-  // },
-  products: [
-    {
-      product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product', // Assuming 'Product' is the name of your product schema
-      },
-      size: String, // Add size field if needed
-      // Add other fields specific to the product within the order
-    },
-  ],
+ 
+  products:{
+    type:Array
+  },
   reason: {
     type: String,
     default: 'N/A',

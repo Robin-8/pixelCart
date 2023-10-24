@@ -38,11 +38,13 @@ const placeOrder = async (obj) => {
         const status = paymentMethod === 'COD' ? 'places' : 'Pending'
 
         const productsWithQuantity = products.map(product => {
+            
             return {
                 product: product.item,
                 quantity: product.quantity,
             };
         });
+        
         const orderObj = {
 
             delivaryDetails: {
@@ -57,7 +59,6 @@ const placeOrder = async (obj) => {
 
 
             },
-
             userName: userName,
             userId: user_Id,
             paymentMethod: data['paymentMethod'],
@@ -69,8 +70,6 @@ const placeOrder = async (obj) => {
 
         }
         connectDB()
-
-
             .then(async () => {
                 let cartId
                 await Order.create(orderObj).then(async (response) => {
@@ -85,7 +84,6 @@ const placeOrder = async (obj) => {
                         let stock = item.products.Stock - item.products.quantity
                         await Products.findByIdAndUpdate(item.product._id), { Stock: stock }, { new: true }
                     })
-
 
                 }).catch((error) => {
                     console.log(error);
@@ -276,6 +274,31 @@ const generateOrderRazorpay = (orderId, total) => {
     })
 }
 
+const findOrderByDate=(startDate,endDate)=>{
+    try {
+      return new Promise ((resolve ,reject)=>{
+        connectDB()
+        .then(()=>{
+          Order.find({
+
+            createdOn: {
+              $gte: startDate, 
+              $lte: endDate,
+            },
+          })
+            .populate({ path: "userId" })
+            // .populate({ path: "address", model: "addres" })
+            .populate({ path: "products", model: "Product" })
+            .exec().then((data)=>{
+              resolve(data)
+            })
+        })
+      })
+    } catch (error) {
+      console.log(error.message)
+    }
+      }
+
 
 module.exports = {
     getAddress,
@@ -289,5 +312,6 @@ module.exports = {
     changePaymentStatus,
     cancelOrder,
     getOrder,
-    generateOrderRazorpay
+    generateOrderRazorpay,
+    findOrderByDate
 }

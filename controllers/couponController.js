@@ -5,7 +5,7 @@ const cartHelper = require('../helpers/cartHelper')
 const adminCoupons = async(req,res)=>{
     try {
         const coupons = await couponHelper.adminGetAllCoupons()
-        console.log(coupons,'copon common');
+        // console.log(coupons,'copon common');
 
         const itemsPerPage = 5;
         const currentPage = parseInt(req.query.page) || 1;
@@ -114,7 +114,7 @@ const adminGetCopons = async(req,res)=>{
 const adminEditCoupon = async(req,res)=>{
     try {
         console.log(req.params,'params here' );
-        console.log(req.body,'reqbody is here==');
+        // console.log(req.body,'reqbody is here==');
         couponHelper.updateCoupon(req.params.id,req.body)
         res.redirect('/admin/admin-coupons')
     } catch (error) {
@@ -124,7 +124,7 @@ const adminEditCoupon = async(req,res)=>{
 const userGetCoupon = async(req,res)=>{
     try {
         const coupons = await couponHelper.userGetAllCoupon()
-        console.log(coupons,"in getcoupons")
+        // console.log(coupons,"in getcoupons")
         res.json({coupons})
     } catch (error) {
         console.log(error,'error in userGetCoupon');
@@ -135,7 +135,7 @@ const userApplayCoupon = async(req,res)=>{
     try {
         
         const couponCode = req.body.couponCode
-        console.log(">>>>>>>>>>>>>>>>>",couponCode);
+        // console.log(">>>>>>>>>>>>>>>>>",couponCode);
         const userId = req.session.user._id
         console.log(req.session.user._id);
         let cartTotal = await cartHelper.getTotal(userId)
@@ -143,7 +143,7 @@ const userApplayCoupon = async(req,res)=>{
         //cartTotal = cartTotal[0].totalPages
        
         let couponDetails = await couponHelper.getCouponCode(couponCode)
-        console.log("><><>><><><><>>>>>><>><><><><>",couponDetails);
+        // console.log("><><>><><><><>>>>>><>><><><><>",couponDetails);
         // couponDetails = couponDetails[0]
         
         if(cartTotal >= couponDetails.minAmount){

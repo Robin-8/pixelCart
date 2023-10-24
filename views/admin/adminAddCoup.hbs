@@ -60,14 +60,14 @@
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 						<ul>
-								<li><a href="index.html">Admin Dashbord</a></li>
+								<li><a href="/">Admin Home</a></li>
 								<li class="has-dropdown">
-									<a href="admin/allCategory">All Users</a>
-                                    	<li><a href="about.html">Products</a></li>
-								
-								</li>
-								
-								<li><a href="about.html">Orders</a></li>
+										<li class="active"><a href="/admin">Admin Dashboard</a></li>
+								<li><a href="/admin/allUsers">All Users</a></li>
+								<li><a href="/admin/allCategory">All Category</a></li>
+								<li><a href="/admin/admin-orderList">Orders</a></li>
+								<li><a href="/admin/admin-coupons">Coupons</a></li>
+									<li><a href="/admin/admin-orderList">OrderList</a></li>
 								
 							</ul>
 						
@@ -78,6 +78,7 @@
 	
 	
 <body>
+	
 	<div class="card shadow mb-4">
               <div class="card-body">
 				<div class="container d-flex justify-content-center">
@@ -115,5 +116,38 @@
               </div>
 			  </div>
             </div>
+
+			{{!-- <script>
+        function validateCouponForm() {
+            var couponCodeInput = document.getElementById("couponCode");
+            var couponCodeValue = couponCodeInput.value;
+
+            // Check if the coupon code is empty
+            if (couponCodeValue.trim() === "") {
+                document.getElementById("couponCodeError").textContent = "Coupon code cannot be empty.";
+                return false;
+            }
+
+            // Check if the coupon code length exceeds 10 characters
+            if (couponCodeValue.length > 10) {
+                document.getElementById("couponCodeError").textContent = "Coupon code cannot exceed 10 characters.";
+                return false;
+            }
+
+            // Check if the coupon code contains special characters
+            var specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+            if (specialChars.test(couponCodeValue)) {
+                document.getElementById("couponCodeError").textContent = "Coupon code cannot contain special characters.";
+                return false;
+            }
+
+            // Clear any previous error message
+            document.getElementById("couponCodeError").textContent = "";
+
+            // You can add more validation rules as needed for other form fields
+
+            return true; // Allow form submission
+        }
+    </script> --}}
 </body>
 </html>

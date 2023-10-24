@@ -43,6 +43,29 @@
     <script src="/javascripts/signup.js"></script>
     <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
 </body>
+ <script>
+        // Function to validate the form
+        function validateForm() {
+            var emailInput = document.getElementById("email");
+            var emailValue = emailInput.value;
+
+            // Validate if email is empty
+            if (emailValue.trim() === "") {
+                alert("Email is required.");
+                return false;
+            }
+
+            // Validate email format
+            var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailRegex.test(emailValue)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            // If all validations pass, you can proceed with form submission.
+            return true;
+        }
+    </script>
 
 </html>
 {{!-- <script>

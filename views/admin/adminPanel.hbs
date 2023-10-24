@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
+
+<head>
 	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
-	
+
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="/css/animate.css">
 	<!-- Icomoon Icon Fonts-->
@@ -26,7 +27,7 @@
 	<!-- Owl Carousel -->
 	<link rel="stylesheet" href="/css/owl.carousel.min.css">
 	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
-	
+
 	<!-- Date Picker -->
 	<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
 	<!-- Flaticons  -->
@@ -35,9 +36,50 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="/css/style.css">
 
-	</head>
-	<body>
-		
+	<style>
+        /* Style for the status dropdown */
+        .status-dropdown {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .status-dropdown ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .status-dropdown ul li {
+            margin-bottom: 5px;
+        }
+
+        /* Style for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Add more styles as needed */
+    </style>     
+</head>
+
+
+<body>
+
 	<!-- <div class="colorlib-loader"></div> -->
 
 	<div id="page">
@@ -49,97 +91,99 @@
 							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
-			            <form action="#" class="search-wrap">
-			               <div class="form-group">
-			                  <input type="search" class="form-control search" placeholder="Search">
-			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
-			               </div>
-			            </form>
-			         </div>
-		         </div>
+							<form action="#" class="search-wrap">
+
+							</form>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li class="active"><a href="/admin/adminDashbord">Admin Dashboard</a></li>
+								<li class="active"><a href="/admin">Admin Dashboard</a></li>
 								<li><a href="/admin/allUsers">All Users</a></li>
 								<li><a href="/admin/allCategory">All Category</a></li>
-                <li><a href="/admin/admin-orderList">Orders</a></li>
-      
-							
+								<li><a href="/admin/admin-orderList">Orders</a></li>
+								<li><a href="/admin/admin-coupons">Coupons</a></li>
+								<li><a href="/admin/admin-orderList">OrderList</a></li>
+								<li><a href="/admin/admin-banners">Banner</a></li>
+
+
+
 							</ul>
-						
+
 						</div>
 					</div>
 				</div>
 			</div>
-	
-	
-
-
-<section>
-
-    <div class="container">
-      <div class="row mt-5">
-        <a href="/admin/add-product" class="btn btn-success  ">Add Product</a>
-        <a href="/admin/logout" class="btn btn-danger ml-auto ">LOGOUT</a>
-      </div>
- <table class="table table-striped mt-5">
-  <thead>
-    <tr>
-      {{!-- <th scope="col">Product ID</th> --}}
-      <th scope="col">Title</th>
-       <th scope="col">
-        <div class="dropdown">
-          <button class="btn  dropdown-toggle" type="button" id="categoryDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Category
-          </button>
-          <div class="dropdown-menu" aria-labelledby="categoryDropdown">
-            <a class="dropdown-item" href="/admin/Cameracategory">Camera</a>
-            <a class="dropdown-item" href="/admin/ActionCameracategory">ActionCamera</a>
-            <a class="dropdown-item" href="/admin/SurveillanceCameracategory">SurveillanceCamera</a>
-            {{!-- <a class="dropdown-item" href="/admin/jewellerycategory">SurveillanceCamera</a> --}}
-            <!-- Add more categories as needed -->
-          </div>
-        </div>
-      </th>
-      <th scope="col">Description</th>
-      <th>Delete Status</th>
-      <th scope="col">Price</th>
-      <th>Image</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-   {{#each products}}
-        <tr>
-          <td>{{this.Name}}</td>
-          <td>{{this.Category}}</td>
-          <td>{{this.Description}}</td>
-          <td>{{this.Deleted}}</td>
-          <td>{{this.Price}}</td>
-        
-   
-          
-          <td>
-            <!-- Display the individual product image -->
-            <img style="width:50px;height:50px" src="/product-images/{{this.Images.[0]}}" alt="{{this.Name}} Image">
-          </td>
-          
-          <td>
-            <!-- Edit and Delete buttons -->
-            <a href="/admin/admineditproduct?productId={{this._id}}" class="btn btn-primary btn-sm btn-block">Edit</a>
-            <a href='/admin/admindeleteproduct?productId={{this._id}}' class="btn btn-danger btn-sm btn-block" onclick="return confirm('Confirm to delete Product {{this.Name}}')">Delete</a>
-          </td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
-</section>
 
 
 
 
+			<section>
+
+				<div class="container">
+					<div class="row mt-5">
+						<a href="/admin/add-product" class="btn btn-success  ">Add Product</a>
+					    
+						<a href="/admin" class="btn btn-danger ml-auto ">LOGOUT</a>
+					</div>
+					<table class="table table-striped mt-5">
+						<thead>
+							<tr>
+								{{!-- <th scope="col">Product ID</th> --}}
+								<th scope="col" style="color: black;">Title</th>
+								<th scope="col" style="color: black;">Category</th>
+								<th scope="col" style="color: black;">Description</th>
+								<th style="color: black;">Delete Status</th>
+								<th scope="col" style="color: black;">Price</th>
+								<th style="color: black;">Image</th>
+								<th style="color: black;">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{{#each products}}
+							<tr>
+								<td style="color: black;">{{this.Name}}</td>
+								<td style="color: black;">{{this.Category}}</td>
+								<td style="color: black;">{{this.Description}}</td>
+								<td style="color: black;">{{this.Deleted}}</td>
+								<td style="color: black;">{{this.Price}}</td>
 
 
-   
+
+								<td>
+									<!-- Display the individual product image -->
+									<img style="width:50px;height:50px" src="/product-images/{{this.Images.[0]}}"
+										alt="{{this.Name}} Image">
+								</td>
+
+								<td>
+									<!-- Edit and Delete buttons -->
+									<a href="/admin/admineditproduct?productId={{this._id}}"
+										class="btn btn-primary btn-sm btn-block">Edit</a>
+									<a href='/admin/admindeleteproduct?productId={{this._id}}'
+										class="btn btn-danger btn-sm btn-block"
+										onclick="return confirm('Confirm to delete Product {{this.Name}}')">Delete</a>
+										<a href="/admin/admin-offers?id={{this._id}}" class="btn btn-success  ">Add Offers</a>
+								</td>
+							</tr>
+							{{/each}}
+						</tbody>
+					</table>
+					{{#if totalpages}}
+					<div class="pagination">
+						{{#if (gt currentpage 1)}}
+						<button><a href="?page={{sub currentpage 1}}">Previous</a></button>
+						{{/if}}
+
+						{{#each pages}}
+						<button><a href="?page={{this}}">{{this}}</a></button>
+						{{/each}}
+
+						{{#if (lt currentpage totalpages)}}
+						<button><a href="?page={{add currentpage 1}}">Next</a></button>
+						{{/if}}
+					</div>
+					{{/if}}
+				</div>
+			</section>

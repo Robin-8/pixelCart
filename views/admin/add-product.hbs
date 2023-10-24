@@ -46,27 +46,28 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="index.html">Adminal Pannel</a></div>
+							<div id="colorlib-logo"><a href="index.html">Admin Pannel</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
-			            <form action="#" class="search-wrap">
-			               <div class="form-group">
-			                  <input type="search" class="form-control search" placeholder="Search">
-			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
-			               </div>
-			            </form>
-			         </div>
-		         </div>
+							<form action="#" class="search-wrap">
+								
+							</form>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li class="active"><a href="">Admin Dashboard</a></li>
-								<li><a href="/admin/allUsers"></a>All Users</li>
-								<li><a href="/admin/AllCategory">All Category</a></li>
-							           
-							
+								<li class="active"><a href="/admin">Admin Dashboard</a></li>
+								<li><a href="/admin/allUsers">All Users</a></li>
+								<li><a href="/admin/allCategory">All Category</a></li>
+								<li><a href="/admin/admin-orderList">Orders</a></li>
+								<li><a href="/admin/admin-coupons">Coupons</a></li>
+									<li><a href="/admin/admin-orderList">OrderList</a></li>
+
+
+
 							</ul>
-						
+
 						</div>
 					</div>
 				</div>
@@ -79,21 +80,23 @@
     <div class="row">
       <div class="col-md-6">
         <h2 class="text-center">Add Product</h2>
-        <form action="/admin/add-product" method="POST" enctype="multipart/form-data" onsubmit="validateForm() ">
+        <form action="/admin/add-product" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+
           <label for="Name" name="productName">Name</label>
-          <input type="text" name="Name" class="form-control" id="product_name">
-           <div id="nameError" style="color: red;"></div>
+          <input type="text" name="Name" class="form-control" required id="product_name" maxlength="30">
+           <div id="nameError"  style="color: red;" ></div>
 
 
           <label for="Category">Category</label>
-          <input type="text" name="Category" class="form-control" >
+          <input type="text" name="Category" required class="form-control" >
 
           <label for="Price">Price</label>
           <input type="number" min="0" name="Price" class="form-control">
 
           <label for="Description" name="productDescription">Description</label>
-          <input type="text" name="Description" class="form-control" id="product_description">
-              <div id="discriptionError" style="color: red;"></div>
+          <input type="text" name="Description" class="form-control"  required id="product_description" maxlength="25">
+             <div id="discriptionError" style="color: red;"></div>
+>
 
           <label for="">Stock </label>
           <input type="number" name="Stock" min="0" class="form-control">
@@ -108,56 +111,46 @@
   </div>
 </section>
 <script>
-
     function validateForm() {
-            // Reset error messages
-            document.getElementById('nameError').textContent = '';
-            document.getElementById('discriptionError').textContent = '';
+        // Reset error messages
+        document.getElementById('nameError').textContent = '';
+        document.getElementById('descriptionError').textContent = '';
 
-           
+        // Get the values from the form
+        const productName = document.getElementById('product_name').value;
+        const productDescription = document.getElementById('product_description').value;
 
-            // Get the values from the form
-            const productName = document.getElementById('product_name').value;
-            const productdescription = document.getElementById('product_description').value;
-            
-                
-            const  maxProductNameLength = 70; 
-            const  maxProductDescriptionLength = 250;
+        const maxProductNameLength = 20; 
+        const maxProductDescriptionLength = 20;
 
+        // Check for spaces or empty product name
+        if (productName.trim() === '') {
+            document.getElementById('nameError').textContent = 'Product title cannot be empty.';
+            return false; // Prevent form submission
+        }
 
-
-
-
-
-            // Check for spaces or empty product name
-            if (productName.trim() === '') {
-                document.getElementById('nameError').textContent = 'Product title cannot be empty.';
-                return false; // Prevent form submission
-            }
-          
-            if (productName.length > maxProductNameLength) {
+        if (productName.length > maxProductNameLength) {
             document.getElementById('nameError').textContent = 'Product title is too long.';
             return false; // Prevent form submission
         }
 
-
-
-
-            
-            if (productdescription.trim() === '') {
-                document.getElementById('discriptionError').textContent = 'Product discription cannot be empty.';
-                return false; // Prevent form submission
-            }
-
-            if (productdescription.length > maxProductDescriptionLength) {
-            document.getElementById('discriptionError').textContent = 'Product description is too long.';
+        if (productDescription.trim() === '') {
+            document.getElementById('descriptionError').textContent = 'Product description cannot be empty.';
             return false; // Prevent form submission
         }
 
-            
-            
-            
-            return true; // Allow form submission if all validations pass
-        }  
+        // Split the input value into words and check the length
+        const descriptionWords = productDescription.trim().split(/\s+/);
+        if (descriptionWords.length > 20) {
+            document.getElementById('descriptionError').textContent = 'Product description can have a maximum of 20 words.';
+            return false; // Prevent form submission
+        }
 
+        if (productDescription.length > maxProductDescriptionLength) {
+            document.getElementById('descriptionError').textContent = 'Product description is too long.';
+            return false; // Prevent form submission
+        }
+
+        return true; // Allow form submission if all validations pass
+    }
 </script>

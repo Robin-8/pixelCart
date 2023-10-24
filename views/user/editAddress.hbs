@@ -292,6 +292,72 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<!-- Main -->
 	<script src="/js/main.js"></script>
 
+	<script>
+    
+    function trimInput(input) {
+        return input.trim();
+    }
+
+    // Function to validate the form
+    function validateForm() {
+        // Get form inputs by their IDs
+        var fname = document.getElementById("fname").value;
+        var lname = document.getElementById("lname").value;
+        var address1 = document.getElementById("address1").value;
+        var towncity = document.getElementById("towncity").value;
+        var pincode = document.getElementById("pincode").value;
+        var email = document.getElementById("email").value;
+        var mobile = document.getElementById("mobile").value;
+
+        
+        fname = trimInput(fname);
+        lname = trimInput(lname);
+        address1 = trimInput(address1);
+        towncity = trimInput(towncity);
+        pincode = trimInput(pincode);
+        email = trimInput(email);
+        mobile = trimInput(mobile);
+
+        
+        if (
+            fname.trim() === "" ||
+            lname.trim() === "" ||
+            address1.trim() === "" ||
+            towncity.trim() === "" ||
+            pincode.trim() === "" ||
+            email.trim() === "" ||
+            mobile.trim() === ""
+        ) {
+            alert("Please fill in all required fields.");
+            return false; 
+        }
+
+        
+        if (!isValidMobileNumber(mobile)) {
+            alert("Please enter a valid mobile number.");
+            return false; 
+        }
+
+       
+
+        return true; 
+    }
+
+    // Function to validate a mobile number
+    function isValidMobileNumber(number) {
+       
+        if (/^\d+$/.test(number)) {
+            
+            return number.length === 10;
+        }
+        return false;
+    }
+
+    // Attach the validateForm function to the form's onsubmit event
+    document.querySelector(".colorlib-form").onsubmit = validateForm;
+</script>
+
+
 	</body>
 </html>
 

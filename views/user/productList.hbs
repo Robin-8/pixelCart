@@ -47,25 +47,25 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-7 col-md-9">
-							<div id="colorlib-logo"><a href="index.html">Camera Shutter</a></div>
+							<div id="colorlib-logo"><a href="index.html" style="color: black;">Camera Shutter</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
-							<form action="#" class="search-wrap">
-								<div class="form-group">
-									<input type="search" class="form-control search" placeholder="Search">
-									<button class="btn btn-primary submit-search text-center" type="submit"><i
-											class="icon-search"></i></button>
-								</div>
-							</form>
+							<div class="search-wrap">
+								<input id="searchInput" type="text" class="form-control search" placeholder="Search">
+								<button id="searchButton" class="btn btn-primary submit-search text-center"
+									type="button"><i class="icon-search"></i></button>
+							</div>
 						</div>
 					</div>
+
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li class="active"><a href="/">Home</a></li>
+								<li class="active"><a href="/" style="color: black;">Home</a></li>
 								<li><a href="/">Products</a></li>
-								<li><a href="/userDetails">User Profile</a></li>
-								<li class="cart"><a href="/carts"><i class="icon-shopping-cart"></i> Cart</a></li>
+								<li><a href="/userDetails" style="color: black;">User Profile</a></li>
+								<li class="cart"><a style="color: black;" href="/carts"><i
+											class="icon-shopping-cart"></i> Cart</a></li>
 								<li class="cart"><a href="/logout"><i class="icon-switch"></i> Logout</a></li>
 
 							</ul>
@@ -75,67 +75,90 @@
 				</div>
 			</div>
 
-              <div style="display: inline-flex;">
-				<div style="padding-top: 5rem;">
-					<div class="container">
-						<div class="row">
-							{{>userFilter}}
-						</div>
-					</div>
-				</div>
-			  </div>
-
-
-
-	</div>
-	</div>
-	</div>
-	</div>
-	
-				<div class="colorlib-intro">
-					<div class="container">
-						<div class="row">
-							<div class="col-sm-12 text-center">
-								<h2 class="intro">Save your Memories, Record your Actions,</h2>
-								<h2 class="intro">Survive with Surveillance</h2>
+			<div class="sale">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-8 offset-sm-2 text-center">
+							<div class="row">
+								<div class="owl-carousel2">
+									<div class="item">
+										<div class="col">
+											<h3><a href="#">25% off (Almost) Everything! Use Code: Summer Sale</a></h3>
+										</div>
+									</div>
+									<div class="item">
+										<div class="col">
+											<h3><a href="#">Our biggest sale yet 50% off all summer shoes</a></h3>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
-				<div
-					style="padding-left:55rem;">
-					<div>
-						<p style="margin-bottom: 0rem;"><strong>Sort By</strong></p>
-						<select class="sort-control-input">
-							<option value="LH" data-sort="LH">Price: Low to High</option>
-							<option value="HL" data-sort="HL">Price: High to Low</option>
-						</select>
-					</div>
-				</div>
-
-
-	<div class="colorlib-product">
-		<div class="container">
-			<div class="row row-pb-md">
-				{{#each products}}
-				<div class="col-lg-3 col-sm-6 mt-3">
-					<a href="/productdetails/{{this._id}} ">
-						<div class="card">
-							<img src="/product-images/{{selectFirst this.Images}}" alt="product-image"
-								style="width: 200px; height: 250px;" class="img-fluid mx-auto d-block" alt="img">
-							<div class="card-body text-center">
-								<h5 class="card-title">{{this.Name}}</h5>
-								<p class="card-text">₹{{this.Price}}</p>
-
-							</div>
-						</div>
-					</a>
-				</div>
-
-				{{/each}}
 			</div>
 
+		</nav>
+	</div>
+	<div class="colorlib-intro">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<h2 class="intro" style="color: black;">Save your Memories, Record your Actions,</h2>
+					<h2 class="intro" style="color: black;">Survive with Surveillance</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="display: flex; flex-direction: row;">
+		{{>userFilter}}
+		<div class="colorlib-product" style="padding: 0em;">
+			<div class="container">
+				<div class="row row-pb-md" style="display: flex;">
+					{{#each products}}
+					<div class="col-lg-3 col-sm-6 mt-3">
+						<a href="/productdetails/{{this._id}} ">
+							<div class="card" style="border-color: black;">
+								<img src="/product-images/{{selectFirst this.Images}}" alt="product-image"
+									style="width: 220px; height: 190px;;" class="img-fluid mx-auto d-block" alt="img">
+								<div class="card-body text-center">
+									<h5 class="card-title">{{this.Name}}</h5>
+									<h5 class="card-title">{{this.Price}}</h5>
+									{{!-- <p class="card-text">₹<del>&#8377;{{this.Price}}</del></p> --}}
+									{{!-- <p class="card-text">₹{{this.OfferPrice}}</p> --}}
+
+								</div>
+							</div>
+						</a>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-12">
+		<div class="paginationhome" style="display: flex; justify-content: center;">
+			<ul class="unlist" style="list-style: none; padding: 0; margin: 0; display: flex; align-items: center;">
+				{{#if (gt currentPage 1)}}
+				<li style="margin-right: 10px;"><a href="/home?page={{sub currentPage 1}}"><button
+							class="btn mb-2 btn-secondary">Previous</button></a></li>
+				{{/if}}
+
+				{{#each pages}}
+				{{#if (eq this ../currentPage)}}
+				<li style="margin-right: 10px;" class="active"><a href="#"><button type="button"
+							class="btn mb-2 btn-primary">{{this}}</button></a></li>
+				{{else}}
+				<li style="margin-right: 10px;"><a href="/home?page={{this}}"><button type="button"
+							class="btn mb-2 btn-secondary">{{this}}</button></a></li>
+				{{/if}}
+				{{/each}}
+
+				{{#if (lt currentPage totalPages)}}
+				<li style="margin-right: 10px;"><a href="/home?page={{add currentPage 1}}"><button
+							class="btn mb-2 btn-secondary">Next</button></a></li>
+				{{/if}}
+			</ul>
 		</div>
 	</div>
 
@@ -147,9 +170,6 @@
 				</div>
 			</div>
 			<div class="row">
-				{{!-- <div class="col partner-col text-center">
-					<img src="/helpers/" class="img-fluid" alt="Free html4 bootstrap 4 template">
-				</div> --}}
 				<div class="col partner-col text-center">
 					<img src="/images/brand-2.jpg" class="img-fluid" alt="Free html4 bootstrap 4 template">
 				</div>
@@ -247,11 +267,11 @@
 			</div>
 		</div>
 	</footer>
-	</div>
 
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="ion-ios-arrow-up"></i></a>
 	</div>
+
 
 	<!-- jQuery -->
 	<script src="/js/jquery.min.js"></script>
@@ -280,115 +300,270 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.all.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.min.css" rel="stylesheet">
+
 	<script>
 
-		document.addEventListener('DOMContentLoaded', function (){
+		document.addEventListener('DOMContentLoaded', function () {
 			const productCategory = new Set();
 			const productRange = new Set();
-            let sort;
+			let sort = undefined
 			let search;
-			let pcategory =[]
+			let pcategory = []
 			let pr = []
-			function categoryAddOrRemoveble(value){
-				if(productCategory.has(value)){
+			function categoryAddOrRemoveble(value) {
+				if (productCategory.has(value)) {
 					productCategory.delete(value);
-				}else{
+				} else {
 					productCategory.add(value);
 				}
 			}
-			function rangeAddOrRemovable(value){
-				if(productRange.has(value)){
+
+
+			function rangeAddOrRemovable(value) {
+				if (productRange.has(value)) {
 					productRange.delete(value);
-				}else{
+				} else {
 					productRange.add(value)
 				}
 			}
-			
+
 			const categoryButton = document.querySelectorAll('.category-control-input');
-			alert(categoryButton.values())
+
 			const priceButton = document.querySelectorAll('.price-control-input');
-				alert(priceButton)
+
 			const selectElement = document.querySelector('.sort-control-input')
-			alert(selectElement)
-			categoryButton.forEach(button =>{
-				button.addEventListener('change',async()=>{
+
+			const productsContainer = document.querySelector('.colorlib-product .container .row.row-pb-md');
+			const searchInput = document.getElementById('searchInput');
+			const searchButton = document.getElementById('searchButton')
+			search = searchInput.value;
+
+			{{!-- const paginationButtons = document.querySelectorAll('.pagination-button');
+			const productsContainer = document.querySelector('.colorlib-product .container .row.row-pb-md');
+			const paginationContainer = document.querySelector('.paginationhome .unlist'); --}}
+
+			categoryButton.forEach(button => {
+				button.addEventListener('change', async () => {
 					const category = button.getAttribute('data-category');
-					categoryAddOrRemoveble(category)
-					pcategory =[...productCategory]
+					categoryAddOrRemoveble(category)// i have doubts category or name
+					pcategory = [...productCategory]
 
-					$.ajax({
-						url:'/filterProduct',
-						data:{
-							productRange:pr,
-							productCategory:pcategory,
-							sort:sort,
-							search:search
-
+					fetch('/filterProduct', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
 						},
-						method:'post',
-						success:(response)=>{
-							if(response.noProducts){
-								Swl.fire({
-									title:'No matching products',
-									confirmButtonText:'OK',
+						body: JSON.stringify({
+							productRange: pr,
+							productCategory: pcategory,
+							sort: sort,
+							search: search,
+						}),
+					})
+						.then((response) => response.json())
+						.then((data) => {
+							if (data.noProducts) {
+								Swal.fire({
+									title: 'No matching products',
+									confirmButtonText: 'OK',
 									confirmButtonColor: '#88c8bc',
-								}).then((result)=>{
-									if(result.isConfirmed){
-										window.location.href ='/home'
+								}).then((result) => {
+									console.log('fail');
+									if (result.isConfirmed) {
+										window.location.href = '/home';
 									}
 								});
-							}else{
-								updateProducts(response.products);
-								
+							} else {
+								updateProducts(data.products);
 							}
-						}
-					})
+						})
+						.catch((error) => {
+							console.error('Error:', error);
+						});
 				})
 			})
 
-			priceButton.forEach(button =>{
-			
-				button.addEventListener('change',async()=>{
-						
+			priceButton.forEach(button => {
+
+				button.addEventListener('change', async () => {
+
 					let price = button.getAttribute('data-range');
 					rangeAddOrRemovable(price)
 					pr = [...productRange]
 					$.ajax({
-						url:'/filterProduct',
-						data:{
-							productRange:pr,
-							productCategory:pcategory,
-							sort:sort,
-							search:search
+						url: '/filterProduct',
+						data: {
+							productRange: pr,
+							productCategory: pcategory,
+							sort: sort,
+							search: search
 						},
-						method:'post',
-						success:(response)=>{
-							if(response.noProducts){
+						method: 'post',
+						success: (response) => {
+							if (response.noProducts) {
 								Swl.fire({
-									title:'No matching product',
-									confirmButtonText:'OK',
-									confirmButtonColor:'#88c8bc',
-								}).then((result)=>{
-									if(result.isConfirmed){
-										window.location.href ='/home'
+									title: 'No matching product',
+									confirmButtonText: 'OK',
+									confirmButtonColor: '#88c8bc',
+								}).then((result) => {
+									if (result.isConfirmed) {
+										window.location.href = '/home'
 									}
 								})
-							}else{
+							} else {
 								updateProducts(response.products);
 							}
 						}
 					})
 				})
 			})
-			selectElement.addEventListener('change',function(){
+
+			searchButton.addEventListener('click', function () {
+				search = searchInput.value;
+				$.ajax({
+					url: '/filterProduct',
+					data: {
+						productRange: pr,
+						productCategory: pcategory,
+						sort: sort,
+						search: search
+					},
+					method: 'post',
+					success: (response) => {
+						if (response.noProducts) {
+							Swal: fire({
+								title: 'No Matching Products',
+								confirmButtonText: 'Ok',
+								confirmButtonColor: '#88c8bc',
+							}).then((result) => {
+								if (result.isConfirmed) {
+									window.location.href = '/productList'
+								}
+							})
+						} else {
+							updateProducts(response.products);
+						}
+					}
+				})
+			})
+			selectElement.addEventListener('change', function () {
 				const selectedIndex = this.selectedIndex;
 				const selectedOption = this.options[selectedIndex]
 				const sortValue = selectedOptions.getAttribute('data-sort');
 				sort = sortValue
-				console.log(sort,'sorting')
+				console.log(sort, 'sorting')
 			})
-	})
-   
 
-	</body >
-</html >
+			{{!-- paginationContainer.addEventListener('click', (event) => {
+				const target = event.target;
+				if (target.classList.contains('pagination-button')) {
+					page = target.getAttribute('data-page');
+					$.ajax({
+						url: '/filterProduct',
+						data: {
+							productRange: pr,
+							productCategory: pcategory,
+							sort: sort,
+							search: search,
+							page: page
+						},
+						method: 'post',
+						success: (response) => {
+							if (response.noProducts) {
+								Swal.fire({
+									title: 'No matching Products',
+									confirmButtonText: 'OK',
+									confirmButtonColor: '#88c8bc',
+								}).then((result) => {
+									if (result.isConfirmed) {
+										window.location.href = 'productList'
+									}
+								});
+							} else {
+								updateProducts(response.product);
+								updatePagination(response.currentPage, response.totalPage, response.pages)
+
+							}
+						}
+					})
+				}
+			}); --}}
+
+			function updateProducts(products) {
+				productsContainer.innerHTML = '';
+				products.forEach(product => {
+					const productHTML =
+						`<div class="col-lg-3 col-sm-6 mt-3">
+						<a href="/productdetails/${product._id} ">
+							    <div class="card" style="border-radius: 1px; border: 1px solid black;">
+								<img src="/product-images/${product.Images[0]}" alt="product-image"
+									style="width: 200px; height: 250px; " class="img-fluid mx-auto d-block" alt="img">
+								<div class="card-body text-center">
+									<h5 class="card-title">${product.Name}</h5>
+									<p class="card-text">₹${product.Price}</p>
+
+								</div>
+							</div>
+						</a>
+					</div>`
+
+					productsContainer.insertAdjacentHTML('beforeend', productHTML);
+
+
+				})
+			}
+
+			{{!-- function updatePagination(currentPage, totalPage, pages) {
+    paginationContainer.innerHTML = ''; // Remove the comma at the end and use a semicolon here
+    let paginationHtml = '';
+    if (currentPage > 1) {
+        paginationHtml += `
+        <li style='margin-right: 10px;'>
+            <a>
+                <button data-page='${currentPage - 1}' class='btn mb-2 btn-secondary pagination-button' id='paginationButton'>Previous</button>
+            </a>
+        </li>
+        `;
+    }
+    pages.forEach(page => {
+        if (page === currentPage) {
+            paginationHtml += `
+            <li style="margin-right: 10px;" class="active">
+                <a href="#">
+                    <button type="button" data-page="${page}" class="btn mb-2 btn-primary pagination-button">${page}</button>
+                </a>
+            </li>
+            `;
+        } else {
+            paginationHtml += `
+            <li style="margin-right: 10px;">
+                <a>
+                    <button type="button" data-page="${page}" class="btn mb-2 btn-secondary pagination-button" id="paginationButton">${page}</button>
+                </a>
+            </li>
+            `;
+        }
+    });
+    if (currentPage < totalPage) {
+        paginationHtml += `
+        <li style="margin-right: 10px;">
+            <a>
+                <button data-page="${currentPage + 1}" class="btn mb-2 btn-secondary pagination-button" id="paginationButton">Next</button>
+            </a>
+        </li>
+        `;
+    }
+    paginationContainer.insertAdjacentHTML('beforeend', paginationHtml); // Correct the typo here
+} --}}
+
+
+		});
+
+
+
+
+	</script>
+
+</body>
+
+</html>

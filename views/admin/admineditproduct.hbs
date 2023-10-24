@@ -51,8 +51,7 @@
 						<div class="col-sm-5 col-md-3">
 			            <form action="#" class="search-wrap">
 			               <div class="form-group">
-			                  <input type="search" class="form-control search" placeholder="Search">
-			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
+
 			               </div>
 			            </form>
 			         </div>
@@ -60,9 +59,12 @@
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
-								<li class="active"><a href="/adminDashbord">Admin Dashboard</a></li>
-								<li><a href="/allCategory">All Category</a></li>
-								<li><a href="/allUsers">All Users</a></li>
+									<li class="active"><a href="/admin">Admin Dashboard</a></li>
+								<li><a href="/admin/allUsers">All Users</a></li>
+								<li><a href="/admin/allCategory">All Category</a></li>
+								<li><a href="/admin/admin-orderList">Orders</a></li>
+								<li><a href="/admin/admin-coupons">Coupons</a></li>
+									<li><a href="/admin/admin-orderList">OrderList</a></li>
 							            
 							
 							</ul>
@@ -79,9 +81,9 @@
     <div class="row">
       <div class="col-md-6">
         <h2 class="text-center">Edit Product</h2>
-        <form action="/admin/edit-product/{{product._id}}" method="POST" enctype="multipart/form-data">
+        <form action="/admin/edit-product/{{product._id}}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
           <label for="Name">Name</label>
-          <input type="text" name="Name" value="{{product.Name}}" class="form-control">
+          <input type="text" name="Name" value="{{product.Name}}" class="form-control" maxlength="30">
 
           <label for="Category">Category</label>
           <input type="text" name="Category" value="{{product.Category}}" class="form-control">
@@ -90,7 +92,7 @@
           <input type="text" name="Price" value="{{product.Price}}" class="form-control">
 
           <label for="Description">Description</label>
-          <input type="text" name="Description" value="{{product.Description}}" class="form-control">
+          <input type="text" name="Description" value="{{product.Description}}" class="form-control" maxlength="20">
           
           <label for="">Stock</label>
           <input type="text" name="Stock" value="{{product.Stock}}" class="form-control">
@@ -99,12 +101,12 @@
           <div id="image-container">
             {{#each product.Images}}
             <div class="image-item">
-              <img src="/product-images/{{this}}" style="width:100px;height:auto" alt="">
+              <img src="/product-images/{{this}}"  style="width:100px;height:auto" alt="" >
               <button type="button" class="btn btn-danger delete-image-button" onclick="deleteImage(this)">Delete</button>
             </div>
             {{/each}}
           </div>
-          <input type="file" name="Image" class="form-control" onchange="viewImage(event)" multiple>
+          <input type="file" name="Images" class="form-control" onchange="viewImage(event)">
 
           <button type="submit" class="btn btn-success mt-4">Submit</button>
         </form>
@@ -114,32 +116,77 @@
 </section>
 
 <script>
+  function validateForm() {
+    const nameInput = document.querySelector('input[name="Name"]');
+    const categoryInput = document.querySelector('input[name="Category"]');
+    const priceInput = document.querySelector('input[name="Price"]');
+    const descriptionInput = document.querySelector('input[name="Description"]');
+    const stockInput = document.querySelector('input[name="Stock"]');
+
+    // Trim and check if any field is empty after trimming
+    if (
+      nameInput.value.trim() === '' ||
+      categoryInput.value.trim() === '' ||
+      priceInput.value.trim() === '' ||
+      descriptionInput.value.trim() === '' ||
+      stockInput.value.trim() === ''
+    ) {
+      alert('Please fill out all fields.');
+      return false; // Prevent form submission
+    }
+
+    // Form is valid, allow submission
+    return true;
+  }
+</script>
+
+<script>
   function viewImage(event) {
     const imageContainer = document.getElementById('image-container');
-    const imageItem = document.createElement('div');
-    imageItem.className = 'image-item';
 
-    const img = document.createElement('img');
-    img.src = URL.createObjectURL(event.target.files[0]);
-    img.style.width = '100px';
-    img.style.height = 'auto';
-    imageItem.appendChild(img);
+    // Check if this is a new image upload or an update of an existing one
+    if (event.target.files) {
+      for (const file of event.target.files) {
+        // Validate the image file
+        if (validateImageFile(file)) {
+          const imageItem = document.createElement('div');
+          imageItem.className = 'image-item';
 
-    const deleteButton = document.createElement('button');
-    deleteButton.type = 'button';
-    deleteButton.className = 'btn btn-danger delete-image-button';
-    deleteButton.textContent = 'Delete';
-    deleteButton.onclick = function() {
-      deleteImage(this);
-    };
-    imageItem.appendChild(deleteButton);
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          img.style.width = '100px';
+          img.style.height = 'auto';
+          imageItem.appendChild(img);
 
-    imageContainer.appendChild(imageItem);
+          const deleteButton = document.createElement('button');
+          deleteButton.type = 'button';
+          deleteButton.className = 'btn btn-danger delete-image-button';
+          deleteButton.textContent = 'Delete';
+          deleteButton.onclick = function () {
+            deleteImage(this);
+          };
+          imageItem.appendChild(deleteButton);
+
+          imageContainer.appendChild(imageItem);
+        } else {
+          alert('Please select a valid image file (JPEG, PNG, or GIF).');
+          event.target.value = ''; // Clear the input field
+        }
+      }
+    }
+  }
+
+  function validateImageFile(file) {
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    return allowedExtensions.includes(fileExtension);
   }
 
   function deleteImage(button) {
-    const imageItem = button.parentElement;
-    const imageContainer = document.getElementById('image-container');
-    imageContainer.removeChild(imageItem);
+    const imageItem = button.parentNode; // Get the parent element containing the image and button
+    imageItem.remove(); // Remove the entire image item from the container
   }
 </script>
+
+
+
