@@ -292,16 +292,20 @@ const fillterProduct = async (req, res) => {
   const productRange = req.body.productRange;
   let sort = req.body.sort
   let serarch = req.body.search;
+  
+  
   let rangeFilter = []
   const filter = { Deleted: false }
+
   if (serarch) {
+    
     const regex = new RegExp('^' + serarch, 'i');
-    filter.name = regex
+    filter.Name = regex
   }
   if (productCategory) {
     filter.Category = { $in: productCategory }
   }
-  console.log(productRange)
+  
   if (productRange) {
     for (let i = 0; i < productRange.length; i++) {
       const el = productRange[i]
@@ -329,7 +333,7 @@ const fillterProduct = async (req, res) => {
   if (rangeFilter.length)
     filter.$or = rangeFilter
 
-  console.log(filter)
+ 
   if (sort) {
     if (sort == 'HL') {
       sort = { Price: -1 }
@@ -344,7 +348,7 @@ const fillterProduct = async (req, res) => {
     sort = { date: -1 }
   }
   const products = await productHelpers.getFilterName(filter, sort);
-  console.log(products)
+  
   const itemsPerPage = 6;
   let currentPage = parseInt(req.body.page);
   if (isNaN(currentPage)) {

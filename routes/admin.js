@@ -15,10 +15,12 @@ const adminReportController = require("../controllers/adminReportController")
 
 
 
-router.get('/',adminController.getAdminLogin) 
+router.get('/',adminController.dashbord )
 
 
 router.post('/admin-login',adminController.verifyAdmin) 
+
+router.get('/productListing',adminController.getProductListing)
 
 
 router.get('/add-product',auth.isLogin,adminController.adminAddProductPage)
@@ -49,8 +51,8 @@ router.post('/addCategory',auth.isLogin,categoryController.createCategory)
 
 // for admin dashbord 
 
-router.get('/adminDashbord',auth.isLogin,adminController.Dashbord)
-router.get('/dashbord',adminController.Daashbord)
+// router.get('/adminDashbord',auth.isLogin,adminController.Dashbord)
+// router.get('/dashbord',adminController.Daashbord)
 //for edit and delete category 
 
 router.get('/editCategory/:categoryId',auth.isLogin, categoryController.getEditCategory);
@@ -109,6 +111,7 @@ router.get('/adminrecovercoupon',auth.isLogin,couponController.adminReverCopon)
 router.get('/totalSaleExcel',adminReportController.totalSaleExcel)
 router.get('/todayRevenueExcel',adminReportController.totalRevenueExcel)
 router.get('/allProductExcel',adminReportController.productListExcel)
+router.get('/allOrderStatusExcel',adminReportController.allOrderStatus)
 router.get('/customDate',adminReportController.customPDF)
  
 module.exports = router;

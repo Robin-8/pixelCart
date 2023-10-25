@@ -211,6 +211,8 @@ const getOrdertotal = async () => {
         
       ])
       console.log(data,'data hererrrrrrrr');
+      return data;
+      
     } catch (error) {
       
     }

@@ -274,29 +274,66 @@ const generateOrderRazorpay = (orderId, total) => {
     })
 }
 
-const findOrderByDate=(startDate,endDate)=>{
+const findOrderByDate = (startDate, endDate) => {
     try {
-      return new Promise ((resolve ,reject)=>{
+      return new Promise((resolve, reject) => {
         connectDB()
-        .then(()=>{
-          Order.find({
-
-            createdOn: {
-              $gte: startDate, 
-              $lte: endDate,
-            },
-          })
-            .populate({ path: "userId" })
-            // .populate({ path: "address", model: "addres" })
-            .populate({ path: "products", model: "Product" })
-            .exec().then((data)=>{
-              resolve(data)
-            })
-        })
-      })
+          .then(() => {
+            Order.aggregate([
+              {
+                $match: {
+                  createdOn: {
+                    $gte: new Date(startDate),
+                    $lte: new Date(endDate),
+                  },
+                },
+              },
+              {
+                $lookup: {
+                  from: 'users',
+                  localField: 'userId',
+                  foreignField: '_id',
+                  as: 'userDetails',
+                },
+              },
+              {
+                $lookup: {
+                  from: 'products',
+                  localField: 'products.item',
+                  foreignField: '_id',
+                  as: 'productDetails',
+                },
+              },
+            ])
+              .exec()
+              .then((data) => {
+                console.log(data[0].productDetails,'data here?????????');
+                resolve(data);
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          });
+      });
     } catch (error) {
-      console.log(error.message)
+      console.log(error);
     }
+  };
+  
+
+      const findOrderDeliverd =()=>{
+        try {
+          return new Promise ((resolve,reject)=>{
+            connectDB()
+            .then(()=>{
+              Order.find({status:"delivered"}).then((data)=>{
+                resolve(data)
+              })
+            })
+          })
+        } catch (error) {
+          console.log(error)
+        }
       }
 
 
@@ -313,5 +350,6 @@ module.exports = {
     cancelOrder,
     getOrder,
     generateOrderRazorpay,
-    findOrderByDate
+    findOrderByDate,
+    findOrderDeliverd
 }

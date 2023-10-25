@@ -337,7 +337,7 @@
 			const searchInput = document.getElementById('searchInput');
 			const searchButton = document.getElementById('searchButton')
 			search = searchInput.value;
-
+            
 			{{!-- const paginationButtons = document.querySelectorAll('.pagination-button');
 			const productsContainer = document.querySelector('.colorlib-product .container .row.row-pb-md');
 			const paginationContainer = document.querySelector('.paginationhome .unlist'); --}}
@@ -417,42 +417,45 @@
 					})
 				})
 			})
-
+			
 			searchButton.addEventListener('click', function () {
 				search = searchInput.value;
 				$.ajax({
-					url: '/filterProduct',
-					data: {
-						productRange: pr,
-						productCategory: pcategory,
-						sort: sort,
-						search: search
-					},
-					method: 'post',
-					success: (response) => {
-						if (response.noProducts) {
-							Swal: fire({
-								title: 'No Matching Products',
-								confirmButtonText: 'Ok',
-								confirmButtonColor: '#88c8bc',
-							}).then((result) => {
-								if (result.isConfirmed) {
-									window.location.href = '/productList'
-								}
-							})
-						} else {
-							updateProducts(response.products);
-						}
-					}
-				})
-			})
-			selectElement.addEventListener('change', function () {
+        url: '/filterProduct',
+        data: {
+            productRange: pr,
+            productCategory: pcategory,
+            sort: sort,
+            search: search
+        },
+        method: 'post',
+        success: (response) => {
+			console.log(response,'response')
+            if (response.noProducts) {
+                Swal.fire({
+                    title: 'No Matching Products',
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#88c8bc',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/productList';
+                    }
+                });
+            } else {
+				
+                updateProducts(response.products);
+				
+            }
+        }
+    });
+});
+			{{!-- selectElement.addEventListener('change', function () {
 				const selectedIndex = this.selectedIndex;
 				const selectedOption = this.options[selectedIndex]
 				const sortValue = selectedOptions.getAttribute('data-sort');
 				sort = sortValue
 				console.log(sort, 'sorting')
-			})
+			}) --}}
 
 			{{!-- paginationContainer.addEventListener('click', (event) => {
 				const target = event.target;

@@ -63,34 +63,45 @@
 						<div class="col-sm-12 text-left menu-1">
 							<ul>
 								<li class="active"><a href="/admin">Dashboard</a></li>
+								<li class="active"><a href="/admin/productListing"> Product</a></li>
 								<li><a href="/admin/allUsers">All Users</a></li>
 								<li><a href="/admin/allCategory">All Category</a></li>
 								<li><a href="/admin/admin-orderList">Orders</a></li>
 								<li><a href="/admin/admin-coupons">Coupons</a></li>
 								<li><a href="/admin/admin-orderList">OrderList</a></li>
+								<li><a href="/admin/admin-banners">Banner</a></li>
+								
+								</li>
 
 
+
+								
 								<a class="nav-link" href="/admin/totalSaleExcel">Total Sale</a>
-                <a class="nav-link" href="/admin/todayRevenueExcel">Today Revenue</a>
-                <a class="nav-link" href="/admin/allProductExcel">All Product</a>
-                <a class="nav-link" href="/admin/allOrderStatusExcel">All OrderStatus</a>
-                <a class="nav-link"  href="/admin/orderDetailPDF">Order View</a>
+								<a class="nav-link" href="/admin/todayRevenueExcel">Today Revenue</a>
+								<a class="nav-link" href="/admin/allProductExcel">All Product</a>
+								<a class="nav-link" href="/admin/allOrderStatusExcel">All OrderStatus</a>
+								<a class="nav-link" href="/admin/orderDetailPDF">Order View</a>
 
-									
+
 								</select>
-                                 <label for="start">Start Date:</label>
-                  <input type="date" id="start" name="start" required>
-                
-                  <label for="end">End Date:</label>
-                  <input type="date" id="end" name="end" required>
-                
-                  <a style="color: aliceblue;" class="nav-link" href="/admin/customDate">
-                  <button id="customDateLink" class="Btn">
-                    <svg class="svgIcon" viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path></svg>
-                    <span class="icon2"></span>
-                    <span class="tooltip">Download</span>
-                 </button>
-                </a>
+								<label for="start">Start Date:</label>
+								<input type="date" id="start" name="start" required>
+
+								<label for="end">End Date:</label>
+								<input type="date" id="end" name="end" required>
+
+								<a style="color: aliceblue;" class="nav-link" href="/admin/customDate">
+									<button id="customDateLink" class="Btn">
+										<svg class="svgIcon" viewBox="0 0 384 512" height="1em"
+											xmlns="http://www.w3.org/2000/svg">
+											<path
+												d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z">
+											</path>
+										</svg>
+										<span class="icon2"></span>
+										<span class="tooltip">Download</span>
+									</button>
+								</a>
 
 
 
@@ -102,23 +113,23 @@
 			</div>
 		</nav>
 
-		 <script>
-                  const customDateLink = document.getElementById('customDateLink');
-                  const startDateInput = document.getElementById('start');
-                  const endDateInput = document.getElementById('end');
-                
-                  customDateLink.addEventListener('click', (event) => {
-                    event.preventDefault(); // Prevent the default link behavior
-                
-                    const startDate = startDateInput.value;
-                    const endDate = endDateInput.value;
-                
-                    setTimeout(() => {
-                      const url = `/admin/customDate?start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate)}`;
-                      window.open(url, '_blank');
-                    }, 1000); 
-                  });
-                </script>
+		<script>
+			const customDateLink = document.getElementById('customDateLink');
+			const startDateInput = document.getElementById('start');
+			const endDateInput = document.getElementById('end');
+
+			customDateLink.addEventListener('click', (event) => {
+				event.preventDefault(); // Prevent the default link behavior
+
+				const startDate = startDateInput.value;
+				const endDate = endDateInput.value;
+
+				setTimeout(() => {
+					const url = `/admin/customDate?start=${encodeURIComponent(startDate)}&end=${encodeURIComponent(endDate)}`;
+					window.open(url, '_blank');
+				}, 1000);
+			});
+		</script>
 
 		<div class="row" style="margin-top: 3rem; padding-left: 4rem;">
 			<div class="col-lg-3">

@@ -10,10 +10,54 @@ const Product = require('../models/product');
 const Category = require("../models/categoryModel")
 const async = require('hbs/lib/async');
 
+const dashbord = async (req,res)=>{
+  try {
+    if(req.session.admin){
+      const orderData = await dashbordHelper.getOrdertotal()
+    const orders = orderData[0]
+
+    const salesData = await dashbordHelper.salesData()
+
+    const salesCount = await dashbordHelper.salesCount()
+    const onlineCount = await dashbordHelper.onlineCount()
+    const onlinePay = onlineCount[0]
+    const codCount = await dashbordHelper.codCount()
+    const codPay = codCount[0]
+    const categorySale = await dashbordHelper.totolCatgorySale()
+    
+
+
+    const arr = [onlinePay.count, codPay.count];
+    const paymentBar = JSON.stringify(arr)
+    console.log(paymentBar);
+    const codCountJSON = JSON.stringify(codCount)
+    const onlineCountJSON = JSON.stringify(codCount)
+   
+    
+    const monthlySalesArray = new Array(12).fill(0);
+
+    salesCount.forEach((data) => {
+      const date = new Date(data._id);
+      const month = date.getMonth();
+      monthlySalesArray[month] += data.orderCount;
+    });
+
+    const monthlySalesArrayJSON = JSON.stringify(monthlySalesArray);
+    const productsCount = await dashbordHelper.productsCount()
+    console.log(monthlySalesArrayJSON);
+    res.render('admin/adminDashbord', { paymentBar, orders, salesData, salesCount, productsCount, monthlySalesArrayJSON, codCountJSON, onlineCountJSON })
+    }else{
+      res.render('./admin/admin-login')
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 
-const getAdminLogin = async (req, res) => {
+const getProductListing = async (req, res) => {
   try {
     if (req.session.admin) {
       const products = await productHelpers.getAllproducts();
@@ -276,54 +320,7 @@ const getAllUsers = async (req, res) => {
   }
 
 }
-const Dashbord = async (req, res) => {
-  try {
-    res.render('admin/adminPanel')
-  } catch (error) {
-    console.log(error.message);
-  }
-}
 
-const Daashbord = async (req, res) => {
-  try {
-
-    const orderData = await dashbordHelper.getOrdertotal()
-    const orders = orderData[0]
-
-    const salesData = await dashbordHelper.salesData()
-
-    const salesCount = await dashbordHelper.salesCount()
-    const onlineCount = await dashbordHelper.onlineCount()
-    const onlinePay = onlineCount[0]
-    const codCount = await dashbordHelper.codCount()
-    const codPay = codCount[0]
-    const categorySale = await dashbordHelper.totolCatgorySale()
-    console.log(categorySale,'hereeee');
-
-
-    const arr = [onlinePay.count, codPay.count];
-    const paymentBar = JSON.stringify(arr)
-    console.log(paymentBar);
-    const codCountJSON = JSON.stringify(codCount)
-    const onlineCountJSON = JSON.stringify(codCount)
-   
-    
-    const monthlySalesArray = new Array(12).fill(0);
-
-    salesCount.forEach((data) => {
-      const date = new Date(data._id);
-      const month = date.getMonth();
-      monthlySalesArray[month] += data.orderCount;
-    });
-
-    const monthlySalesArrayJSON = JSON.stringify(monthlySalesArray);
-    const productsCount = await dashbordHelper.productsCount()
-    console.log(monthlySalesArrayJSON);
-    res.render('admin/adminDashbord', { paymentBar, orders, salesData, salesCount, productsCount, monthlySalesArrayJSON, codCountJSON, onlineCountJSON })
-  } catch (error) {
-    console.log(error, 'not find dashbord');
-  }
-}
 
 const addOffer = async (req, res) => {
   try {
@@ -414,7 +411,8 @@ const applyOfferToCategory = async (req, res) => {
 
 
 module.exports = {
-  getAdminLogin,
+  dashbord,
+  getProductListing,
   verifyAdmin,
   logOut,
   adminGetProduct,
@@ -426,11 +424,9 @@ module.exports = {
   adminAddProductPage,
   adminAddProduct,
   getAllUsers,
-  Dashbord,
   adminRecoverDeletePrdt,
   addOffer,
   createOffer,
-  Daashbord,
   addOfferCategory ,
   applyOfferToCategory
 }

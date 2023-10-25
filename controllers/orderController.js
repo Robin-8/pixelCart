@@ -267,7 +267,7 @@ const cancelOrder = async (req, res) => {
   const adminOrderDtails = async (req, res) => {
     try {
        // Fetch orders in descending order of createdOn
-      const orders = await Order.find({}).sort({ createdOn: -1 });
+      const orders = await Order.find({}).sort({ createdOn: -1 }).populate('products.item');
 
         const products = await Product.find();
         const itemsPerPage = 5;
@@ -278,7 +278,7 @@ const cancelOrder = async (req, res) => {
         const pages = Array.from({ length: totalpages }, (_, i) => i + 1); // Create an array of page numbers
         const currentproduct = orders.slice(startIndex, endIndex);
         
-        console.log(orders,"ods");
+        console.log(orders[0].products,"ods");
       
         res.render('admin/adminOrderDetails',{ orders:currentproduct,pages,currentpage,totalpages,products });
     } catch (error) {

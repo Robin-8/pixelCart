@@ -1,8 +1,142 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
+
 <head>
-    <title>Create Product Offer</title>
+	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
+
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/css/icomoon.css">
+	<!-- Ion Icon Fonts-->
+	<link rel="stylesheet" href="/css/ionicons.min.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="/css/magnific-popup.css">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="/css/flexslider.css">
+
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
+
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="/css/style.css">
+
+	{{!-- <style>
+        /* Style for the status dropdown */
+        .status-dropdown {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        .status-dropdown ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .status-dropdown ul li {
+            margin-bottom: 5px;
+        }
+
+        /* Style for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Add more styles as needed */
+    </style>      --}}
+   <style>
+        form {
+    text-align: left;
+    margin-left: 120px; /* You can adjust the margin as needed */
+}
+
+label, input {
+    display: block; /* This makes each label and input element appear on a new line */
+}
+h1{
+    text-align: :left;
+    margin-left :120px;
+}
+.light-green-button{
+    background-color: lightgreen;
+    color: black;
+    font-size: medium;
+}
+
+
+    </style>
 </head>
+
+
+<body>
+
+	<!-- <div class="colorlib-loader"></div> -->
+
+	<div id="page">
+		<nav class="colorlib-nav" role="navigation">
+			<div class="top-menu">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-7 col-md-9">
+							<div id="colorlib-logo"><a href="index.html">Admin Pannel</a></div>
+						</div>
+						<div class="col-sm-5 col-md-3">
+							<form action="#" class="search-wrap">
+
+							</form>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 text-left menu-1">
+							<ul>
+								<li class="active"><a href="/admin">Dashboard</a></li>
+								<li class="active"><a href="/admin/productListing"> Product</a></li>
+								<li><a href="/admin/allUsers">All Users</a></li>
+								<li><a href="/admin/allCategory">All Category</a></li>
+								<li><a href="/admin/admin-orderList">Orders</a></li>
+								<li><a href="/admin/admin-coupons">Coupons</a></li>
+								<li><a href="/admin/admin-orderList">OrderList</a></li>
+								<li><a href="/admin/admin-banners">Banner</a></li>
+
+
+
+							</ul>
+
+						</div>
+					</div>
+				</div>
+			</div>
 <body>
     <h1>Create Product Offer</h1>
     <form action="/admin/create-offer" method="post">
@@ -10,7 +144,7 @@
         <label for="discountPercentage">Discount Percentage:</label>
         <input type="number" id="discountPercentage" name="discountPercentage" required><br><br>
          <input  type="hidden" name="product" value="{{product._id}}">
-        <input type="submit" value="Create Offer">
+        <input type="submit" value="Create Offer" class="light-green-button">
     </form>
 </body>
 </html>
