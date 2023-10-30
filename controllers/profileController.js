@@ -12,7 +12,7 @@ const addAddress = (req,res)=>{
 const addNewAddress = async(req,res)=>{
     const userId = req.session.user._id
     const data = req.body
-    console.log(req.body,'hai body is here');
+ 
 
     const status = await profileHelper.addAddress(userId,data)
     if(status){
@@ -36,7 +36,7 @@ const manageAddress = async(req,res)=>{
     try {
         const profile = await profileHelper.getProfile(req.session.user._id)
         const address = profile.Address
-        console.log(profile.Address.length,'chkkkkk addresssss');
+    
     
         if(!profile.Address.length==0){
             res.render('user/manageAddress',{profile,address,condition:true})
@@ -51,7 +51,7 @@ const manageAddress = async(req,res)=>{
 const editAddress = async(req,res)=>{
     const addressId = req.query.id
     const userId = req.session.user._id
-    // console.log(addressId,'i am your address',userId,'i am user id');
+ 
 
     const address = await profileHelper.fetchAddress(userId,addressId)
     console.log(address,' i am the address');
@@ -61,7 +61,7 @@ const editAddress = async(req,res)=>{
 const updateAddress = async (req, res) => {
     const addressId = req.body.id;
     const userId = req.session.user._id;
-    // console.log(req.body.id,'i am uour id',userId,' iam usir');
+   
 
     const updatedAddress = {
        
@@ -74,7 +74,7 @@ const updateAddress = async (req, res) => {
         email: req.body.email,
         mobile: req.body.mobile
     };
-    // console.log(req.body,'reqbody');
+ 
 
     const updated = await profileHelper.updateAddress(userId, addressId, updatedAddress);
 
@@ -97,24 +97,7 @@ const deleteAddress = async(req,res)=>{
         res.redirect('/home')
     }
 }
-// const getUserProfile = async(req,res)=>{
-//     try {
-//         const user = (req.session.user)
-//         console.log(req.session.user,'i am here');
-    
-//         const userCart = await Cart.findOne({user:req.session.user._id})
-//         console.log(userCart,"here is userCart");
-    
-//          if(userCart){
-//          const cartCount = await cartHelper.getCartCount(req.session.user._id)
-//          console.log(cartCount,'cartCount is here');
-//           res.render('userProfile',{cartCount,user})
-//          }
-//     } catch (error) {
-//         console.log(error);
-//     }
-   
-// }
+
 
 const getUserProfilePage = async(req,res)=>{
        try {
@@ -139,7 +122,7 @@ const changePrimaryAddress = async(req,res)=>{
 const addresscheckout = async(req,res)=>{
     const userId = req.session.user._id
     const data = req.body
-    // console.log(req.body,'hai body is here');
+  
 
     const status = await profileHelper.addAddress(userId,data)
     if(status){
@@ -158,7 +141,6 @@ module.exports ={
     updateAddress,
     deleteAddress,
     addresscheckout,
-   // getUserProfile,
     changePrimaryAddress,
     getUserProfilePage
 }

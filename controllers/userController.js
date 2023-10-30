@@ -8,7 +8,7 @@ const categoryController = require('../controllers/categoryController')
 const bannerHelper = require("../helpers/bannerHelper")
 
 
-// twilio otp
+
 const accountSid = "AC270df992da52b5449497119dc18e587e";
 const authToken = "524920901fca86b6b704297c2c78c0a5";
 const verifySid = "VAfd550d640b6494827f4e6879f08c66f1";
@@ -21,7 +21,7 @@ const landingPage = async (req, res) => {
       return;
     }
 
-    // Fetch all products using await
+  
     const products = await productHelpers.getAllproducts();
 
     res.render('user/LandingPage', { products });
@@ -32,11 +32,11 @@ const landingPage = async (req, res) => {
 };
 
 
-// to send verification code
+
 const verify = async (req, res) => {
   try {
     const mobileNumber = req.body.mobileNumber
-    console.log(mobileNumber);
+
     client.verify.v2.services(verifySid)
       .verifications.create({ to: mobileNumber, channel: 'whatsapp' })
       .then((verification) => {
@@ -51,12 +51,12 @@ const verify = async (req, res) => {
     console.log(error.message);
   }
 };
-// to check the received otp
+
 const verifys = async (req, res) => {
   try {
     const mobile = req.body.mobileNumber
     const otpCode = req.body.otp
-    console.log(otpCode, "otp", mobile, "mobile")
+
     client.verify
       .services(verifySid)
       .verificationChecks.create({ to: mobile, code: otpCode })
@@ -142,7 +142,7 @@ const home = async (req, res) => {
       return;
     }
 
-    // Fetch all products
+
     const products = await productHelpers.getAllproducts();
     const banner = await bannerHelper.userGetBanner();
    
@@ -163,22 +163,43 @@ const productListing = async (req, res) => {
     const categories = await Category.find();
     const categoryNames = categories.map(category => category.name);
 
-
     if (!req.session.user) {
       res.redirect('/login');
       return;
     }
-    // Fetch all products
-    productHelpers.getAllProductList((products) => {
-      
 
-      res.render('user/productList', { products, name, categories });
+  
+    productHelpers.getAllProductList((products) => {
+      const itemsPerPage = 8;
+      let currentPage = parseInt(req.query.page);
+      if (isNaN(currentPage)) {
+        currentPage = 1;
+      }
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const paginatedProducts = products.slice(startIndex, endIndex);
+      const totalPages = Math.ceil(products.length / itemsPerPage);
+      const pages = [];
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+
+      res.render('user/productList', {
+        products: paginatedProducts, 
+        name,
+        categories,
+        paginatedProducts,
+        currentPage,
+        totalPages,
+        pages,
+      });
     });
   } catch (error) {
     console.log('Error in landingPage:', error.message);
     res.render('user/home', { products: [] });
   }
 };
+
 const getProductDetails = async (req, res) => {
   try {
     const id = req.params.id
@@ -199,15 +220,15 @@ const forgetPassword = (req, res) => {
 
 const resetPasswordOTP = async (req, res) => {
   try {
-    console.log(req.body);
-    const mobileNumber = req.body.mobileNumber; // Get the mobile number from the form input
+ 
+    const mobileNumber = req.body.mobileNumber; 
 
-    // Generate and send OTP
+  
     client.verify.v2.services(verifySid)
-      .verifications.create({ to: mobileNumber, channel: 'whatsapp' }) // You can use SMS for password reset
+      .verifications.create({ to: mobileNumber, channel: 'whatsapp' }) 
       .then((verification) => {
         console.log(verification.status);
-        res.render('verify_otp', { mobileNumber }); // Redirect to OTP verification page
+        res.render('verify_otp', { mobileNumber }); 
       })
       .catch((error) => {
         console.log(error);
@@ -223,13 +244,13 @@ const verifyResetPasswordOTP = async (req, res) => {
     const mobile = req.body.mobileNumber;
     const otpCode = req.body.otp;
 
-    // Verify the OTP
+
     client.verify
       .services(verifySid)
       .verificationChecks.create({ to: mobile, code: otpCode })
       .then((verificationCheck) => {
         if (verificationCheck.status === 'approved') {
-          res.render('resetPassword', { mobile }); // Redirect to the password reset form
+          res.render('resetPassword', { mobile }); 
         } else {
           res.send('OTP verification failed');
         }
@@ -248,7 +269,7 @@ const resetPassword = async (req, res) => {
     const mobile = req.body.mobileNumber;
     const newPassword = req.body.newPassword;
 
-    // Implement your password reset logic here, e.g., update the password in your database
+    
     bcrypt.hash(newPassword, 10, (err, hash) => {
       if (err) {
         console.log('error passing new password', err);
@@ -264,7 +285,7 @@ const resetPassword = async (req, res) => {
       }
     })
 
-    res.send('Password reset successful'); // You can also redirect to a login page
+    res.send('Password reset successful'); 
   } catch (error) {
     console.log(error.message);
     res.send('Error resetting password');
@@ -348,8 +369,9 @@ const fillterProduct = async (req, res) => {
     sort = { date: -1 }
   }
   const products = await productHelpers.getFilterName(filter, sort);
+ 
   
-  const itemsPerPage = 6;
+  const itemsPerPage = 8;
   let currentPage = parseInt(req.body.page);
   if (isNaN(currentPage)) {
     currentPage = 1;

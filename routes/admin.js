@@ -113,6 +113,7 @@ router.get('/todayRevenueExcel',adminReportController.totalRevenueExcel)
 router.get('/allProductExcel',adminReportController.productListExcel)
 router.get('/allOrderStatusExcel',adminReportController.allOrderStatus)
 router.get('/customDate',adminReportController.customPDF)
+router.get("/orderDetailsPDF",adminReportController.orderDetailsPDF)
  
 module.exports = router;
 

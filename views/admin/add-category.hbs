@@ -129,7 +129,8 @@
 
                     <form method="POST" action="/admin/addCategory">
                         <label for="name">Category Name:</label>
-                        <input type="text" name="name" id="name" required>
+                        <input type="text" name="name" id="category-name" required>
+                        <div id="nameError"  style="color: red;" ></div>
 
                         <label for="description">Category Description:</label>
                         <textarea name="description" id="description" required></textarea>
@@ -149,3 +150,23 @@
 
 
     </section>
+     <script>
+        function validateForm() {
+            // Reset error messages
+            document.getElementById("nameError").textContent = "";
+
+            // Get the input values
+            const name = document.getElementById("name").value.trim();
+
+            // Regular expression pattern for valid category names (letters and spaces)
+            const namePattern = /^[A-Za-z\s]+$/;
+
+            // Check if the name is empty or contains only spaces
+            if (name === "" || !namePattern.test(name)) {
+                document.getElementById("nameError").textContent = "Category name is required and should contain only letters and spaces.";
+                return false;
+            }
+
+            return true; // Form submission allowed if all validations pass
+        }
+    </script>

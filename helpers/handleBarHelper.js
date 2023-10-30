@@ -3,28 +3,28 @@ module.exports = {
         if (Array.isArray(array) && array.length > 0) {
           return array[0];
         }
-        // Handle the case where the array is empty or not an array
+       
         return array;
     },
     selectSecond: function(array) {
         if (Array.isArray(array) && array.length > 0) {
           return array[1];
         }
-        // Handle the case where the array is empty or not an array
+      
         return array;
     },
     selectThird: function(array) {
         if (Array.isArray(array) && array.length > 0) {
           return array[2];
         }
-        // Handle the case where the array is empty or not an array
+      
         return array;
     },
     selectFourth: function(array) {
         if (Array.isArray(array) && array.length > 0) {
           return array[3];
         }
-        // Handle the case where the array is empty or not an array
+       
         return array;
     },
     formatPrice: function (price) {

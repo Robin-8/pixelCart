@@ -1,5 +1,5 @@
 const isLogin = async (req, res, next) => {
-    try {    console.log(req.session,"haii");
+    try {    
         if (req.session && req.session.user._id) {
             
             next(); // If the user is logged in, proceed to the next middleware or route handler

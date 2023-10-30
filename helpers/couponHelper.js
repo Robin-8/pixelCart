@@ -83,7 +83,7 @@ const softRecoverCoupon = async (couponId) => {
 
 const updateCoupon = async (couponId, couponDetails) => {
     try {
-        //   
+          
         const updatedCoupon = await Coupon.findOneAndUpdate(
             { _id: couponId },
             couponDetails,
@@ -106,7 +106,7 @@ const getCouponCode = async (couponCode) => {
         
         await connectDB()
         const coupons = await Coupon.findOne({ couponCode: couponCode })
-        console.log(coupons,'coooo1234');
+  
         return coupons
     } catch (error) {
         console.log(error, 'error finding copon code');

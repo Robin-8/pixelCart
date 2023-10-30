@@ -7,21 +7,9 @@ const adminBanners = async(req,res)=>{
     try {
          const banners = await bannerHelper.adminGetAllBanner();
          
-        // const itemsPerPage = 3;
-        // const currentPage = parseInt(req.query.page)|| 1;
-        // const startIndex = (currentPage -1)* itemsPerPage;
-        // const endIndex = startIndex + itemsPerPage;
-        // const paginatedBanners = banners.slice(startIndex,endIndex);
-        // const totalPages = Math.ceil(banners.length / itemsPerPage);
-        // const pages =[];
-        // for(let i = 1;i<=totalPages;i++){
-        //     pages.push(i);
-        // }
+        
         res.render("admin/adminBanners",{
-            // banners:paginatedBanners,
-            // currentpage,
-            // totalPages,
-            // pages,
+          
             banners,
             admin:true,
             title:"Admin-Banners"
@@ -43,7 +31,7 @@ const adminAddBanner = async (req, res) => {
     try {
       req.body.bannerImage = req.file.filename
       const banner = await bannerHelper.addBanner(req.body , req.file);
-      console.log(banner, 'banner is here');
+     
       
       if (req.files && req.files["bannerImage"]) {
         const images = req.files["bannerImage"];
@@ -73,7 +61,7 @@ const adminAddBanner = async (req, res) => {
         
         try {
             const bannerId = req.query.bannerId;
-            console.log(bannerId,'bannerid here===');
+       
             
             
             const banner = await bannerHelper.getBannerById({_id: bannerId});
@@ -99,7 +87,7 @@ const adminAddBanner = async (req, res) => {
     try {
       req.body.bannerImage = req.file.filename
       await bannerHelper.updateBanner(req.params.id, req.body);
-            console.log(req.body,'print this=====');
+     
       if (req.files && req.files["bannerImage"]) {
         const image = req.files["bannerImage"];
   

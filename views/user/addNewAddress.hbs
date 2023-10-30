@@ -100,7 +100,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-8">
-						<form action="/addNewAddress" method="post" class="colorlib-form">
+						<form action="/addNewAddress" method="post" class="colorlib-form" onsubmit=" return validateForm()">
 							<h2>Address</h2>
 		              	<div class="row">
 			               <div class="col-md-12">
@@ -292,7 +292,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="/js/main.js"></script>
 
 	<script>
-    
     function trimInput(input) {
         return input.trim();
     }
@@ -308,7 +307,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         var email = document.getElementById("email").value;
         var mobile = document.getElementById("mobile").value;
 
-        
+        // Trim input values
         fname = trimInput(fname);
         lname = trimInput(lname);
         address1 = trimInput(address1);
@@ -317,7 +316,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         email = trimInput(email);
         mobile = trimInput(mobile);
 
-        
+        // Check if any required field is empty
         if (
             fname.trim() === "" ||
             lname.trim() === "" ||
@@ -328,26 +327,23 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             mobile.trim() === ""
         ) {
             alert("Please fill in all required fields.");
-            return false; 
+            return false;
         }
 
-        
+        // Mobile number validation (at least 6 different digits)
         if (!isValidMobileNumber(mobile)) {
-            alert("Please enter a valid mobile number.");
-            return false; 
+            alert("Please enter a valid mobile number with at least 6 different digits.");
+            return false;
         }
 
-       
-
-        return true; 
+        return true; // Form is valid
     }
 
-    // Function to validate a mobile number
+    // Function to validate a mobile number (at least 6 different digits)
     function isValidMobileNumber(number) {
-       
         if (/^\d+$/.test(number)) {
-            
-            return number.length === 10;
+            var uniqueDigits = new Set(number); // Use a Set to track unique digits
+            return uniqueDigits.size >= 6; // Ensure at least 6 unique digits
         }
         return false;
     }
@@ -355,6 +351,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     // Attach the validateForm function to the form's onsubmit event
     document.querySelector(".colorlib-form").onsubmit = validateForm;
 </script>
+
 
 
 

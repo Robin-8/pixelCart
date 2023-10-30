@@ -111,6 +111,37 @@ const totalRevenueExcel = async (req, res) => {
     console.log(error);
   }
 }
+const orderDetailsPDF = async (req,res)=>{
+  try {
+    const startDate = req.query.start;
+    const endDate = req.query.end;
+    const allOrder = await orderHelper.findOrderByDate(startDate, endDate)
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage()
+
+    let netTotalAmount = 0
+    allOrder.forEach(it=>{
+      netTotalAmount += it.totalPrice
+    })
+
+    const content = generatePdfTemplate({
+      orders: allOrder,
+      netTotalAmount,
+      netFinalAmount: netTotalAmount,
+      netDiscount:0,
+    })
+
+    await page.setContent(content)
+    const pdfBuffer = await page.pdf({ format: 'A4' })
+
+    res.setHeader('Content-Disposition', 'attachment; filename=report.pdf');
+    res.setHeader('Content-Type', 'application/pdf');
+    res.send(pdfBuffer);
+  } catch (error) {
+    console.log(error,'error here');
+  }
+}
+
 
 const productListExcel = async (req, res) => {
 
@@ -235,5 +266,6 @@ module.exports = {
   totalRevenueExcel,
   productListExcel,
   customPDF,
-  allOrderStatus
+  allOrderStatus,
+  orderDetailsPDF
 }

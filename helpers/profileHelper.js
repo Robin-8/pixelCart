@@ -24,7 +24,7 @@ const getProfile = async(userId)=>{
 
 
 const addAddress = async (userId,details)=>{
-    console.log(userId,'userid here',details,'here deatails');
+
     const newAddress={
         _id: new mongoose.Types.ObjectId(),
          fname:details.fname,
@@ -38,7 +38,7 @@ const addAddress = async (userId,details)=>{
 
     };
   
-   console.log(newAddress,'address here');
+
     try {
         const user = await User.findById(userId)
         if(!user){
@@ -73,21 +73,21 @@ const fetchAddress = async (userId, addressId,) => {
             .then(() => {
                 User.findById(userId)
                     .then((user) => {
-                        console.log(user, 'user here');
+  
                         const addressIndex = user.Address.findIndex(addr => String(addr._id) === addressId);
                         if (addressIndex !== -1) {
                             const address = user.Address[addressIndex];
                             resolve(address);
                         } else {
-                            reject(new Error("Address not found")); // Provide an error object or a descriptive error message
+                            reject(new Error("Address not found")); 
                         }
                     })
                     .catch((error) => {
-                        reject(error); // Handle any errors that occurred during the User.findById operation
+                        reject(error); 
                     });
             })
             .catch((error) => {
-                reject(error); // Handle any errors that occurred during the connectDB operation
+                reject(error);
             });
     });
 };
@@ -137,7 +137,7 @@ const changePrimaryAddress = async(userId,addressId)=>{
           console.log("user not found");
           return
         }
-      // Update all addresses and set 'primary' to false
+     
       user.Address.forEach(address => {
         if (address._id.toString() !== addressId) {
           address.primary = false;
@@ -146,7 +146,7 @@ const changePrimaryAddress = async(userId,addressId)=>{
         }
       });
       const updateUser = await user.save()
-      console.log(updateUser,'updateUser here');
+  
     } catch (error) {
         console.log(error,'updating user');
     }
@@ -172,26 +172,7 @@ const fetchPrimaryAddress = async (userId) => {
   };
   
 
-// const updatePassword = async (userPassword,email)=>{
 
-//     const hashPassword = await bcrypt.hash(userPassword,10)
-
-//     return new Promise((resolve,reject)=>{
-//         User.findOne({Email:email}).then(async(user)=>{
-//             if(user){
-//                 user.password = hashPassword
-//                 await user.save()
-//                 console.log("password updated successfully");
-//                 resolve(true)
-//             }else{
-//                 console.log('user not found');
-//                 reject(false)
-//             }
-//         }).catch((error)=>{
-//             console.log("error passing password",error);
-//         })
-//     })
-// }
 
 
 
@@ -203,6 +184,6 @@ module.exports = {
  deleteAddress,
  changePrimaryAddress,
  fetchPrimaryAddress,
-//  updatePassword
+
 }
 

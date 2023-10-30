@@ -10,10 +10,10 @@ const cartCount = ((userId)=>{
         
         const cartCount =0 
         if(userCart){
-            console.log(userCart,'here is user cart');
+          
            const cartCount = await cartHelper.getCartCount(userId)
 
-           console.log(cartCount,'here is cartcount');
+       
         }
         resolve(cartCount)
 

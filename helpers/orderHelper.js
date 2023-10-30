@@ -8,8 +8,8 @@ const { response } = require('express')
 const { error } = require('console')
 const { rejects } = require('assert')
 const Order = require('../models/orderModel')
-const Razorpay=require('razorpay')
-var instance = new Razorpay({ key_id:"rzp_test_pGz4qvobcKcY0w", key_secret: "pH1BfIUA8rp2D33YqG0OOYQJ" })
+const Razorpay = require('razorpay')
+var instance = new Razorpay({ key_id: "rzp_test_pGz4qvobcKcY0w", key_secret: "pH1BfIUA8rp2D33YqG0OOYQJ" })
 
 const getAddress = async (userId) => {
     return new Promise((resolve, reject) => {
@@ -26,7 +26,7 @@ const getAddress = async (userId) => {
     })
 }
 
-//const placeOrder = async (paymentMethod,data, products, total, user_Id, userName,amountPaid) => {
+
 const placeOrder = async (obj) => {
     const { paymentMethod, user_Id,
         delivaryAddress, amountPaid, products } = obj
@@ -38,13 +38,13 @@ const placeOrder = async (obj) => {
         const status = paymentMethod === 'COD' ? 'places' : 'Pending'
 
         const productsWithQuantity = products.map(product => {
-            
+
             return {
                 product: product.item,
                 quantity: product.quantity,
             };
         });
-        
+
         const orderObj = {
 
             delivaryDetails: {
@@ -109,7 +109,7 @@ const allOrders = async () => {
 
 
 const getOrderDetails = async (orderId) => {
-    console.log('chkkkk getOrderDetails hlprrrrrrrr');
+  
     try {
         const orders = await Order.findById(orderId)
             .populate('products.product')
@@ -117,7 +117,7 @@ const getOrderDetails = async (orderId) => {
             .exec();
 
         if (!orders) {
-            throw new Error('Order not found'); // Handle the case when the order is not found
+            throw new Error('Order not found'); 
         }
 
         return orders;
@@ -136,7 +136,7 @@ const getOrderCount = async (userId) => {
                 Order.find({ userId: userId }).then((order) => {
                     const orderCount = order.length
                     resolve(orderCount)
-                    console.log(orderCount, 'show the order count');
+                   
                 }).catch((err) => {
                     resolve(err, 'order not found')
                 })
@@ -145,14 +145,14 @@ const getOrderCount = async (userId) => {
 }
 const getOrders = async (userId) => {
     return new Promise((resolve, reject) => {
-        
+
         connectDB()
             .then(async () => {
                 const orders = await Order.find({ userId: userId })
-                    .populate('products.product') // Populate the 'product' field within the 'products' array
+                    .populate('products.product') 
                     .exec()
                     .then((data) => {
-                        
+
                         resolve(data)
                     }).catch((error) => {
                         console.log(error);
@@ -177,21 +177,20 @@ const updateDeliveryStatus = async (details) => {
 
 }
 const verifyPayment = async (details) => {
-    console.log(details, 'checking details');
-    console.log("verifying payment...");
+
 
     return new Promise(async (resolve, reject) => {
         if (details.payment.method === 'COD') {
-            // Handle COD payment here
+        
             console.log("Cash on Delivery payment accepted.");
             resolve();
         } else {
-            // For other payment methods, perform your existing verification logic
+           
             const crypto = require('crypto');
             let hmac = await crypto.createHmac('sha256', 'pH1BfIUA8rp2D33YqG0OOYQJ');
             hmac.update(details.payment.razorpay_order_id + '|' + details.payment.razorpay_payment_id);
             hmac = hmac.digest('hex');
-            console.log(hmac, 'checking hmac');
+        
 
             if (hmac === details.payment.razorpay_signature) {
                 console.log("Payment verified.");
@@ -207,9 +206,9 @@ const changePaymentStatus = async((userId) => {
     return new Promise((resolve, reject) => {
         connectDB()
             .then(() => {
-                Order.findByIdAndUpdate(userId,{$set: { status: 'placed' }})
+                Order.findByIdAndUpdate(userId, { $set: { status: 'placed' } })
                     .then(() => {
-                        console.log("status is changed");
+                      
                         resolve()
                     }).catch((error) => {
                         reject(error)
@@ -245,7 +244,7 @@ const getOrder = async (orderId) => {
         connectDB()
             .then(() => {
                 Order.findById(orderId).then((order) => {
-                    console.log(order, 'order here');
+               
                     resolve(order)
                 }).catch((error) => {
                     rejects(error)
@@ -256,11 +255,11 @@ const getOrder = async (orderId) => {
 
 const generateOrderRazorpay = (orderId, total) => {
     return new Promise((resolve, reject) => {
-        console.log(typeof orderId,typeof total, orderId, total)
+        console.log(typeof orderId, typeof total, orderId, total)
         const options = {
-            amount: total * 100,  // amount in the smallest currency unit
+            amount: total * 100, 
             currency: "INR",
-            receipt: ""+orderId
+            receipt: "" + orderId
         };
         instance.orders.create(options, function (err, order) {
             if (err) {
@@ -276,65 +275,107 @@ const generateOrderRazorpay = (orderId, total) => {
 
 const findOrderByDate = (startDate, endDate) => {
     try {
-      return new Promise((resolve, reject) => {
-        connectDB()
-          .then(() => {
-            Order.aggregate([
-              {
-                $match: {
-                  createdOn: {
-                    $gte: new Date(startDate),
-                    $lte: new Date(endDate),
-                  },
-                },
-              },
-              {
-                $lookup: {
-                  from: 'users',
-                  localField: 'userId',
-                  foreignField: '_id',
-                  as: 'userDetails',
-                },
-              },
-              {
-                $lookup: {
-                  from: 'products',
-                  localField: 'products.item',
-                  foreignField: '_id',
-                  as: 'productDetails',
-                },
-              },
-            ])
-              .exec()
-              .then((data) => {
-                console.log(data[0].productDetails,'data here?????????');
-                resolve(data);
-              })
-              .catch((err) => {
-                reject(err);
-              });
-          });
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-
-      const findOrderDeliverd =()=>{
-        try {
-          return new Promise ((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             connectDB()
-            .then(()=>{
-              Order.find({status:"delivered"}).then((data)=>{
-                resolve(data)
-              })
-            })
-          })
-        } catch (error) {
-          console.log(error)
-        }
-      }
+                .then(() => {
+                    Order.aggregate([
+                        {
+                            $match: {
+                                $and: [
+                                    {
+                                        createdOn: {
+                                            $gte: new Date(startDate),
+                                            $lte: new Date(endDate)
+                                        }
+                                    },
+                                    {
+                                        status: 'Delivered'
+                                    }
+                                ]
+                            }
+
+                        },
+                        {
+                            $lookup: {
+                                from: 'users',
+                                localField: 'userId',
+                                foreignField: '_id',
+                                as: 'userDetails',
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: 'products',
+                                localField: 'products.item',
+                                foreignField: '_id',
+                                as: 'productDetails',
+                            },
+                        },
+                    ])
+                        .exec()
+                        .then((data) => {
+
+                            resolve(data);
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
+                });
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+const findOrderDeliverd = () => {
+    try {
+        return new Promise((resolve, reject) => {
+            connectDB()
+                .then(() => {
+                    Order.find({ status: "delivered" }).then((data) => {
+                        resolve(data)
+                    })
+                })
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+const findOrdersDeliveredWithProducts = async () => {
+   
+    try {
+        await connectDB();
+        const data = await Order.aggregate([
+            {
+                $match: {
+                    status: "delivered",
+                },
+            },
+            // {
+            //   $lookup: {
+            //     from: 'users',
+            //     localField: 'userId',
+            //     foreignField: '_id',
+            //     as: 'userDetails',
+            //   },
+            // },
+            // {
+            //   $lookup: {
+            //     from: 'products',
+            //     localField: 'products.item',
+            //     foreignField: '_id',
+            //     as: 'productDetails',
+            //   },
+            // },
+        ]);
+      
+        return data;
+    } catch (error) {
+        console.log(error);
+        throw error; 
+    }
+};
 
 
 module.exports = {
@@ -351,5 +392,6 @@ module.exports = {
     getOrder,
     generateOrderRazorpay,
     findOrderByDate,
-    findOrderDeliverd
+    findOrderDeliverd,
+    findOrdersDeliveredWithProducts
 }

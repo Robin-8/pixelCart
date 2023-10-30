@@ -42,9 +42,12 @@ router.get('/productdetails/:id', userController.getProductDetails)
 
 router.get('/addToCart/:id',auth.isLogin, cartController.addToCart)
 router.get('/carts', auth.isLogin,cartController.getCart)
+router.get('/checkStock',orderController.checkStock)
 router.post('/changeProuductQuantity', cartController.changeQuantity)
 router.get('/removeCartProduct', cartController.removeCartProduct)
 router.get('/deleteCart', cartController.deleteCart)
+
+
 
 router.get('/addAddress',auth.isLogin, profileController.addAddress)
 router.post('/addNewAddress', auth.isLogin,profileController.addNewAddress)

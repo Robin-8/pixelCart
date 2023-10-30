@@ -4,7 +4,7 @@ const Wallet = require('../models/wallerModel')
 
 
 const updateWalletAmount = async(total,userId)=>{
-    console.log('total,userID',total,userId)
+   
     try {
         await connectDB()
        
@@ -16,12 +16,12 @@ const updateWalletAmount = async(total,userId)=>{
                 balance:total
             })
             await wallet.save()
-            console.log('new wallet added successfully');
+     
         }else{
             const updatedAmount = wallet.balance + total
-            console.log('wallet updated amout',wallet.balance,total,updatedAmount);
+
             await Wallet.findByIdAndUpdate({userId:userId},{$set:{balance:'updatedAmount'}});
-            console.log('wallet amount updated successfully');
+      
         }
     } catch (error) {
     }
@@ -30,7 +30,7 @@ const updateWalletAmount = async(total,userId)=>{
 const getWallet = async (userId) => {
     try {
         let wallet = await Wallet.findOne({ userId: userId })
-        console.log("wallet",wallet)
+
         if (!wallet) {
             wallet = new Wallet({
                 userId: userId,

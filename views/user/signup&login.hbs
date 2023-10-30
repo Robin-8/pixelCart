@@ -16,17 +16,20 @@
             <form action="/verify" method="post" onsubmit="return validateMobile()">
                 <h1>Create Account</h1>
                 <input type="text" name="mobileNumber" id="mobileNumber" placeholder="Mobile">
+                <div id="mobileError" style="color: red;"></div>
                 <button>Verify</button>
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="/login" method="POST" onsubmit="return validateEmail()">
+            <form action="/login" method="POST" onsubmit="return validateEmailPassword()">
                 {{#if loginErr}}
                 <p class="text-white">Invalid UserName or Password</p>
                 {{/if}}
                 <h1>Log In</h1>
                 <input type="email" name="email" id="email" placeholder="Email">
-                <input type="password" name="password" placeholder="Password">
+                <div id="emailError" style="color: red;"></div>
+                <input type="password" name="password" id="password" placeholder="Password">
+                <div id="passwordError" style="color: red;"></div>
                 <button>Log In</button>
             </form>
         </div>
@@ -39,9 +42,9 @@
                 </div>
                 <div class="overlay-panel overlay-right">
                     <h1>Get Started</h1>
-                    <p>Please Enter your Mobile number</p>
+                    <p>Please enter your Mobile number</p>
                     <button class="ghost" id="signUp">Sign Up</button>
-                    <a href="/forgetpassword">Forget password</a>
+                    {{!-- <a href="/forgetpassword">Forget password</a> --}}
                 </div>
             </div>
         </div>
@@ -49,38 +52,50 @@
     <script src="/javascripts/signup.js"></script>
     <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
     <script>
-{{!--   
-        function validateMobile() {
-            var mobileInput = document.getElementById("mobileNumber");
-            var mobileValue = mobileInput.value;
-
-            
-            if (!/^[1-9][0-9]*$/.test(mobileValue)) {
-                alert("Please enter a valid mobile number.");
-                return false;
-            }
-
-           
-
-            return true; 
-        } --}}
-
-        function validateEmail() {
+        function validateEmailPassword() {
             var emailInput = document.getElementById("email");
+            var passwordInput = document.getElementById("password");
             var emailValue = emailInput.value;
+            var passwordValue = passwordInput.value;
 
-           
             var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
             if (!emailRegex.test(emailValue)) {
-                alert("Please enter a valid email address.");
+                document.getElementById("emailError").textContent = "Please enter a valid email address.";
                 return false;
+            } else {
+                document.getElementById("emailError").textContent = "";
             }
 
-            
+            // Password length condition (minimum 3, maximum 8 characters)
+            if (passwordValue.length < 3 || passwordValue.length > 8) {
+                document.getElementById("passwordError").textContent = "Password must be between 3 and 8 characters.";
+                return false;
+            } else {
+                document.getElementById("passwordError").textContent = "";
+            }
 
-            return true; 
+            return true;
         }
+
+       function validateMobile() {
+    var mobileInput = document.getElementById("mobileNumber");
+    var mobileValue = mobileInput.value;
+
+    // Remove non-digit characters
+    var digitsOnly = mobileValue.replace(/\D/g, "");
+
+    // Check if there are at least 6 different numbers
+    var uniqueNumbers = new Set(digitsOnly);
+    if (uniqueNumbers.size < 6) {
+        document.getElementById("mobileError").textContent = "Please enter at least 6 different digits in your mobile number.";
+        return false;
+    } else {
+        document.getElementById("mobileError").textContent = "";
+    }
+
+    return true;
+}
     </script>
 </body>
-
 </html>

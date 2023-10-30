@@ -34,7 +34,7 @@ module.exports = {
         
           resolve(productData)
         }).catch((error) => {
-          console.log(error, '///////////');
+       
         })
 
       }
@@ -67,28 +67,17 @@ module.exports = {
 
 
 
-  // getAllProducts: (callback) => {
-  //   connectDB().then(() => {
-  //     Product.find()
-  //       .then((products) => {
-  //         callback(products);
-  //       })
-  //       .catch((error) => {
-  //         console.log('Failed to get products:', error);
-  //         callback(null);
-  //       });
-  //   });
-  // },
+ 
  getAllproducts : async () => {
     try {
-      await connectDB(); // Assuming this function establishes a database connection
+      await connectDB(); 
       const products = await Product.find({ Deleted: false }).exec();
-      console.log(product,'productss==');
+      
      
       return products;
     } catch (error) {
       console.log('Failed to get products:', error);
-      throw error; // Throw the error to be caught by the caller
+      throw error; 
     }
   },
   
@@ -215,5 +204,27 @@ module.exports = {
       });
     });
   },
+
+  checkStock : async (userId)=>{
+    try {
+       await connectDB()
+
+       const products = await Cart.findOne({user:userId})
+     
+       const cartProducts = products.products
+       for(const cartProduct of cartProducts){
+        const productId = cartProduct.item;
+        const product = await Product.findOne({_id:productId})
+    
+        if(product.Stock < cartProduct.quantity){
+           return ({status:false})
+        }
+       }
+       return ({status:true})
+    } catch (error) {
+      console.log(error);
+      return ({status:false})
+    }
+  }
 };
 

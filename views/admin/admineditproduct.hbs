@@ -85,26 +85,31 @@
         <h2 class="text-center">Edit Product</h2>
         <form action="/admin/edit-product/{{product._id}}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
           <label for="Name">Name</label>
-          <input type="text" name="Name" value="{{product.Name}}" class="form-control" maxlength="30">
+          <input type="text" name="Name" value="{{product.Name}}" class="form-control" maxlength="30" id="product_name">
+          <div id="nameError"  style="color: red;" ></div>
 
           <label for="Category">Category</label>
-          <input type="text" name="Category" value="{{product.Category}}" class="form-control">
+          <input type="text" name="Category" value="{{product.Category}}" class="form-control" id="category_name">
+           <div id="categoryError"  style="color: red;" ></div>
 
           <label for="Price">Price</label>
-          <input type="text" name="Price" value="{{product.Price}}" class="form-control">
+          <input type="text" name="Price" value="{{product.Price}}" class="form-control" id="product_price">
+           <div id="priceError"  style="color: red;" ></div>
 
           <label for="Description">Description</label>
-          <input type="text" name="Description" value="{{product.Description}}" class="form-control" maxlength="20">
-          
+          <input type="text" name="Description" value="{{product.Description}}" class="form-control" maxlength="20" id="product_description">
+          <div id="descriptionError"  style="color: red;" ></div>
+
           <label for="">Stock</label>
-          <input type="text" name="Stock" value="{{product.Stock}}" class="form-control">
-          
+          <input type="text" name="Stock" value="{{product.Stock}}" class="form-control" id="stock">
+          <div id="stockError"  style="color: red;" ></div>
+
           <label for="Image">Images</label>
           <div id="image-container">
             {{#each product.Images}}
             <div class="image-item">
               <img src="/product-images/{{this}}"  style="width:100px;height:auto" alt="" >
-              <button type="button" class="btn btn-danger delete-image-button" onclick="deleteImage(this)">Delete</button>
+              {{!-- <button type="button" class="btn btn-danger delete-image-button" onclick="deleteImage(this)">Delete</button> --}}
             </div>
             {{/each}}
           </div>
@@ -119,27 +124,69 @@
 
 <script>
   function validateForm() {
-    const nameInput = document.querySelector('input[name="Name"]');
-    const categoryInput = document.querySelector('input[name="Category"]');
-    const priceInput = document.querySelector('input[name="Price"]');
-    const descriptionInput = document.querySelector('input[name="Description"]');
-    const stockInput = document.querySelector('input[name="Stock"]');
+    
+     const form = document.getElementById('product-form');
+        const productNameInput = document.getElementById('product_name');
+        const categoryInput = document.getElementById('category_name');
+        const productPriceInput = document.getElementById('product_price');
+        const productDescriptionInput = document.getElementById('product_description');
+        const stockInput = document.getElementById('stock');
+        const imageInput = document.getElementById('product_image');
 
-    // Trim and check if any field is empty after trimming
-    if (
-      nameInput.value.trim() === '' ||
-      categoryInput.value.trim() === '' ||
-      priceInput.value.trim() === '' ||
-      descriptionInput.value.trim() === '' ||
-      stockInput.value.trim() === ''
-    ) {
-      alert('Please fill out all fields.');
-      return false; // Prevent form submission
+        const nameError = document.getElementById('nameError');
+        const categoryError = document.getElementById('categoryError');
+        const priceError = document.getElementById('priceError');
+        const descriptionError = document.getElementById('descriptionError');
+        const stockError = document.getElementById('stockError');
+        const imageError = document.getElementById('imageError');
+
+        // Reset error messages
+        nameError.textContent = '';
+        categoryError.textContent = '';
+        priceError.textContent = '';
+        descriptionError.textContent = '';
+        stockError.textContent = '';
+        imageError.textContent = '';
+
+        
+        if (productNameInput.value.trim() === '') {
+            nameError.textContent = 'Product name cannot be empty.';
+            return false;
+        }
+
+        if (categoryInput.value.trim() === '') {
+            categoryError.textContent = 'Category cannot be empty.';
+            return false;
+        }
+
+        if (isNaN(productPriceInput.value) || parseFloat(productPriceInput.value) <= 0) {
+            priceError.textContent = 'Invalid product price.';
+            return false;
+        }
+
+        if (productDescriptionInput.value.trim() === '') {
+            descriptionError.textContent = 'Product description cannot be empty.';
+            return false;
+        }
+
+        if (parseInt(stockInput.value) < 0) {
+            stockError.textContent = 'Stock must be a non-negative number.';
+            return false;
+        }
+
+        // Check file input for image validation
+        const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+        const fileName = imageInput.value.toLowerCase();
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+        if (imageInput.files.length === 0 || !allowedExtensions.includes(fileExtension)) {
+            imageError.textContent = 'Invalid or missing image file. Allowed formats: JPG, JPEG, PNG, GIF';
+            return false;
+        }
+
+   
+        return true;
     }
-
-    // Form is valid, allow submission
-    return true;
-  }
+  
 </script>
 
 <script>

@@ -218,44 +218,32 @@ const adminRecoverDeletePrdt = async (req, res) => {
 }
 
 const adminEditProduct = async (req, res) => {
-
   try {
-    if (req.files.length == 0) {
+    if (req.files.length === 0) {
       await productHelpers.updateProduct(req.params.id, req.body);
     } else {
-      let ExistingProduct = await Product.findById(req.params.id)
-      ExistingProduct.Images.push(req.files[0].filename)
-      ExistingProduct = {
-        name: req.body.name,
-        description: req.body.Description,
-        category: req.body.Category,
-        Price: req.body.Price,
-        Stock: req.body.Stock,
-        Images: ExistingProduct.Images
-      }
-      Product.findByIdAndUpdate(req.params.id, ExistingProduct, { new: true })
+      let existingProduct = await Product.findById(req.params.id);
+
+      // Add new images to the existing product's Images array
+      existingProduct.Images.push(req.files[0].filename);
+
+      // Update other properties individually
+      existingProduct.name = req.body.name;
+      existingProduct.description = req.body.Description;
+      existingProduct.category = req.body.Category;
+      existingProduct.Price = req.body.Price;
+      existingProduct.Stock = req.body.Stock;
+
+      // Update the product with the modified data
+      existingProduct
+        .save()
         .then((updatedProduct) => {
-          console.log("updated details =>", updatedProduct)
+          console.log("Updated details =>", updatedProduct);
         })
         .catch((error) => {
           console.log('Failed to update product:', error);
         });
     }
-
-
-    // if (req.files && req.files.Image) {
-    //   const image = req.files.Image;
-    //   image.mv('./public/product-images/' + req.params.id + '.jpg', (err) => {
-    //     if (err) {
-    //       console.error('Image upload error:', err);
-
-    //     } else {
-
-    //       console.log('Image uploaded successfully');
-    //     }
-    //   });
-    // }
-
 
     res.redirect('/admin');
   } catch (error) {
@@ -264,10 +252,13 @@ const adminEditProduct = async (req, res) => {
 };
 
 
+
 const adminAddProductPage = async (req, res) => {
   try {
+    const categories = await categoryHelper.getAllCategories()
+    console.log(categories,'cat===');
 
-    res.render('admin/add-product')
+    res.render('admin/add-product',{categories})
   }
   catch (error) {
     console.log(error.message);
@@ -277,6 +268,7 @@ const adminAddProductPage = async (req, res) => {
 
 const adminAddProduct = async (req, res) => {
   try {
+   
 
     const caseInsensitiveCatogaryExist = await Product.findOne({
       Name: { $regex: new RegExp('^' + req.body.Name + '$', 'i') }
@@ -334,28 +326,27 @@ const addOffer = async (req, res) => {
 }
 
 const createOffer = async (req, res) => {
-  try {
+    try {
+        const { discountPercentage, product } = req.body;
 
-    const { discountPercentage, product } = req.body;
-   
-    const productDAta = await Product.findById(product);
-   
+        const productData = await Product.findById(product);
 
+        // Calculate the discount amount based on the discount percentage
+        const discount = (discountPercentage / 100) * productData.Price;
 
-    // Calculate the new price based on the discount percentage
-    const discount = (discountPercentage / 100) * productDAta.Price;
-    const newPrice = (productDAta.Price - discount).toFixed(2);
+        // Calculate the new offer price after the discount
+        const offerPrice = productData.Price - discount;
 
-    // Update the product's price in the database
-    productDAta.Price = newPrice;
-    const updatedProduct = await productDAta.save();
+        // Store the offer price in the product document
+        productData.OfferPrice = offerPrice;
+        await productData.save();
 
-    res.redirect('/admin')
+        res.redirect('/admin');
+    } catch (error) {
+        console.log(error, 'Offer not created');
+    }
+};
 
-  } catch (error) {
-    console.log(error, 'offer not created');
-  }
-}
 
 const addOfferCategory = async(req,res)=>{
   try {

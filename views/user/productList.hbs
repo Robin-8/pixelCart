@@ -140,7 +140,7 @@
 		<div class="paginationhome" style="display: flex; justify-content: center;">
 			<ul class="unlist" style="list-style: none; padding: 0; margin: 0; display: flex; align-items: center;">
 				{{#if (gt currentPage 1)}}
-				<li style="margin-right: 10px;"><a href="/home?page={{sub currentPage 1}}"><button
+				<li style="margin-right: 10px;"><a href="/productList?page={{sub currentPage 1}}"><button
 							class="btn mb-2 btn-secondary">Previous</button></a></li>
 				{{/if}}
 
@@ -149,13 +149,13 @@
 				<li style="margin-right: 10px;" class="active"><a href="#"><button type="button"
 							class="btn mb-2 btn-primary">{{this}}</button></a></li>
 				{{else}}
-				<li style="margin-right: 10px;"><a href="/home?page={{this}}"><button type="button"
+				<li style="margin-right: 10px;"><a href="/productList?page={{this}}"><button type="button"
 							class="btn mb-2 btn-secondary">{{this}}</button></a></li>
 				{{/if}}
 				{{/each}}
 
 				{{#if (lt currentPage totalPages)}}
-				<li style="margin-right: 10px;"><a href="/home?page={{add currentPage 1}}"><button
+				<li style="margin-right: 10px;"><a href="/productList?page={{add currentPage 1}}"><button
 							class="btn mb-2 btn-secondary">Next</button></a></li>
 				{{/if}}
 			</ul>
@@ -338,14 +338,14 @@
 			const searchButton = document.getElementById('searchButton')
 			search = searchInput.value;
             
-			{{!-- const paginationButtons = document.querySelectorAll('.pagination-button');
-			const productsContainer = document.querySelector('.colorlib-product .container .row.row-pb-md');
-			const paginationContainer = document.querySelector('.paginationhome .unlist'); --}}
+		    const paginationButtons = document.querySelectorAll('.pagination-button');
+			const paginationContainer = document.querySelector('.paginationhome .unlist'); 
 
 			categoryButton.forEach(button => {
 				button.addEventListener('change', async () => {
 					const category = button.getAttribute('data-category');
-					categoryAddOrRemoveble(category)// i have doubts category or name
+					console.log(category,'selected category')
+					categoryAddOrRemoveble(category)
 					pcategory = [...productCategory]
 
 					fetch('/filterProduct', {
@@ -362,6 +362,7 @@
 					})
 						.then((response) => response.json())
 						.then((data) => {
+							
 							if (data.noProducts) {
 								Swal.fire({
 									title: 'No matching products',
@@ -375,6 +376,7 @@
 								});
 							} else {
 								updateProducts(data.products);
+								updatePagination(data.currentPage, data.totalPage, data.pages)
 							}
 						})
 						.catch((error) => {
@@ -412,6 +414,7 @@
 								})
 							} else {
 								updateProducts(response.products);
+								updatePagination(response.currentPage, response.totalPage, response.pages)
 							}
 						}
 					})
@@ -444,6 +447,7 @@
             } else {
 				
                 updateProducts(response.products);
+				updatePagination(response.currentPage, response.totalPage, response.pages)
 				
             }
         }
@@ -457,10 +461,11 @@
 				console.log(sort, 'sorting')
 			}) --}}
 
-			{{!-- paginationContainer.addEventListener('click', (event) => {
+			 paginationContainer.addEventListener('click', (event) => {
 				const target = event.target;
 				if (target.classList.contains('pagination-button')) {
 					page = target.getAttribute('data-page');
+					console.log(page,'pageno')
 					$.ajax({
 						url: '/filterProduct',
 						data: {
@@ -472,6 +477,7 @@
 						},
 						method: 'post',
 						success: (response) => {
+							console.log(response,'response')
 							if (response.noProducts) {
 								Swal.fire({
 									title: 'No matching Products',
@@ -483,16 +489,17 @@
 									}
 								});
 							} else {
-								updateProducts(response.product);
+								updateProducts(response.products);
 								updatePagination(response.currentPage, response.totalPage, response.pages)
 
 							}
 						}
 					})
 				}
-			}); --}}
+			}); 
 
 			function updateProducts(products) {
+				console.log(products)
 				productsContainer.innerHTML = '';
 				products.forEach(product => {
 					const productHTML =
@@ -516,8 +523,8 @@
 				})
 			}
 
-			{{!-- function updatePagination(currentPage, totalPage, pages) {
-    paginationContainer.innerHTML = ''; // Remove the comma at the end and use a semicolon here
+			function updatePagination(currentPage, totalPage, pages) {
+    paginationContainer.innerHTML = ''; 
     let paginationHtml = '';
     if (currentPage > 1) {
         paginationHtml += `
@@ -557,7 +564,7 @@
         `;
     }
     paginationContainer.insertAdjacentHTML('beforeend', paginationHtml); // Correct the typo here
-} --}}
+} 
 
 
 		});

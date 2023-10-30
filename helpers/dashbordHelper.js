@@ -12,7 +12,7 @@ const getOrdertotal = async () => {
       const data = await Order.aggregate([
         {
           $match: {
-            "status": "Delivered"  // Consider only completed orders
+            "status": "Delivered"  
           }
         },
         {
@@ -37,7 +37,7 @@ const getOrdertotal = async () => {
       const data = await Order.aggregate([
         {
           $match: {
-            status: "Delivered", // Match only delivered orders
+            status: "Delivered", 
           },
         },
         {
@@ -45,24 +45,24 @@ const getOrdertotal = async () => {
             _id: {
               $dateToString: {
                 format: "%Y-%m-%d",
-                date: "$createdOn", // Group by the date field
+                date: "$createdOn", 
               },
             },
             dailySales: {
-              $sum: "$totalPrice", // Calculate the daily sales using totalAmount
+              $sum: "$totalPrice", 
             },
           },
         },
         {
           $sort: {
-            _id: 1, // Sort the results by date in ascending order
+            _id: 1, 
           },
         },
       ]);
       return data;
     } catch (error) {
       console.log(error);
-      throw error; // Rethrow the error to indicate failure
+      throw error; 
     }
   }
 
@@ -72,7 +72,7 @@ const getOrdertotal = async () => {
       const data = await Order.aggregate([
         {
           $match: {
-            "status": "Delivered", // Match orders with "delivered" status
+            "status": "Delivered", 
           },
         },
         {
@@ -80,22 +80,22 @@ const getOrdertotal = async () => {
             _id: {
               $dateToString: {
                 format: "%Y-%m-%d",
-                date: "$createdOn", // Group by the "date" field
+                date: "$createdOn", 
               },
             },
-            orderCount: { $sum: 1 } // Calculate the count of orders per date
+            orderCount: { $sum: 1 } 
           },
         },
         {
           $sort: {
-            _id: 1 // Sort the results by date in ascending order
+            _id: 1 
           }
         }
       ]);
       return data;
     } catch (error) {
       console.log(error);
-      throw error; // Rethrow the error to indicate failure
+      throw error; 
     }
   }
 
@@ -108,7 +108,7 @@ const getOrdertotal = async () => {
       return data;
     } catch (error) {
       console.log(error);
-      throw error; // Rethrow the error to indicate failure
+      throw error; 
     }
   }
 
@@ -120,13 +120,13 @@ const getOrdertotal = async () => {
         {
           $match: {
             payment: "ONLINE",
-            status: "Delivered", // Use lowercase for status based on the enum values
+            status: "Delivered", 
           },
         },
         {
           $group: {
             _id: null,
-            totalPriceSum: { $sum: "$totalPrice" }, // Assuming totalAmount contains the price for each product
+            totalPriceSum: { $sum: "$totalPrice" }, 
             count: { $sum: 1 },
           },
         },
@@ -135,19 +135,19 @@ const getOrdertotal = async () => {
       return data;
     } catch (error) {
       console.log(error);
-      throw error; // Rethrow the error if needed
+      throw error; 
     }
   }
 
   const codCount = async () => {
     try {
-      await connectDB(); // Assuming connectDB returns a promise
+      await connectDB(); 
   
       const data = await Order.aggregate([
         {
           $match: {
             payment: 'COD',
-            status: 'Delivered' // Use lowercase for status based on the enum values
+            status: 'Delivered' 
           }
         },
         {
@@ -162,7 +162,7 @@ const getOrdertotal = async () => {
       return data;
     } catch (error) {
       console.error(error);
-      throw error; // Rethrow the error if needed
+      throw error; 
     }
   }
 
@@ -186,7 +186,7 @@ const getOrdertotal = async () => {
       return data;
     } catch (error) {
       console.log(error);
-      throw error; // Re-throw the error to indicate failure
+      throw error; 
     }
   };
 

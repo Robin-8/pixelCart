@@ -96,15 +96,22 @@
             },
             "theme": {
                 "color": "#4D4DFF",
-            }
+            },
+           
         };
+
 
         const rzp1 = new Razorpay(options);
         rzp1.on('payment.failed', function (response) {
             status.textContent = response.error.description
         });
         rzp1.open();
+
+
     })
+
+   
+
 
 
 </script>

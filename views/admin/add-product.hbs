@@ -88,23 +88,39 @@
           <input type="text" name="Name" class="form-control" required id="product_name" maxlength="30">
            <div id="nameError"  style="color: red;" ></div>
 
-
-          <label for="Category">Category</label>
-          <input type="text" name="Category" required class="form-control" >
+         
+            <label for="Category">Category</label>
+    <select name="Category" required class="form-control" id="category_name">
+        <option value="" disabled selected>Select a Category</option>
+        {{#each categories}}
+            <option value="{{this.name}}">{{this.name}}</option>
+        {{/each}}
+    </select>
+          <div id="categoryError"  style="color: red;" ></div>
+      
 
           <label for="Price">Price</label>
-          <input type="number" min="0" name="Price" class="form-control">
+          <input type="number" min="0" name="Price" class="form-control" id="product_price">
+                <div id="priceError"  style="color: red;" ></div>
 
           <label for="Description" name="productDescription">Description</label>
           <input type="text" name="Description" class="form-control"  required id="product_description" maxlength="25">
-             <div id="discriptionError" style="color: red;"></div>
+             <div id="descriptionError" style="color: red;"></div>
 >
 
           <label for="">Stock </label>
-          <input type="number" name="Stock" min="0" class="form-control">
+          <input type="number" name="Stock" min="0" class="form-control" id="stock">
+          <div id="stockError" style="color: red;"></div>
 
+           <label for="Price">OfferPrice</label>
+          <input type="number" min="0" name="OfferPrice" class="form-control" id="offer_price">
+                <div id="offerError"  style="color: red;" ></div>           
+
+         
+         
           <label for="Images">Images</label>
           <input type="file" name="Images" class="form-control" id="product_image" multiple />
+           <div id="imageError" style="color: red;"></div>
 
           <button type="submit" class="btn btn-success mt-4">Submit</button>
         </form>
@@ -112,47 +128,70 @@
     </div>
   </div>
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     function validateForm() {
+        const form = document.getElementById('product-form');
+        const productNameInput = document.getElementById('product_name');
+        const categoryInput = document.getElementById('category_name');
+        const productPriceInput = document.getElementById('product_price');
+        const productDescriptionInput = document.getElementById('product_description');
+        const stockInput = document.getElementById('stock');
+        const imageInput = document.getElementById('product_image');
+
+        const nameError = document.getElementById('nameError');
+        const categoryError = document.getElementById('categoryError');
+        const priceError = document.getElementById('priceError');
+        const descriptionError = document.getElementById('descriptionError');
+        const stockError = document.getElementById('stockError');
+        const imageError = document.getElementById('imageError');
+
         // Reset error messages
-        document.getElementById('nameError').textContent = '';
-        document.getElementById('descriptionError').textContent = '';
+        nameError.textContent = '';
+        categoryError.textContent = '';
+        priceError.textContent = '';
+        descriptionError.textContent = '';
+        stockError.textContent = '';
+        imageError.textContent = '';
 
-        // Get the values from the form
-        const productName = document.getElementById('product_name').value;
-        const productDescription = document.getElementById('product_description').value;
-
-        const maxProductNameLength = 20; 
-        const maxProductDescriptionLength = 20;
-
-        // Check for spaces or empty product name
-        if (productName.trim() === '') {
-            document.getElementById('nameError').textContent = 'Product title cannot be empty.';
-            return false; // Prevent form submission
+        
+        if (productNameInput.value.trim() === '') {
+            nameError.textContent = 'Product name cannot be empty.';
+            return false;
         }
 
-        if (productName.length > maxProductNameLength) {
-            document.getElementById('nameError').textContent = 'Product title is too long.';
-            return false; // Prevent form submission
+        if (categoryInput.value.trim() === '') {
+            categoryError.textContent = 'Category cannot be empty.';
+            return false;
         }
 
-        if (productDescription.trim() === '') {
-            document.getElementById('descriptionError').textContent = 'Product description cannot be empty.';
-            return false; // Prevent form submission
+        if (isNaN(productPriceInput.value) || parseFloat(productPriceInput.value) <= 0) {
+            priceError.textContent = 'Invalid product price.';
+            return false;
         }
 
-        // Split the input value into words and check the length
-        const descriptionWords = productDescription.trim().split(/\s+/);
-        if (descriptionWords.length > 20) {
-            document.getElementById('descriptionError').textContent = 'Product description can have a maximum of 20 words.';
-            return false; // Prevent form submission
+        if (productDescriptionInput.value.trim() === '') {
+            descriptionError.textContent = 'Product description cannot be empty.';
+            return false;
         }
 
-        if (productDescription.length > maxProductDescriptionLength) {
-            document.getElementById('descriptionError').textContent = 'Product description is too long.';
-            return false; // Prevent form submission
+        if (parseInt(stockInput.value) < 0) {
+            stockError.textContent = 'Stock must be a non-negative number.';
+            return false;
         }
 
-        return true; // Allow form submission if all validations pass
+        // Check file input for image validation
+        const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+        const fileName = imageInput.value.toLowerCase();
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+        if (imageInput.files.length === 0 || !allowedExtensions.includes(fileExtension)) {
+            imageError.textContent = 'Invalid or missing image file. Allowed formats: JPG, JPEG, PNG, GIF';
+            return false;
+        }
+
+   
+        return true;
     }
 </script>
+

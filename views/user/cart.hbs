@@ -521,6 +521,28 @@
 		}
 	</script>
 
+	 <script>
+	function checkout(){
+		$.ajax({
+			url:"/checkStock",
+			method:'get',
+			success: (response)=>{
+				if(response.status){
+				 window.location.href = '/placeorder'
+				}else{
+				Swal.fire({
+								icon: 'warning',
+								title: 'Adjust Product quantity',
+								showConfirmButton: false,
+								timer: 5000
+							})
+							location.reload()
+				}
+			}
+		})
+		}
+	</script>
+
 
 </body>
 

@@ -15,6 +15,21 @@ const Wallet = require('../models/wallerModel')
 const user = require('../models/user')
 const Product = require('../models/product')
 const Mongodb = require('mongodb')
+const orderModel = require('../models/orderModel')
+const productHelper= require("../helpers/product-helpers")
+const { default: mongoose } = require('mongoose')
+
+
+const checkStock = async (req, res) => {
+    try {
+      const response = await productHelper.checkStock(req.session.user._id);
+      res.json(response);
+    } catch (error) {
+      console.error(error);
+      res.json({ status: false, error: "An error occurred while checking stock." });
+    }
+  };
+  
 
 
 
@@ -63,12 +78,19 @@ const placeOrder = async(req,res)=>{
 const checkOut = async (req, res) => {
     try {
 
+          
         const userId = req.session.user._id;
 
         const user = await User.findById(userId);
-        console.log('this is user data ', user);
+        
         const cart = await Cart.findOne({ user: userId })
-        console.log('this is cart', cart.products);
+
+        if(req.body.isWalletUsed){
+            const wallet = await Wallet.findOneAndUpdate({userId:user._id},{balance:0})
+           
+        }
+     
+       
 
 
         const a = req.body;
@@ -89,11 +111,14 @@ const checkOut = async (req, res) => {
             
         })
 
-        const saveOrder = await order.save()
 
-       
-        console.log(saveOrder,"===========")
+        const saveOrder = await order.save()
+        const deleteCart = await Cart.findOneAndDelete({user:userId})
         
+
+        req.session.order_id=saveOrder._id;
+
+      
 
 
 
@@ -107,7 +132,9 @@ const checkOut = async (req, res) => {
             const generatedOrder = await orderHelpler.generateOrderRazorpay(saveOrder._id, saveOrder.totalPrice);
             console.log(generatedOrder,'generatedOrder')
             res.json({ payment: false, method: "ONLINE", razorpayOrder: generatedOrder, order: saveOrder });
-
+        }else{
+            console.log("gjgf");
+            res.json(false);
         }
 
 
@@ -118,13 +145,7 @@ const checkOut = async (req, res) => {
 
     }
     
- //----------------------------------------------
- 
- 
- 
- 
- 
- //------------grnerate the razorpay -----------------
+
 
  
  const verifyPayment=async(req,res)=>{
@@ -138,13 +159,7 @@ const checkOut = async (req, res) => {
         
     }
 }
-//----------------------------------------------
 
-
-
-
-
-//---------------verify the payment  razorpay-------------------------------
 
 const verifyOrderPayment = (details) => {
         console.log("DETAILS : " + JSON.stringify(details));
@@ -215,34 +230,64 @@ const successOrder= async (req,res)=>{
 
 const orderDetails = async (req, res) => {
     try {
-      const userId = req.session.user._id; // Assuming you can access the user's ID from the session
-    //   const orders = await orderHelpler.getOrders(userId);
-    const orders = await Order.find({userId:userId})
-      // Use Mongoose's populate method to populate the 'products' field in each order
-    //   await Order.populate(orders, { path: 'products.product' });
-  
-      orders.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+        const userId = req.session.user._id; 
         
-      const itemsPerPage = 5;
-      const currentpage = parseInt(req.query.page) || 1;
-      const startIndex = (currentpage - 1) * itemsPerPage;
-      const endIndex = startIndex + itemsPerPage;
-      const totalpages = Math.ceil(orders.length / itemsPerPage);
-      const pages = Array.from({ length: totalpages }, (_, i) => i + 1); // Create an array of page numbers
-      const currentproduct = orders.slice(startIndex, endIndex);
-        console.log("Current pages=>" , currentproduct)
-      res.render('user/orderDetails', {
-        orders: currentproduct,
-        currentpage,
-        totalpages,
-        pages, // Pass the array of page numbers
-      });
+         
+
+        const itemsPerPage = 5;
+        const currentpage = parseInt(req.query.page) || 1;
+
+     
+        const orders = await Order.aggregate([
+            {
+                $match: {
+                    userId: new mongoose.Types.ObjectId(userId)
+                },
+            },
+            {
+                $lookup: {
+                    from: 'products', 
+                    localField: 'products',
+                    foreignField: '_id',
+                    as: 'productDetails',
+                },
+            },
+        ]);
+
+       
+        orders.forEach(order => {
+            let walletDeduction = 0;
+          
+            if (order.walletUsed) {
+                walletDeduction = order.walletAmount;
+            }
+            order.actualOrderTotal = order.totalPrice - walletDeduction;
+        });
+
+        orders.sort((a, b) => b.createdOn - a.createdOn);
+
+
+
+        
+        const startIndex = (currentpage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const totalpages = Math.ceil(orders.length / itemsPerPage);
+        const pages = Array.from({ length: totalpages }, (_, i) => i + 1);
+
+        const currentOrders = orders.slice(startIndex, endIndex);
+
+        res.render('user/orderDetails', {
+            orders: currentOrders,
+            currentpage,
+            totalpages,
+            pages,
+        });
     } catch (error) {
-      // Handle errors
-      console.log(error)
-      res.redirect('/login')
+        console.log(error);
+        res.redirect('/login');
     }
-  };
+};
+
   
 
 const cancelOrder = async (req, res) => {
@@ -251,13 +296,12 @@ const cancelOrder = async (req, res) => {
       console.log('this sihh  the order',orderId);
       const updatedOrder = await orderHelpler.cancelOrder(orderId)
   
-      // Check if the order was successfully cancelled
+
       if (!updatedOrder) {
         return res.status(404).json({ error: 'Order not found' });
       }
          res.json({status:true});
-      // Send a response to indicate success
-    //   res.json({ message: 'Order cancelled successfully', order: updatedOrder });
+     
     } catch (error) {
       console.error('Error cancelling order:', error);
       res.status(500).json({ error: 'Internal server error' });
@@ -266,8 +310,9 @@ const cancelOrder = async (req, res) => {
 
   const adminOrderDtails = async (req, res) => {
     try {
-       // Fetch orders in descending order of createdOn
+
       const orders = await Order.find({}).sort({ createdOn: -1 }).populate('products.item');
+     
 
         const products = await Product.find();
         const itemsPerPage = 5;
@@ -275,7 +320,7 @@ const cancelOrder = async (req, res) => {
         const startIndex = (currentpage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         const totalpages = Math.ceil(orders.length / itemsPerPage);
-        const pages = Array.from({ length: totalpages }, (_, i) => i + 1); // Create an array of page numbers
+        const pages = Array.from({ length: totalpages }, (_, i) => i + 1);
         const currentproduct = orders.slice(startIndex, endIndex);
         
         console.log(orders[0].products,"ods");
@@ -300,13 +345,11 @@ const adminOrderDetails = async (req, res) => {
     try {
       const orderId = req.params.orderId;
       const oid = new Mongodb.ObjectId(orderId)
-    //   const order = await Order.findById(orderId).populate('products.product');
+  
     let orders = await Order.aggregate([
         {$match:{_id:oid}},
         {$unwind:'$products'},
-        // {$project:{
-        //     proId:{'$toObjectId':'$products._id'},
-        // }},
+      
         {$lookup:{
             from:'products',
             localField:'products.item', 
@@ -452,6 +495,7 @@ module.exports = {
     ChangeStatusDelivered,
     ChangeStatusShipped,
     ChangeStatusReturned,
-    ChangeStatuscancelled
+    ChangeStatuscancelled,
+    checkStock
     
 }

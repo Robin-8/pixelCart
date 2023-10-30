@@ -53,9 +53,10 @@
 						<div class="col-sm-5 col-md-3">
 							<form action="#" class="search-wrap">
 								<div class="form-group">
-									<input id="searchInput" type="text" class="form-control search" placeholder="Search">
-									<button id="searchButton" class="btn btn-primary submit-search text-center" type="button"><i
-											class="icon-search"></i></button>
+									<input id="searchInput" type="text" class="form-control search"
+										placeholder="Search">
+									<button id="searchButton" class="btn btn-primary submit-search text-center"
+										type="button"><i class="icon-search"></i></button>
 								</div>
 							</form>
 						</div>
@@ -97,12 +98,13 @@
 					</div>
 				</div>
 			</div>
-             <aside id="colorlib-hero">
+			<aside id="colorlib-hero">
 				<div class="flexslider">
 					<ul class="slides">
 						{{#each banner}}
-						<li style="background-image: url('/product-images/{{this.bannerImage.[0]}}'); background-size: cover; background-repeat: no-repeat; padding: 10px; list-style: none; margin: 5px 0;">
-						{{!-- <div class="overlay"></div> --}}
+						<li
+							style="background-image: url('/product-images/{{this.bannerImage.[0]}}'); background-size: cover; background-repeat: no-repeat; padding: 10px; list-style: none; margin: 5px 0;">
+							{{!-- <div class="overlay"></div> --}}
 							<div class="container-fluid">
 								<div class="row">
 									<div class="col-sm-6 offset-sm-3 text-center slider-text">
@@ -133,7 +135,7 @@
 				</div>
 			</div>
 
-			
+
 
 			<div class="colorlib-product">
 				<div class="container">
@@ -141,13 +143,14 @@
 						{{#each products}}
 						<div class="col-lg-3 col-sm-6 mt-3">
 							<a href="/productdetails/{{this._id}} ">
-								<div class="card" style="border-color: black; width: 220px height:150px" >
+								<div class="card" style="border-color: black; width: 220px height:150px">
 									<img src="/product-images/{{selectFirst this.Images}}" alt="product-image"
 										style="width: 200px; height: 225px;" class="img-fluid mx-auto d-block"
 										alt="img">
 									<div class="card-body text-center">
 										<h5 class="card-title">{{this.Name}}</h5>
-										<p class="card-text">₹{{this.Price}}</p>
+										<p class="card-text">Original Price: ₹{{this.Price}}</p>
+										<p class="card-text">Offer Price: ₹{{this.OfferPrice}}</p>
 
 									</div>
 								</div>

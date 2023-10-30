@@ -20,7 +20,7 @@ const addToWishlist = (proId, userId) => {
           console.log(userwishlist,"userwishlist");
           try {
             console.log("proexisst");
-            // const proExist =userwishlist.products.some(product => product.item.toString() === proId.toString());
+         
             const proExist = userwishlist.products.some(product => product.toString() === proId.toString());
             console.log(proExist,"proexisst");
 
@@ -40,7 +40,7 @@ const addToWishlist = (proId, userId) => {
             }
             else{
 
-              console.log("chkk not proExist");
+        
               await Wishlist.updateOne(
               { user: userId },
               {

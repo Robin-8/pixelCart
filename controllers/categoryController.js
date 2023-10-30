@@ -1,7 +1,7 @@
 const Category = require('../models/categoryModel')
 
 
-// for category
+
 
 const loadCategory = async (req, res) => {
   try {
@@ -16,13 +16,17 @@ const createCategory = async (req, res) => {
     console.log(req.body);
     const { name, description } = req.body;
 
-
     const existingCategory = await Category.findOne({
       name: { $regex: `^${name}$`, $options: 'i' },
     });
 
     if (existingCategory) {
-      return res.status(400).json({ error: 'Category name already exists.' });
+
+      return res.render('./admin/add-category', {
+        error: 'Category name already exists.',
+        name, 
+        description,
+      });
     }
 
     const newCategory = new Category({ name, description });
@@ -34,6 +38,7 @@ const createCategory = async (req, res) => {
     res.status(500).json({ error: 'An error occurred while creating the category.' });
   }
 };
+
 
 
 const getAllCategory = async (req, res) => {
