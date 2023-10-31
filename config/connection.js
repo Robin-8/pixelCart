@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const connectDB = () => {
-  return mongoose.connect('mongodb://127.0.0.1:27017/pixelCart', {
+  return mongoose.connect('mongodb+srv://robinshaji888:8gzieIutPiNVwomJ@cluster0.oripmdq.mongodb.net/', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

@@ -12,6 +12,7 @@ const async = require('hbs/lib/async');
 
 const dashbord = async (req,res)=>{
   try {
+    console.log('enteredddd ');
     if(req.session.admin){
       const orderData = await dashbordHelper.getOrdertotal()
     const orders = orderData[0]
@@ -47,6 +48,7 @@ const dashbord = async (req,res)=>{
     console.log(monthlySalesArrayJSON);
     res.render('admin/adminDashbord', { paymentBar, orders, salesData, salesCount, productsCount, monthlySalesArrayJSON, codCountJSON, onlineCountJSON })
     }else{
+      console.log('loogggggggggggggggggg');
       res.render('./admin/admin-login')
     }
 
@@ -106,8 +108,9 @@ const verifyAdmin = async (req, res) => {
 
 const logOut = async (req, res) => {
   try {
+    
     req.session.admin = false
-    res.render('/admin');
+    res.redirect('/admin');
   }
   catch (error) {
     console.log(error.message);

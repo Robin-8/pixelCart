@@ -17,7 +17,7 @@ const adminReportController = require("../controllers/adminReportController")
 
 router.get('/',adminController.dashbord )
 
-
+router.get('/logout' , adminController.logOut)
 router.post('/admin-login',adminController.verifyAdmin) 
 
 router.get('/productListing',adminController.getProductListing)
