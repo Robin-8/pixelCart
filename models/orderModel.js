@@ -11,9 +11,20 @@ const orderSchema = new mongoose.Schema({
     default: Date.now
   },
  
-  products:{
-    type:Array
-  },
+  products: [
+    {
+      item: {                
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+      }, 
+      quantity: {
+        type: Number,
+        
+      }
+    }
+  ],
+    
+  
   reason: {
     type: String,
     default: 'N/A',

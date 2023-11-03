@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const connectDB = () => {
+const mongooseDb = () => {
   return mongoose.connect('mongodb+srv://robinshaji888:8gzieIutPiNVwomJ@cluster0.oripmdq.mongodb.net/', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -13,4 +13,4 @@ const connectDB = () => {
     });
 };
 
-module.exports = connectDB;
+module.exports = mongooseDb;

@@ -110,7 +110,8 @@ const getuserlogin = async (req, res) => {
     const password = req.body.password
    
     const user = await userHelper.getUsers({ email: email, password: password });
-    if (!user) {
+    console.log(user,'user');
+    if (!user || user.Blocked) {
       req.session.loginErr = true
       return res.redirect('/login');
     }

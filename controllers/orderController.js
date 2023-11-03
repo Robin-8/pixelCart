@@ -247,12 +247,13 @@ const orderDetails = async (req, res) => {
             {
                 $lookup: {
                     from: 'products', 
-                    localField: 'products',
+                    localField: 'products.item',
                     foreignField: '_id',
                     as: 'productDetails',
                 },
             },
         ]);
+        console.log(orders[0],'productt');
 
        
         orders.forEach(order => {
@@ -323,7 +324,7 @@ const cancelOrder = async (req, res) => {
         const pages = Array.from({ length: totalpages }, (_, i) => i + 1);
         const currentproduct = orders.slice(startIndex, endIndex);
         
-        console.log(orders[0].products,"ods");
+   
       
         res.render('admin/adminOrderDetails',{ orders:currentproduct,pages,currentpage,totalpages,products });
     } catch (error) {

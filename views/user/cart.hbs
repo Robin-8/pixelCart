@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+	<title>Camera Shutter</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	{{!--
@@ -62,20 +62,7 @@
 <link rel="stylesheet" href="css/style.css">
 
 
-{{!--
-<script>
-	function showCoupons() {
-		console.log("showcoupons");
-		fetch('/getCoupons')
-			.then(response => response.json())
-			.then(data => {
-				console.log(data);
-			})
-			.catch(error => { // Change curly braces to parentheses here
-				console.log('error fetching coupons', error);
-			});
-	}
-</script> --}}
+
 </head>
 
 <body>
@@ -108,7 +95,7 @@
 
 								<li><a href="about.html" style="color: black;">CONTACT</a></li>
 
-								<li class="cart"><a href="/"><i class="icon-shopping-cart"></i> Cart [0]</a>
+								<li class="cart"><a href="/"><i class="icon-shopping-cart"></i> Cart </a>
 								</li>
 							</ul>
 						</div>
@@ -149,7 +136,11 @@
 			</div>
 		</div>
 
-
+		{{#if (isArrayEmpty products)}}
+		<div class="container my-4">
+		<h1>No Products</h1>
+		</div>
+		{{else}}
 		<div class="colorlib-product">
 			<div class="container">
 				
@@ -174,6 +165,7 @@
 								<span>Remove</span>
 							</div>
 						</div>
+						
 						{{#each products}}
 						<div class="product-cart d-flex">
 							<div class="one-forth">
@@ -282,20 +274,18 @@
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="col-sm-8 offset-sm-2 text-center colorlib-heading colorlib-heading-sm">
-						<h2>Related Products</h2>
-					</div>
-				</div>
+			
 
 			</div>
+
 		</div>
+		{{/if}}
 
 		<footer id="colorlib-footer" role="contentinfo">
 			<div class="container">
 				<div class="row row-pb-md">
 					<div class="col footer-col colorlib-widget">
-						<h4>About Footwear</h4>
+						<h4>About Camera</h4>
 						<p>Even the all-powerful Pointing has no control about the blind texts it is an almost
 							unorthographic life</p>
 						<p>
@@ -411,6 +401,21 @@
 	<script src="/js/jquery.stellar.min.js"></script>
 	<!-- Main --> --}}
 	<script src="/js/main.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.all.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.min.css" rel="stylesheet">
+
+
+	<script>
+
+		if(!{{total}}){
+		Swal.fire({
+			title: 'No Products in Cart',
+			confirmButtonText: 'OK',
+			confirmButtonColor: '#88c8bc',
+		});
+		}
+	</script>
 
 
 	{{#each products}}
@@ -441,6 +446,39 @@
 
 	<script>
 
+		function deleteCartItem(productId) {
+    $.ajax({
+        type: 'GET',
+        url: '/deleteCart?id=' + productId,
+        success: function (response) {
+            if (response.cartEmpty) {
+                Swal.fire({
+                    title: 'No Products in Cart',
+                    icon: 'info',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#88c8bc',
+                }).then(() => {
+                    window.location.href = '/home';
+                });
+            } else {
+                
+            }
+        },
+        error: function (error) {
+            console.error('Error deleting item: ' + error);
+        }
+    });
+}
+
+	</script>
+
+	
+
+	<script>
+
+	
+
+
 
 
 		function changeQuantity(Stock, tPrice, price, cartId, proId, count) {
@@ -448,8 +486,10 @@
 			const changeQElement = document.getElementById(proId + "quantity");
 			const changeQ = changeQElement.textContent;
 			count = parseInt(count)
-			console.log('hai', Stock, tPrice, price, cartId, proId, count)
+			
 
+			if(changeQ <= 1 && count === -1) return
+			
 			$.ajax({
 				url: '/changeProuductQuantity',
 
@@ -519,7 +559,26 @@
 				}
 			});
 		}
+	
 	</script>
+
+  
+	<script>
+		
+    $(document).ready(function () {
+        if ({{cartEmpty}}) {
+            Swal.fire({
+                title: 'No Products in Cart',
+                icon: 'info',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#88c8bc',
+            }).then(() => {
+                
+                window.location.href = '/home';
+            });
+        }
+    });
+</script>
 
 	 <script>
 	function checkout(){

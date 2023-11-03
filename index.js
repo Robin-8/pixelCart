@@ -10,7 +10,7 @@ const exphbs = require('express-handlebars');
 const helpers = require('./helpers/handleBarHelper'); // Include the helpers module
 
 const config = require("./config/config");
-const mongooseDb = require('../config/connection');
+const mongooseDb = require('./config/connection');
 
 mongooseDb();
 
@@ -45,12 +45,8 @@ hbs.registerHelper('selectSecond', function (array) {
   // Handle the case where the array is empty or not an array
   return array;
 });
-hbs.registerHelper('selectFirst', function (array) {
-  if (Array.isArray(array) && array.length > 0) {
-    return array[0];
-  }
-  // Handle the case where the array is empty or not an array
-  return array;
+hbs.registerHelper('isDisabled', (quantity) => {
+  return quantity <= 0 ? 'disabled' : '';
 });
 hbs.registerHelper('selectFirst', function (array) {
   if (Array.isArray(array) && array.length > 0) {
@@ -59,6 +55,16 @@ hbs.registerHelper('selectFirst', function (array) {
   // Handle the case where the array is empty or not an array
   return array;
 });
+hbs.registerHelper('selectFirst', function (array) {
+  if (Array.isArray(array) && array.length > 0) {
+    return array[0];
+  }
+  // Handle the case where the array is empty or not an array
+  return array;
+});
+hbs.registerHelper('isArrayEmpty',function(array){
+  return array.length ===0
+})
 
 hbs.registerHelper('formatPrice', function (price) {
   return (

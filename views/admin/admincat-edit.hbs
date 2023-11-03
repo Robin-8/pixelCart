@@ -50,10 +50,7 @@
 						</div>
 						<div class="col-sm-5 col-md-3">
 			            <form action="#" class="search-wrap">
-			               <div class="form-group">
-			                  <input type="search" class="form-control search" placeholder="Search">
-			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
-			               </div>
+			               
 			            </form>
 			         </div>
 		         </div>
@@ -89,12 +86,16 @@
     
     <h2 class="text-center">Edit Catgory</h2>
 
-<form action="/admin/admincat-edit/{{categories._id}}" method="POST">
+<form action="/admin/admincat-edit/{{categories._id}}" method="POST" onsubmit="return validateForm()"
+ id="categoryForm">
   <label for="">Name</label>
-  <input type="text" name="name" value="{{categories.name}}" class="form-control">
+  <input type="text" name="name" value="{{categories.name}}" class="form-control" id="category_name">
+  <p id="categoryNameError" class="error-message" style="color: red;"></p>
 
-  <label for="">Description</label>
-  <input type="text" name="description" value="{{categories.description}}" class="form-control">
+  <label for="description">Description</label>
+<textarea name="description" class="form-control" id="description"></textarea>
+<p id="descriptionError" class="error-message" style="color: red;"></p>
+
 
   <button type="submit" class="btn btn-success mt-4">Submit</button>
 </form>
@@ -107,3 +108,55 @@
 
 
 </section>
+
+<script>
+            function validateForm() {
+                const categoryname = document.getElementById('category_name').value;
+                const description = document.querySelector('textarea[name="description"]').value;
+   
+                const categoryNameError = document.getElementById('categoryNameError');
+                const descriptionError = document.getElementById('descriptionError');
+
+
+                categoryNameError.textContent = '';
+                descriptionError.textContent = '';
+          
+
+                const maxNameLength = 70;
+                const maxDescriptionLength = 150;
+                const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif'];
+             
+
+                let isValid = true;
+
+                if (categoryname.trim() === '') {
+                    categoryNameError.textContent = 'Category Name is required.';
+                    isValid = false;
+                } else if (categoryname.length > maxNameLength) {
+                    categoryNameError.textContent = 'Category Name must not exceed ' + maxNameLength + ' characters.';
+
+                    isValid = false;
+                } else if (!categoryname.match(/^[a-z ,.'-]+$/i)) {
+                    categoryNameError.textContent = 'Category name should not include special characters';
+                    isValid = false;
+                }
+
+                if (description.trim() === '') {
+                    descriptionError.textContent = 'Description is required.';
+                    isValid = false;
+                } else if (description.length > maxDescriptionLength) {
+					descriptionError.textContent = 'Description must not exceed ' + maxDescriptionLength + ' characters.';
+
+                    isValid = false;
+                } else if (!description.match(/^[a-z ,.'-]+$/i)) {
+                    descriptionError.textContent = 'Description should not include special characters'
+                    isValid = false
+                }
+                if (!isValid) {
+                    return false;
+                }
+                return true;
+            }
+        </script>
+       
+

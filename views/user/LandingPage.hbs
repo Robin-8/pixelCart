@@ -40,7 +40,7 @@
         </div>
         {{#each products}}
         <div class="product product-1">
-          <figure> <img src="/product-images/{{this.Images}}" alt="product-image" style="width: 210px; height: 250px;">
+          <figure> <img src="/product-images/{{selectFirst this.Images}}" alt="product-image" style="width: 210px; height: 250px;">
             <figcaption>{{this.Name}}</figcaption>
             <figcaption>₹{{this.Price}}</figcaption>
           </figure>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+	<title>Camera Shutter</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -93,7 +93,7 @@
 
 								<li><a href="about.html" style="color: black;">About</a></li>
 								<li><a href="contact.html" style="color: black;">Contact</a></li>
-								<li class="cart"><a href="/carts"><i class="icon-shopping-cart"></i> Cart [0]</a></li>
+								<li class="cart"><a href="/carts"><i class="icon-shopping-cart"></i> Cart </a></li>
 							</ul>
 						</div>
 					</div>
@@ -135,13 +135,17 @@
 		</div>
 
 
-		<div class="colorlib-product">
+		<div class="colorlib-product pt-0">
 			<div class="container">
-				<div class="row row-pb-lg">
-					
-				</div>
-				{{#each address}}
-				<div class="col-lg-4 mb-3">
+
+				<div class="row">
+					<div class="col-lg-8">
+						<form action="/addAddress" method="get" class="colorlib-form">
+							<h2>Billing Details</h2>
+							<div class="row">
+								<div class="col-md-12">
+									{{#each address}}
+				<div class="mb-3">
 					<div style="background-color: rgba(238, 235, 235, 0.829); color: rgb(44, 39, 39);"
 						class="form-check h-100 border rounded-3">
 						<div class="p-2">
@@ -166,103 +170,14 @@
 				</div>
 				{{/each}}
 
-
-				<div class="row">
-					<div class="col-lg-8">
-						<form action="/addNewAddress" method="post" class="colorlib-form">
-							<h2>Billing Details</h2>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="country">Select Country</label>
-										<div class="form-field">
-											<i class="icon icon-arrow-down3"></i>
-											<select name="people" id="people" class="form-control">
-												<option value="#">Select country</option>
-												<option value="#">Alaska</option>
-												<option value="#">China</option>
-												<option value="#">Japan</option>
-												<option value="#">Korea</option>
-												<option value="#">Philippines</option>
-											</select>
-										</div>
-									</div>
 								</div>
-
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="fname">First Name</label>
-										<input type="text" name="fname" id="fname" class="form-control"
-											placeholder="Your firstname">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="lname">Last Name</label>
-										<input type="text" name="lname" id="lname" class="form-control"
-											placeholder="Your lastname">
-									</div>
-								</div>
-
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="fname">Street Address</label>
-										<input type="text" name="address1" id="address1" class="form-control"
-											placeholder="House No and Street Id">
-									</div>
-									<div class="form-group">
-										<input type="text" name="address2" id="address2" class="form-control"
-											placeholder="Apartment, suite, unit etc: (optional)">
-									</div>
-								</div>
-
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="companyname">Town/City</label>
-										<input type="text" name="towncity" id="towncity" class="form-control"
-											placeholder="Town or City">
-									</div>
-								</div>
-
-
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="lname">Zip/Postal Code</label>
-										<input type="text" name="pincode" id="pincode" class="form-control"
-											placeholder="Zip / Postal">
-									</div>
-								</div>
-
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="email">E-mail Address</label>
-										<input type="text" name="email" id="email" class="form-control"
-											placeholder="Enter Your Email">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="mobile">Phone Number</label>
-										<input type="text" id="mobile" name="mobile" class="form-control"
-											placeholder="Enter the Number">
-									</div>
-								</div>
-
 								<div class="col-md-12">
 									<div class="form-group">
 										<!-- Add a submit button here -->
 										<button type="submit" class="btn btn-primary">Add Address</button>
 									</div>
 								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<div class="radio">
-											<label><input type="radio" name="optradio"> Create an Account? </label>
-											<label><input type="radio" name="optradio"> Ship to different
-												address</label>
-										</div>
-									</div>
-								</div>
+								
 							</div>
 						</form>
 						<div>
@@ -305,7 +220,7 @@
 										<li><span>Wallet Amount</span>
 											<p class="mb-2 text-danger fw-bold" style="padding-left: 14%;">
 												{{this.wallet.balance}}</p>
-										<li><span></span>
+										<li><span>Discount</span>
 											<p class="mb-2 text-danger fw-bold" id="discount"
 												style="padding-left: 14%;">{{this.discount}}</p>
 										<li><span>Order Total</span>
@@ -462,7 +377,7 @@
 				<div class="container">
 					<div class="row row-pb-md">
 						<div class="col footer-col colorlib-widget">
-							<h4>About Footwear</h4>
+							<h4>About Camera</h4>
 							<p>Even the all-powerful Pointing has no control about the blind texts it is an almost
 								unorthographic life</p>
 							<p>
@@ -640,10 +555,10 @@
 						const total = parseInt(document.getElementById('totalValue').innerText);
 
 
-						const discount = parseInt(document.getElementById('discount').value)
+						const discount = parseInt(document.getElementById('discount').textContent)
 
 						console.log(total, response.discount, discount)
-						document.getElementById('discount').innerContent = discount + parseInt(response.discount);
+						document.getElementById('discount').innerContent =  parseInt(response.discount);
 						document.getElementById('totalValue').innerText = total - parseInt(response.discount)
 
 						const tot = parseInt(document.getElementById('totalValue').innerHTML);
@@ -840,13 +755,7 @@
 
 <script>
 
-	{
-		{
-			!-- function getCouponData(buttonElement) {
-				var data = buttonElement.getAttribute("data-id");
-				console.log(data)
-			} --}
-	}
+	
 
 	const couponBtns = document.querySelectorAll('#coupon-btn')
 	couponBtns.forEach((btn, index) => {

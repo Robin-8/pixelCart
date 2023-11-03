@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link href="https://unpkg.com/ionicons@4.2.2/dist/css/ionicons.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/stylesheets/signupstyle.css">
-    <title>Slider Form</title>
+    <title>Login Form</title>
 </head>
 
 <body>
@@ -67,7 +67,7 @@
                 document.getElementById("emailError").textContent = "";
             }
 
-            // Password length condition (minimum 3, maximum 8 characters)
+          
             if (passwordValue.length < 3 || passwordValue.length > 8) {
                 document.getElementById("passwordError").textContent = "Password must be between 3 and 8 characters.";
                 return false;
@@ -82,13 +82,13 @@
     var mobileInput = document.getElementById("mobileNumber");
     var mobileValue = mobileInput.value;
 
-    // Remove non-digit characters
+ 
     var digitsOnly = mobileValue.replace(/\D/g, "");
 
-    // Check if there are at least 6 different numbers
+  
     var uniqueNumbers = new Set(digitsOnly);
-    if (uniqueNumbers.size < 6) {
-        document.getElementById("mobileError").textContent = "Please enter at least 6 different digits in your mobile number.";
+    if (uniqueNumbers.size < 5) {
+        document.getElementById("mobileError").textContent = "Please enter a valid digits in your mobile number.";
         return false;
     } else {
         document.getElementById("mobileError").textContent = "";

@@ -129,6 +129,7 @@ background-color: #ddd;
                     <th scope="col">Price</th>
                     <th>Status</th>
                     <th>Payment</th>
+					<th>Name</th>
 					<th>Images</th>
                     <th>Cancel</th>
                 </tr>
@@ -140,9 +141,10 @@ background-color: #ddd;
                     <td>{{this.totalPrice}}</td>
                     <td>{{this.status}}</td>
                     <td>{{this.payment}}</td>
-					<td> {{#each this.products}}
-                         <img src="/product-images/{{product.Images}}" alt="{{this.product.Name}}" style="max-width: 100px; max-height: 100px;">
-                          {{/each}}</td>
+					<td>{{this.productDetails.[0].Name}}</td>
+					<td> 
+                         <img src="/product-images/{{this.productDetails.[0].Images.[0]}}" alt="{{this.product.Name}}" style="max-width: 60px; max-height: 60px;">
+                         </td>
                     <td>
      
                       <button class="btn btn-danger" onclick="cancelOrder('{{this._id}}')">Cancel</button>

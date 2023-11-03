@@ -1,7 +1,14 @@
+const userHelper =require('../helpers/user-helpers')
+
+
 const isLogin = async (req, res, next) => {
     try {    
         if (req.session && req.session.user._id) {
-            
+            const user = await userHelper.getUserById(req.session.user._id)
+            if(user.Blocked){
+                req.session.user = null
+                return res.redirect('/login')
+            }
             next(); // If the user is logged in, proceed to the next middleware or route handler
         } else {
             res.redirect('/login'); // If the user is not logged in, redirect them to the login page
@@ -23,6 +30,8 @@ const isLogout = async (req, res, next) => {
         console.log(error.message);
     }
 };
+
+
 
 module.exports = {
     isLogin,
