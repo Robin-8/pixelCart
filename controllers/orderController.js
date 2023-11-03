@@ -84,6 +84,7 @@ const checkOut = async (req, res) => {
         const user = await User.findById(userId);
         
         const cart = await Cart.findOne({ user: userId })
+        
 
         if(req.body.isWalletUsed){
             const wallet = await Wallet.findOneAndUpdate({userId:user._id},{balance:0})

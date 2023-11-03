@@ -85,6 +85,12 @@ hbs.registerHelper('eq', function (a, b) {
 hbs.registerHelper('lt', function (a, b) {
   return parseInt(a) < parseInt(b);
 });
+hbs.registerHelper('unless', function (condition, options) {
+  if (!condition) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
 hbs.registerHelper('sub', function (a, b) {
   return parseInt(a) - parseInt(b);
 });

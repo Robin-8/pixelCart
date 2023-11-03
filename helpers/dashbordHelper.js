@@ -5,7 +5,7 @@ const Category = require('../models/categoryModel')
 
 
 const getOrdertotal = async () => {
-    console.log('getOrdertotal at hpr');
+ 
     try {
   
   
@@ -210,7 +210,7 @@ const getOrdertotal = async () => {
         }
         
       ])
-      console.log(data,'data hererrrrrrrr');
+      
       return data;
       
     } catch (error) {

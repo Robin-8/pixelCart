@@ -606,7 +606,9 @@
 
 			
 			function placeOrder() {
+				let originalTotal = parseFloat('{{this.total}}');
 				let isWalletUsed = document.getElementById('checkbox').checked;
+				console.log('hhhhhhhhhhhhhh',isWalletUsed)
 				localStorage.removeItem('discountAmount')
 				if (isWalletUsed) {
                 totalValue = originalTotal;
@@ -717,13 +719,13 @@
 			function walletRadioClick(radioButton) {
 				document.getElementById('checkbox').disabled=true
 				let originalTotal = parseFloat('{{this.total}}');
-				const totalElement = document.getElementById('totalValue');
-				const total = parseFloat(totalElement.textContent);
+				let totalElement = document.getElementById('totalValue');
+				let total = parseFloat(totalElement.textContent);
 				let lastTotal = total;
-				console.log('total====', total);
+				
 
-				const wallet = parseFloat('{{this.wallet.balance}}');
-				const useWalletButton = document.getElementById('useWallet'); 
+				let wallet = parseFloat('{{this.wallet.balance}}');
+				let useWalletButton = document.getElementById('useWallet'); 
 			
 				if (radioButton.checked) {
 					if (originalTotal < wallet) {
