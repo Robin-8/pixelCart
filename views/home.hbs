@@ -33,7 +33,7 @@
                         <a class="nav-link text-warning" href="#">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-warning" href="#">Cart</a>
+                        <a class="nav-link text-warning" href="/addToCart">Cart</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-warning" href="#">Contact</a>
@@ -58,15 +58,16 @@
                     <div class="container">
                         <div class="row py-3">
 
-                            {{#each CameraProduct}}
+                            {{#each products}}
                              <div class="col-lg-3 col-sm-6 mt-3">
                                 <a href="/productdetails/{{this._id}} " >
                                     <div class="card">
-                                        <img src="/product-images/{{this._id}}.jpg" alt="product-image"  style="width: 200px; height: 250px;"
+                                        <img src="/product-images/{{this.Images}}" alt="product-image"  style="width: 200px; height: 250px;"
                                             class="img-fluid mx-auto d-block" alt="img">
                                         <div class="card-body text-center">
                                             <h5 class="card-title">{{this.Name}}</h5>
                                             <p class="card-text">₹{{this.Price}}</p>
+                                            
                                         </div>
                                     </div>
                                 </a>
@@ -74,37 +75,6 @@
 
                             {{/each}}<br><br>
 
-                            {{#each ActionCameraProduct}}
-                            <div class="col-lg-3 col-sm-6 mt-3">
-                                <a href="/productdetails/{{this._id}} " >
-                                    <div class="card">
-                                        <img src="/product-images/{{this._id}}.jpg" alt="product-image"  style="width: 200px; height: 250px;"
-                                            class="img-fluid mx-auto d-block" alt="img">
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title">{{this.Name}}</h5>
-                                            <p class="card-text">₹{{this.Price}}</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-
-                            {{/each}}<br><br>
-
-
-                            {{#each SurveillanceCameraProduct}}
-                            <div class="col-lg-3 col-sm-6 mt-3">
-                              <a href="/productdetails/{{this._id}} " >
-                                <div class="card">
-                                    <img src="/product-images/{{this._id}}.jpg" alt="product-image"  style="width: 200px; height: 250px;"
-                                        class="img-fluid mx-auto d-block" alt="img">
-                                    <div class="card-body text-center">
-                                        <h5 class="card-title">{{this.Name}}</h5>
-                                        <p class="card-text">₹{{this.Price}}</p>
-                                    </div>
-                                </div>
-                                </a>
-                            </div>
-                             {{/each}}
                         </div>
                     </div>
                 </section>

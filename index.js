@@ -4,18 +4,23 @@ const express = require("express");
 const app = express();
 const session = require("express-session");
 const nocache=require('nocache');
-const fileUpload = require('express-fileupload');
 
 const config = require("./config/config");
+const mongooseDb = require('../config/connection') 
+
+mongooseDb()
 
 app.use(session({ secret: config.sessionSecret, saveUninitialized: true, resave: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
+
 app.use(nocache());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(fileUpload());
 app.set('view engine', 'hbs');
 
 

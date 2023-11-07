@@ -10,7 +10,7 @@
           <a class="nav-link active" aria-current="page" href="/admin">All Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">All Orders</a>
+          <a class="nav-link" href="/admin/allCategory">All Category</a>
         </li>
       
          <li class="nav-item">
@@ -23,62 +23,40 @@
     
     </div>
       <div class="d-flex justify-content-end">
-      <form class="d-flex ml-5 " role="search">
+      {{!-- <form class="d-flex ml-5 " role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      </form> --}}
       </div>
   </div>
 </nav>
 
 
+
 <section>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6">
+        <h2 class="text-center">Add Product</h2>
+        <form action="/admin/add-product" method="POST" enctype="multipart/form-data">
+          <label for="Name">Name</label>
+          <input type="text" name="Name" class="form-control">
 
-<div class="container mt-4">
+          <label for="Category">Category</label>
+          <input type="text" name="Category" class="form-control">
 
-<div class="row">
+          <label for="Price">Price</label>
+          <input type="text" name="Price" class="form-control">
 
-<div class="col-md-6">
-    
-    <h2 class="text-center">Add Product</h2>
+          <label for="Description">Description</label>
+          <input type="text" name="Description" class="form-control">
 
-<form action="/admin/add-product"method="POST" enctype="multipart/form-data" >
-<label for="">Name</label>
- <input type "text" name="Name" class="form-control">
+          <label for="Images">Images</label>
+          <input type="file" name="Images" class="form-control" id="product_image"  multiple/>
 
-<label for="">Category</label>
-{{!-- <input type="text" name="Category" class="form-control"> --}}
-<select name="Category" class="form-control">
-  <option value="Camera">Camera</option>
-  <option value="ActionCamera">ActionCamera</option>
-  <option value="SurveillanceCamera">SurveillanceCamera</option>
-  {{!-- <option value="SurveillanceCamera">SurveillanceCamera</option> --}}
-  <!-- Add more options as needed -->
-</select>
-
-<label for="">Price</label>
-<input type="text" name="Price" class="form-control">
-
-<label for="">Description</label>
-<input type="text" name="Description" class="form-control">
-
-
-
-{{!-- <label for="">Images</Label>
-<input type="file" name="Images[]" class="form-control" > --}}
-
- <label for="images">Images</label>
-  <input type="file" name="images[]" id="images" class="form-control" multiple>
-
-
-
-<button type="submit" class="btn btn-success mt-4">Submit</button>
-
-</form>
-
-</div>
-</div>
-</div>
-
-
+          <button type="submit" class="btn btn-success mt-4">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </section>

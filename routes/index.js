@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const cartController = require('../controllers/cartController');
+
+router.use(express.static('public'))
 
 router.get('/',userController.landingPage)
 
@@ -17,5 +20,9 @@ router.get('/home',userController.home)
 router.get('/logout',userController.logout)
 
 router.get('/productdetails/:id',userController.getProductDetails)
+
+router.get('/addToCart/:id',cartController.CartManeagement)
+
+
 
 module.exports = router;

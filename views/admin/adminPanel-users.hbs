@@ -13,6 +13,10 @@
         <li class="nav-item">
           <a class="nav-link" href="#">All Orders</a>
         </li>
+         <li class="nav-item">
+          <a class="nav-link" href="/admin/allCategory">All Category</a>
+        </li>
+      
       
          <li class="nav-item">
           <a class="nav-link" href="/admin/allUsers">All Users</a>
@@ -60,19 +64,33 @@
       <td>{{this.Blocked}} </td>
     
     
-     
-        <td>
-          {{!-- <button class="btn btn-primary btn-sm btn-block" onclick="window.location.href='/admin/adminedituser?userId={{this._id}}'">edit</button> --}}
-    <button class="btn btn-danger btn-sm btn-block" onclick="window.location.href='/admin/admindeleteuser?userId={{this._id}}'">delete</button>
-    
-    {{#if this.Blocked}}
-    <button class="btn btn-success btn-sm btn-block" onclick="window.location.href='/admin/adminUn_block_user?userId={{this._id}}'">Un_block</button></td>
-    {{else}}
-    <button class="btn btn-warning btn-sm btn-block"  onclick="window.location.href='/admin/adminblock_user?userId={{this._id}}'">block</button>
-    {{/if}}
+      <td>
+      {{#if this.Blocked}}
+        <button class="btn btn-success btn-sm btn-block" onclick="window.location.href='/admin/adminUn_block_user?userId={{this._id}}'">Un_block</button>
+      {{else}}
+        <button class="btn btn-warning btn-sm btn-block" onclick="confirmBlock('{{this._id}}')">block</button>
+      {{/if}}
+    </td>
   </tr>
-    </tr>
-    {{/each}}
+{{/each}}
+
+<script>
+  function confirmBlock(userId) {
+    const confirmed = confirm("Are you sure you want to block this user?");
+    if (confirmed) {
+      window.location.href = '/admin/adminblock_user?userId=' + userId;
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+
    
   </tbody>
 </table>

@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/stylesheets/productdetailspage.css">
     <link href="css/style.css" rel="stylesheet" />
-    <style> .sp-iphone-banner { background-image: url(/product-images/{{product._id}}.jpg);}</style>
+    <style> .sp-iphone-banner { background-image: url(/product-images/{{product.Images}});}</style>
 
     <title> </title>
 </head>
@@ -30,7 +30,7 @@
             <section class="sp-product-details">
                 <div class="sp-product-image sp-show" id="space-gray">
                     <div class="sp-product-image-container">
-                             <img src="/product-images/{{product._id}}.jpg" alt="product-image"  style="width:470px; height: 556px;" class="img-fluid mx-auto d-block" alt="img">
+                             <img src="/product-images/{{product.Images}}" alt="product-image"  style="width:470px; height: 556px;" class="img-fluid mx-auto d-block" alt="img">
                     </div>
                 </div>
                 <div class="sp-product-selection">
@@ -39,7 +39,7 @@
                     <div class="sp-variations-selection sp-finish-selection">
                         <h3 class="sp-section-subtitle"> {{product.Description}}</h3>
                     </div>
-                    <a href="/addToCart/{{product._id}}">
+                    <a href="/addToCart/{{this._id}}">
                      <button class="sp-primary-button">
                         Add To Cart 
                     </button></a>

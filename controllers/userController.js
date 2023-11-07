@@ -1,5 +1,6 @@
-const productHelpers = require("../helpers/product-helpers")
+const Category = require("../models/categoryModel")
 const userHelper = require("../helpers/user-helpers")
+const  productHelpers = require('../helpers/product-helpers')
 
 // twilio otp
 const accountSid = "AC270df992da52b5449497119dc18e587e";
@@ -10,25 +11,20 @@ const client = require("twilio")(accountSid, authToken);
 const landingPage = async (req, res) => {
   try {
     if (req.session.user) {
-      res.redirect('/home')
+      res.redirect('/home');
+      return;
     }
-    const promises = [
-      productHelpers.getCamera_Products(),
-      productHelpers.getActionCamera_Products(),
-      productHelpers.getSurveillanceCamera_Products()
-    ];
 
-    Promise.all(promises)
-      .then(([CameraProduct, ActionCameraProduct, SurveillanceCameraProduct]) => {
-        res.render('LandingPage', { CameraProduct, ActionCameraProduct, SurveillanceCameraProduct });
-      })
-      .catch((error) => {
-        console.log('Failed to retrieve products:', error);
-      });
+    // Fetch all products
+    productHelpers.getAllproducts((products) => {
+      res.render('LandingPage', { products });
+    });
   } catch (error) {
-    console.log(error.message);
+    console.log('Error in landingPage:', error.message);
+    res.render('LandingPage', { products: [] });
   }
 };
+
 // to send verification code
 const verify = async (req, res) => {
   try {
@@ -133,32 +129,20 @@ const logout = async (req, res) => {
 
 const home = async (req, res) => {
   try {
-    try {
-      if (req.session.user ) {
-        const promises = [
-          productHelpers.getCamera_Products(),
-          productHelpers.getActionCamera_Products(),
-          productHelpers.getSurveillanceCamera_Products()
-        ];
-        Promise.all(promises)
-          .then(([CameraProduct, ActionCameraProduct, SurveillanceCameraProduct]) => {
-            console.log(SurveillanceCameraProduct);
-            res.render('home', { CameraProduct, ActionCameraProduct, SurveillanceCameraProduct });
-          })
-          .catch((error) => {
-            console.log('Failed to retrieve products:', error);
-          });
-      }
-    } catch (err) {
-      console.log(err);
-      console.log("error occured !!!!!here @get home");
-      res.redirect('/login');
+    if (req.session.user) {
+      res.redirect('/home');
+      return;
     }
-  } catch (error) {
-    console.log(error.message);
-  }
-}
 
+    // Fetch all products
+    productHelpers.getAllproducts((products) => {
+      res.render('home', { products });
+    });
+  } catch (error) {
+    console.log('Error in landingPage:', error.message);
+    res.render('home', { products: [] });
+  }
+};
 const getProductDetails = async (req, res) => {
   try {
     const id = req.params.id

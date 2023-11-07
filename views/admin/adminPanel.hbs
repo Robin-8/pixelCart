@@ -9,11 +9,15 @@
     <div class="collapse navbar-collapse ml-5" id="navbarSupportedContents">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/admin/adminDashbord">Admin Dashbord</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/admin">All Products</a>
         </li>
-        {{!-- <li class="nav-item">
-          <a class="nav-link" href="#">All Orders</a>
-        </li> --}}
+     
+         <li class="nav-item">
+          <a class="nav-link" href="/admin/allCategory">All Category</a>
+        </li>
       
          <li class="nav-item">
           <a class="nav-link" href="/admin/allUsers">All Users</a>
@@ -63,24 +67,31 @@
     </tr>
   </thead>
   <tbody>
-    {{#each products}}
-    <tr>
-      {{!-- <th scope="row">{{this._id}}</th> --}}
-      <td>{{this.Name}}</td>
-      <td>{{this.Category}}</td>
-      <td>{{this.Description}}</td>
-      <td>{{this.Deleted}} </td>
-      <td>{{this.Price}} </td>
-      <td><img style="width:50px;height:50px" src="/product-images/{{this._id}}.jpg" ></td>
-        <td><a href="/admin/admineditproduct?productId={{this._id}} " class="btn btn-primary btn-sm btn-block" >Edit</a>
-    <a href='/admin/admindeleteproduct?productId={{this._id}}' class="btn btn-danger btn-sm btn-block" onclick="return confirm('Confirm to delete Product {{this.name}}')" >Delete</a></td>
-  </tr>
-    </tr>
-    {{/each}}
+   {{#each products}}
+        <tr>
+          <td>{{this.Name}}</td>
+          <td>{{this.Category}}</td>
+          <td>{{this.Description}}</td>
+          <td>{{this.Deleted}}</td>
+          <td>{{this.Price}}</td>
+        
    
-  </tbody>
-</table>
-    </div>
+          
+          <td>
+            <!-- Display the individual product image -->
+            <img style="width:50px;height:50px" src="/product-images/{{this.Images}}" alt="{{this.Name}} Image">
+          </td>
+          
+          <td>
+            <!-- Edit and Delete buttons -->
+            <a href="/admin/admineditproduct?productId={{this._id}}" class="btn btn-primary btn-sm btn-block">Edit</a>
+            <a href='/admin/admindeleteproduct?productId={{this._id}}' class="btn btn-danger btn-sm btn-block" onclick="return confirm('Confirm to delete Product {{this.Name}}')">Delete</a>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
 </section>
 
 
