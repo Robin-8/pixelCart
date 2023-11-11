@@ -110,7 +110,7 @@ function generatePdfTemplate(props) {
                         <td>${index + 1}</td>
                         <td>${order.createdOn.toISOString().split('T')[0]}</td>
                         <td>${order._id.toString().replace(/"/g, '')}</td>
-                        <td>${order.userDetails[0].email}</td>
+                        <td>${order?.userDetails[0]?.email}</td>
                         <td>${order.totalPrice}</td>
                         <td>0</td>
                         <td>${order.totalPrice}</td>

@@ -124,12 +124,14 @@
 									<div class="form-group">
 										<label for="fname">First Name</label>
 										<input type="text" name="fname" id="fname" class="form-control" placeholder="Your firstname" required>
+										 <div id="fnameError"  style="color: red;" ></div>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="lname">Last Name</label>
 										<input type="text" name="lname" id="lname" class="form-control" placeholder="Your lastname" required>
+										 <div id="lnameError"  style="color: red;" ></div>
 									</div>
 								</div>
 
@@ -137,9 +139,11 @@
 									<div class="form-group">
 										<label for="fname">Street Address</label>
 			                    	<input type="text" name="address1" id="address1" class="form-control" placeholder="House No and Street Id" required>
+									 <div id="address1Error"  style="color: red;" ></div>
 			                  </div>
 			                  <div class="form-group">
 			                    	<input type="text" name="address2" id="address2" class="form-control" placeholder="Apartment, suite, unit etc: (optional)" required>
+									 <div id="address2Error"  style="color: red;" ></div>
 			                  </div>
 			               </div>
 			            
@@ -147,6 +151,7 @@
 									<div class="form-group">
 										<label for="companyname">Town/City</label>
 			                    	<input type="text" name="towncity" id="towncity" class="form-control" placeholder="Town or City" required>
+									 <div id="towncityError"  style="color: red;" ></div>
 			                  </div>
 			               </div>
 			            
@@ -155,6 +160,7 @@
 									<div class="form-group">
 										<label for="lname">Zip/Postal Code</label>
 										<input type="text" name="pincode" id="pincode" class="form-control" placeholder="Zip / Postal" required>
+										 <div id="pincodeError"  style="color: red;" ></div>
 									</div>
 								</div>
 							
@@ -162,12 +168,14 @@
 									<div class="form-group">
 										<label for="email">E-mail Address</label>
 										<input type="text" name="email" id="email" class="form-control" placeholder="Enter Your Email" required>
+										 <div id="emailError"  style="color: red;" ></div>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="mobile">Phone Number</label>
 										<input type="text" id="mobile" name="mobile" class="form-control" placeholder="Enter the Number" required>
+										 <div id="mobileError"  style="color: red;" ></div>
 									</div>
 								</div>
 
@@ -290,15 +298,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="/js/jquery.stellar.min.js"></script>
 	<!-- Main -->
 	<script src="/js/main.js"></script>
-
-	<script>
+<script>
     function trimInput(input) {
         return input.trim();
     }
 
-    // Function to validate the form
+  
     function validateForm() {
-        // Get form inputs by their IDs
+     
         var fname = document.getElementById("fname").value;
         var lname = document.getElementById("lname").value;
         var address1 = document.getElementById("address1").value;
@@ -307,7 +314,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         var email = document.getElementById("email").value;
         var mobile = document.getElementById("mobile").value;
 
-        // Trim input values
+       
         fname = trimInput(fname);
         lname = trimInput(lname);
         address1 = trimInput(address1);
@@ -316,7 +323,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         email = trimInput(email);
         mobile = trimInput(mobile);
 
-        // Check if any required field is empty
+        
         if (
             fname.trim() === "" ||
             lname.trim() === "" ||
@@ -326,26 +333,51 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             email.trim() === "" ||
             mobile.trim() === ""
         ) {
-            alert("Please fill in all required fields.");
+            // Display error messages using error IDs
+            document.getElementById("fnameError").innerText = "Please enter your first name.";
+            document.getElementById("lnameError").innerText = "Please enter your last name.";
+            document.getElementById("address1Error").innerText = "Please enter your street address.";
+            document.getElementById("towncityError").innerText = "Please enter your town/city.";
+            document.getElementById("pincodeError").innerText = "Please enter your zip/postal code.";
+            document.getElementById("emailError").innerText = "Please enter your email address.";
+            document.getElementById("mobileError").innerText = "Please enter your phone number.";
             return false;
         }
 
         // Mobile number validation (at least 6 different digits)
         if (!isValidMobileNumber(mobile)) {
-            alert("Please enter a valid mobile number with at least 6 different digits.");
+            // Display error message for mobile number
+            document.getElementById("mobileError").innerText = "Please enter a valid mobile number";
             return false;
         }
 
-        return true; // Form is valid
+        // Pincode validation (only numbers allowed)
+        if (!/^\d+$/.test(pincode)) {
+            // Display error message for pincode
+            document.getElementById("pincodeError").innerText = "Please enter only numbers for the zip/postal code.";
+            return false;
+        }
+
+        // Form is valid, clear any previous error messages
+        clearErrorMessages();
+        return true;
     }
 
     // Function to validate a mobile number (at least 6 different digits)
     function isValidMobileNumber(number) {
         if (/^\d+$/.test(number)) {
             var uniqueDigits = new Set(number); // Use a Set to track unique digits
-            return uniqueDigits.size >= 6; // Ensure at least 6 unique digits
+            return uniqueDigits.size >= 5; // Ensure at least 6 unique digits
         }
         return false;
+    }
+
+    // Function to clear error messages
+    function clearErrorMessages() {
+        var errorIds = ["fnameError", "lnameError", "address1Error", "towncityError", "pincodeError", "emailError", "mobileError"];
+        for (var i = 0; i < errorIds.length; i++) {
+            document.getElementById(errorIds[i]).innerText = "";
+        }
     }
 
     // Attach the validateForm function to the form's onsubmit event

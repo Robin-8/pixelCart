@@ -140,15 +140,42 @@ h1{
 <body>
     <h1>Create Category Offer</h1>
   
-    <form action="/admin/categoryoffer" method="post">
+    <form action="/admin/categoryoffer" method="post" onsubmit="return validateForm()">
 
         <label for="discountPercentage">Discount Percentage:</label>
         <input type="number" id="discountPercentage" name="discountPercentage" required><br><br>
+		 <p id="discountError" class="error-message" style="color: red;"></p>
          <input  type="hidden" name="product" value="{{category._id}}">
        <input type="submit" value="Create Offer" class="light-green-button">
 
 
     </form>
-   
+
+	<script>
+                function validateForm() {
+                    var discountPercentage = document.getElementById('discountPercentage').value;
+                    var discountError = document.getElementById('discountError');
+
+
+                    if (discountPercentage === "" || isNaN(discountPercentage) || discountPercentage < 0) {
+                        discountError.innerText = "Please enter a valid positive number for Discount Percentage.";
+                        return false;
+                    }
+
+                    var maxDiscount = 100; 
+                    var minDiscount = 0; 
+
+                 
+                    if (discountPercentage > maxDiscount || discountPercentage < minDiscount) {
+                        discountError.innerText = "Discount Percentage must be between " + minDiscount + " and " + maxDiscount + ".";
+                        return false;
+                    }
+
+                    discountError.innerText = "";
+
+                    return true;
+                }
+            </script>
+    
 </body>
 </html>

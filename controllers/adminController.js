@@ -259,7 +259,7 @@ const adminEditProduct = async (req, res) => {
 const adminAddProductPage = async (req, res) => {
   try {
     const categories = await categoryHelper.getAllCategories()
-    console.log(categories,'cat===');
+    
 
     res.render('admin/add-product',{categories})
   }
@@ -334,13 +334,14 @@ const createOffer = async (req, res) => {
 
         const productData = await Product.findById(product);
 
-        // Calculate the discount amount based on the discount percentage
+       
         const discount = (discountPercentage / 100) * productData.Price;
-
-        // Calculate the new offer price after the discount
+       
+        
         const offerPrice = productData.Price - discount;
+        
 
-        // Store the offer price in the product document
+      
         productData.OfferPrice = offerPrice;
         await productData.save();
 
@@ -354,9 +355,9 @@ const createOffer = async (req, res) => {
 const addOfferCategory = async(req,res)=>{
   try {
     const id = req.query.id;
-    console.log(id,'id is here====');
+   
     const category = await Category.findById(id)
-    console.log(category,'category is here===');
+   
     res.render('admin/adiminCatOffer', { category })
   } catch (error) {
     console.log(error,'cannot create cat offer');
@@ -368,37 +369,24 @@ const applyOfferToCategory = async (req, res) => {
     const id = req.body.product;
     const category = await Category.findById(id);
 
-    console.log(category, 'id is here====/////');
+   
 
     const productsInCategory = await Product.find({ Category: category.name });
-    console.log(productsInCategory, 'products here////////');
+   
 
     const discountPercentage = req.body.discountPercentage;
-    console.log('this is product discount ', discountPercentage);
+   
 
     for (const product of productsInCategory) {
       const discountedPrice = product.Price - (discountPercentage / 100) * product.Price;
-      product.OfferPrice = discountedPrice;
-
-      // Use a try-catch block to handle errors for individual products
-      try {
-        const newPrice = discountedPrice.toFixed(2);
-        product.Price = newPrice;
-        await product.save();
-        console.log('-------------------this id ', product, '-------------');
-      } catch (error) {
-        console.error('Error updating product:', error);
-        // You can choose to continue with the loop or break it on error
-        // Continue with the loop for other products
-        continue;
-      }
+      product.OfferPrice = discountedPrice.toFixed(0);
+      await product.save();
     }
-
-    console.log('???????????????????????????????????????????????????????????????????????');
+   
     res.redirect('/admin/allCategory');
-    console.log('this is updated ');
+
   } catch (error) {
-    console.log('///////////////////////////////////');
+   
     return res.status(500).json({ message: "Internal server error" });
   }
 };

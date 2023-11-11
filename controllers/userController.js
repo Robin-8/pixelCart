@@ -10,8 +10,8 @@ const bannerHelper = require("../helpers/bannerHelper")
 
 
 const accountSid = "AC270df992da52b5449497119dc18e587e";
-const authToken = "524920901fca86b6b704297c2c78c0a5";
-const verifySid = "VAfd550d640b6494827f4e6879f08c66f1";
+const authToken = "9ff158b0144bfb8f613e94e70eb39430";
+const verifySid = "VA9efa6a14be52fe0b3bbbff56a5e78a19";
 const client = require("twilio")(accountSid, authToken);
 
 const landingPage = async (req, res) => {

@@ -26,13 +26,15 @@
                 <p class="text-white">Invalid UserName or Password</p>
                 {{/if}}
                 <h1>Log In</h1>
-                <input type="email" name="email" id="email" placeholder="Email">
+                <input type="email" name="email" id="floatingInput" placeholder="Email">
                 <div id="emailError" style="color: red;"></div>
                 <input type="password" name="password" id="password" placeholder="Password">
                 <div id="passwordError" style="color: red;"></div>
                 <button>Log In</button>
+                 <a href="#" id="myLink">Forgot password</a>
             </form>
         </div>
+        <p id="verificationMessage" style="color: green;"></p>
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
@@ -44,16 +46,47 @@
                     <h1>Get Started</h1>
                     <p>Please enter your Mobile number</p>
                     <button class="ghost" id="signUp">Sign Up</button>
-                    {{!-- <a href="/forgetpassword">Forget password</a> --}}
+                 
                 </div>
             </div>
         </div>
     </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+
+        $(document).ready(function() {
+    $('#myLink').on('click', function(event) {
+        event.preventDefault(); 
+
+       
+        var email = $('#floatingInput').val();
+
+       
+        $.ajax({
+            url: '/forgotPassword?email=' + email, 
+            method: 'GET',
+            success: function(response) {
+                
+                
+              
+                document.getElementById('alert').innerHTML = response.message
+            },
+            error: function(error) {
+                console.error('AJAX request error:', error);
+            }
+        });
+    });
+});
+    </script>
+
     <script src="/javascripts/signup.js"></script>
     <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
     <script>
         function validateEmailPassword() {
-            var emailInput = document.getElementById("email");
+            var emailInput = document.getElementById("floatingInput");
             var passwordInput = document.getElementById("password");
             var emailValue = emailInput.value;
             var passwordValue = passwordInput.value;

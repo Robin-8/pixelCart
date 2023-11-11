@@ -109,7 +109,7 @@ const allOrders = async () => {
 
 
 const getOrderDetails = async (orderId) => {
-  
+
     try {
         const orders = await Order.findById(orderId)
             .populate('products.product')
@@ -117,7 +117,7 @@ const getOrderDetails = async (orderId) => {
             .exec();
 
         if (!orders) {
-            throw new Error('Order not found'); 
+            throw new Error('Order not found');
         }
 
         return orders;
@@ -136,7 +136,7 @@ const getOrderCount = async (userId) => {
                 Order.find({ userId: userId }).then((order) => {
                     const orderCount = order.length
                     resolve(orderCount)
-                   
+
                 }).catch((err) => {
                     resolve(err, 'order not found')
                 })
@@ -149,7 +149,7 @@ const getOrders = async (userId) => {
         connectDB()
             .then(async () => {
                 const orders = await Order.find({ userId: userId })
-                    .populate('products.product') 
+                    .populate('products.product')
                     .exec()
                     .then((data) => {
 
@@ -181,16 +181,16 @@ const verifyPayment = async (details) => {
 
     return new Promise(async (resolve, reject) => {
         if (details.payment.method === 'COD') {
-        
+
             console.log("Cash on Delivery payment accepted.");
             resolve();
         } else {
-           
+
             const crypto = require('crypto');
             let hmac = await crypto.createHmac('sha256', 'pH1BfIUA8rp2D33YqG0OOYQJ');
             hmac.update(details.payment.razorpay_order_id + '|' + details.payment.razorpay_payment_id);
             hmac = hmac.digest('hex');
-        
+
 
             if (hmac === details.payment.razorpay_signature) {
                 console.log("Payment verified.");
@@ -208,7 +208,7 @@ const changePaymentStatus = async((userId) => {
             .then(() => {
                 Order.findByIdAndUpdate(userId, { $set: { status: 'placed' } })
                     .then(() => {
-                      
+
                         resolve()
                     }).catch((error) => {
                         reject(error)
@@ -244,7 +244,7 @@ const getOrder = async (orderId) => {
         connectDB()
             .then(() => {
                 Order.findById(orderId).then((order) => {
-               
+
                     resolve(order)
                 }).catch((error) => {
                     rejects(error)
@@ -257,7 +257,7 @@ const generateOrderRazorpay = (orderId, total) => {
     return new Promise((resolve, reject) => {
         console.log(typeof orderId, typeof total, orderId, total)
         const options = {
-            amount: total * 100, 
+            amount: total * 100,
             currency: "INR",
             receipt: "" + orderId
         };
@@ -300,8 +300,8 @@ const findOrderByDate = (startDate, endDate) => {
                                 from: 'users',
                                 localField: 'userId',
                                 foreignField: '_id',
-                                as: 'userDetails',
-                            },
+                                as: 'userDetails'
+                            }
                         },
                         {
                             $lookup: {
@@ -343,7 +343,7 @@ const findOrderDeliverd = () => {
     }
 }
 const findOrdersDeliveredWithProducts = async () => {
-   
+
     try {
         await connectDB();
         const data = await Order.aggregate([
@@ -369,11 +369,11 @@ const findOrdersDeliveredWithProducts = async () => {
             //   },
             // },
         ]);
-      
+
         return data;
     } catch (error) {
         console.log(error);
-        throw error; 
+        throw error;
     }
 };
 

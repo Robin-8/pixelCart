@@ -234,6 +234,7 @@ const customPDF = async (req, res) => {
     const startDate = req.query.start;
     const endDate = req.query.end;
     const allOrder = await orderHelper.findOrderByDate(startDate, endDate)
+    console.log(allOrder,'all');
     const browser = await puppeteer.launch();
     const page = await browser.newPage()
 

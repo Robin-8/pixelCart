@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<head>
+	<title>Coupon</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Rokkitt:100,300,400,700" rel="stylesheet">
-	
+
 	<!-- Animate.css -->
 	<link rel="stylesheet" href="/css/animate.css">
 	<!-- Icomoon Icon Fonts-->
@@ -26,7 +27,7 @@
 	<!-- Owl Carousel -->
 	<link rel="stylesheet" href="/css/owl.carousel.min.css">
 	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
-	
+
 	<!-- Date Picker -->
 	<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
 	<!-- Flaticons  -->
@@ -35,9 +36,10 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="/css/style.css">
 
-	</head>
-	<body>
-		
+</head>
+
+<body>
+
 	<!-- <div class="colorlib-loader"></div> -->
 
 	<div id="page">
@@ -49,104 +51,146 @@
 							<div id="colorlib-logo"><a href="index.html">Adminal Pannel</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
-			            <form action="#" class="search-wrap">
-			               
-			            </form>
-			         </div>
-		         </div>
+							<form action="#" class="search-wrap">
+
+							</form>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-sm-12 text-left menu-1">
-						<ul>
-								<li><a href="/">Admin Home</a></li>
+							<ul>
+
 								<li class="has-dropdown">
-										<li class="active"><a href="/admin">Dashboard</a></li>
-										<li class="active"><a href="/admin/productListing"> Product</a></li>
+								<li class="active"><a href="/admin">Dashboard</a></li>
+								<li class="active"><a href="/admin/productListing"> Product</a></li>
 								<li><a href="/admin/allUsers">All Users</a></li>
 								<li><a href="/admin/allCategory">All Category</a></li>
 								<li><a href="/admin/admin-orderList">Orders</a></li>
 								<li><a href="/admin/admin-coupons">Coupons</a></li>
-									<li><a href="/admin/admin-orderList">OrderList</a></li>
-									<li><a href="/admin/admin-banners">Banner</a></li>
-								
+								<li><a href="/admin/admin-orderList">OrderList</a></li>
+								<li><a href="/admin/admin-banners">Banner</a></li>
+
 							</ul>
-						
+
 						</div>
 					</div>
 				</div>
 			</div>
-	
-	
-<body>
-	
-	<div class="card shadow mb-4">
-              <div class="card-body">
-				<div class="container d-flex justify-content-center">
-                <div class="row col-10">
-                  <div class="col-md-12">
-                    <form action="/admin/addCoupon" method="POST" >
-                      <div class="form-group mb-3">
-                        <label for="simpleinput">Coupon Code</label>
-                        <input type="text" name="couponCode" id="simpleinput" class="form-control" required/>
-                      </div>
-                      <div class="form-group mb-3">
-                        <label for="simpleinput">Description</label>
-                        <input type="text" name="couponDescription" id="simpleinput" class="form-control" required/>
-                      </div>
-                      <div class="form-group mb-3">
-                        <label for="simpleinput">Discount</label>
-                        <input type="text" name="discount" id="simpleinput" class="form-control" required/>
-                      </div>
-                      <div class="form-group mb-3">
-                        <label for="simpleinput">Max Discount</label>
-                        <input type="text" name="maxDiscount" id="simpleinput" class="form-control" required/>
-                      </div>
-                      <div class="form-group mb-3">
-                        <label for="simpleinput">Min Amount</label>
-                        <input type="text" name="minAmount" id="simpleinput" class="form-control" required/>
-                      </div>
-                      <div class="form-group mb-3">
-                        <label for="simpleinput">Expiration Date</label>
-                        <input type="date" name="expirationDate" id="simpleinput" class="form-control" required/>
-                      </div>
-                      <button type="submit" class="btn mb-2 btn-success">Submit</button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-			  </div>
-            </div>
 
-			{{!-- <script>
-        function validateCouponForm() {
-            var couponCodeInput = document.getElementById("couponCode");
-            var couponCodeValue = couponCodeInput.value;
 
-            // Check if the coupon code is empty
-            if (couponCodeValue.trim() === "") {
-                document.getElementById("couponCodeError").textContent = "Coupon code cannot be empty.";
-                return false;
-            }
+			<body>
 
-            // Check if the coupon code length exceeds 10 characters
-            if (couponCodeValue.length > 10) {
-                document.getElementById("couponCodeError").textContent = "Coupon code cannot exceed 10 characters.";
-                return false;
-            }
+				<div class="card shadow mb-4">
+					<div class="card-body">
+						<div class="container d-flex justify-content-center">
+							<div class="row col-10">
+								<div class="col-md-12">
+									<form action="/admin/addCoupon" method="POST"
+										onsubmit="return validateCouponForm() ">
+										<div class="form-group mb-3">
+											<label for="simpleinput">Coupon Code</label>
+											<input type="text" name="couponCode" id="couponCode" class="form-control">
 
-            // Check if the coupon code contains special characters
-            var specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-            if (specialChars.test(couponCodeValue)) {
-                document.getElementById("couponCodeError").textContent = "Coupon code cannot contain special characters.";
-                return false;
-            }
+											<p id="couponNameError" class="error-message" style="color: red;"></p>
+										</div>
+										<div class="form-group mb-3">
+											<label for="couponDescription">Description</label>
+											<input type="text" name="couponDescription" id="couponDescription"
+												class="form-control">
+											<p id="couponDescriptionError" class="error-message" style="color: red;">
+											</p>
+										</div>
 
-            // Clear any previous error message
-            document.getElementById("couponCodeError").textContent = "";
+										<div class="form-group mb-3">
+											<label for="simpleinput">Discount</label>
+											<input type="text" name="discount" id="simpleinput" class="form-control">
+											<p id="discountError" class="error-message" style="color: red;"></p>
+										</div>
+										<div class="form-group mb-3">
+											<label for="simpleinput">Max Discount</label>
+											<input type="text" name="maxDiscount" id="maxDiscount" class="form-control">
+											<p id="maximumDiscountError" class="error-message" style="color: red;"></p>
+										</div>
+										<div class="form-group mb-3">
+											<label for="simpleinput">Min Amount</label>
+											<input type="text" name="minAmount" id="minAmount" class="form-control">
+											<p id="minAmountError" class="error-message" style="color: red;"></p>
+										</div>
+										<div class="form-group mb-3">
+											<label for="simpleinput">Expiration Date</label>
+											<input type="date" name="expirationDate" id="expirationDate"
+												class="form-control">
 
-            // You can add more validation rules as needed for other form fields
+										</div>
+										<button type="submit" class="btn mb-2 btn-success">Submit</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-            return true; // Allow form submission
-        }
-    </script> --}}
-</body>
+				<script>
+					function validateCouponForm() {
+						// Validate Coupon Code
+						var couponCode = document.getElementById("couponCode").value;
+						var couponNameError = document.getElementById("couponNameError");
+						if (couponCode.trim() === "") {
+							couponNameError.textContent = "Coupon code cannot be empty.";
+							return false;
+						}
+
+						var regex = /^[a-zA-Z0-9]+$/;
+						if (!regex.test(couponCode)) {
+							couponNameError.textContent = "Only alphanumeric characters are allowed.";
+							return false;
+						}
+						couponNameError.textContent = "";
+
+						// Validate Description
+						var couponDescription = document.getElementById("couponDescription").value;
+						var couponDescriptionError = document.getElementById("couponDescriptionError");
+						if (couponDescription.trim() === "") {
+							couponDescriptionError.textContent = "Description cannot be empty.";
+							return false;
+						}
+						couponDescriptionError.textContent = "";
+
+						// Validate Discount
+						var discount = document.getElementById("simpleinput").value;
+						var discountError = document.getElementById("discountError");
+						if (discount.trim() === "" || isNaN(discount) || parseFloat(discount) < 0) {
+							discountError.textContent = "Please enter a valid non-negative discount.";
+							return false;
+						}
+						discountError.textContent = "";
+
+						// Validate Max Discount
+						var maxDiscount = document.getElementById("maxDiscount").value;
+						var maximumDiscountError = document.getElementById("maximumDiscountError");
+						if (maxDiscount.trim() === "" || isNaN(maxDiscount) || parseFloat(maxDiscount) < 0) {
+							maximumDiscountError.textContent = "Please enter a valid non-negative max discount.";
+							return false;
+						}
+						maximumDiscountError.textContent = "";
+
+						// Validate Min Amount
+						var minAmount = document.getElementById("minAmount").value;
+						var minAmountError = document.getElementById("minAmountError");
+						if (minAmount.trim() === "" || isNaN(minAmount) || parseFloat(minAmount) < 0) {
+							minAmountError.textContent = "Please enter a valid non-negative min amount.";
+							return false;
+						}
+						minAmountError.textContent = "";
+
+						// Validate Expiration Date (if needed)
+						var expirationDate = document.getElementById("expirationDate").value;
+						// You can add a validation for the expiration date if needed.
+
+						return true;
+					}
+				</script>
+
+			</body>
+
 </html>

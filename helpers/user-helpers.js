@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt")
 const connectDB = require("../config/connection");
 const User = require('../models/user');
-const user = require("../models/user");
+
 
 
 module.exports = {
@@ -93,6 +93,21 @@ module.exports = {
 				reject(error);
 			});
 		});
+	},
+
+	getUserEmail: async(email)=>{
+		try {
+			connectDB()
+			const user = await User.findOne({email:email})
+			console.log(user,'here user');
+			if(user){
+				return user
+			}else{
+				return null
+			}
+		} catch (error) {
+			console.log(error,'user not found');
+		}
 	},
 
 	deleteUserById: (_id) => {
@@ -212,29 +227,29 @@ module.exports.getAllUsers = () => {
 	});
 };
 
- module.exports.getUserEmail = (email) => {
-	return new Promise((resolve, reject) => {
-	  connectDB()
-		.then(() => {
-		  User.findOne({ Email: email })
-			.then((user) => {
-			  if (user) {
-				console.log(user, 'user found');
-				resolve(user);
-			  } else {
-				resolve(null);
-			  }
-			})
-			.catch((error) => {
-			  console.log('failed to retrieve user', error);
-			  reject(error);
-			});
-		})
-		.catch((error) => {
-		  console.log('failed to connect to the database', error);
-		  reject(error);
-		});
-	});
-  };
+//  module.exports.getUserEmail = (email) => {
+// 	return new Promise((resolve, reject) => {
+// 	  connectDB()
+// 		.then(() => {
+// 		  User.findOne({ Email: email })
+// 			.then((user) => {
+// 			  if (user) {
+// 				console.log(user, 'user found');
+// 				resolve(user);
+// 			  } else {
+// 				resolve(null);
+// 			  }
+// 			})
+// 			.catch((error) => {
+// 			  console.log('failed to retrieve user', error);
+// 			  reject(error);
+// 			});
+// 		})
+// 		.catch((error) => {
+// 		  console.log('failed to connect to the database', error);
+// 		  reject(error);
+// 		});
+// 	});
+//   };
   
   

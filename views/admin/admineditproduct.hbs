@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-	<title>Footwear - Free Bootstrap 4 Template by Colorlib</title>
+	<title>Admin Pannel</title>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -83,7 +83,8 @@
     <div class="row">
       <div class="col-md-6">
         <h2 class="text-center">Edit Product</h2>
-        <form action="/admin/edit-product/{{product._id}}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+       <form action="/admin/edit-product/{{product._id}}" method="POST" enctype="multipart/form-data" id="editProductForm" onsubmit="return validateForm()">
+
           <label for="Name">Name</label>
           <input type="text" name="Name" value="{{product.Name}}" class="form-control" maxlength="30" id="product_name">
           <div id="nameError"  style="color: red;" ></div>
@@ -97,7 +98,7 @@
            <div id="priceError"  style="color: red;" ></div>
 
           <label for="Description">Description</label>
-          <input type="text" name="Description" value="{{product.Description}}" class="form-control" maxlength="20" id="product_description">
+          <input type="text" name="Description" value="{{product.Description}}" class="form-control" maxlength="25" id="product_description">
           <div id="descriptionError"  style="color: red;" ></div>
 
           <label for="">Stock</label>
@@ -109,7 +110,7 @@
             {{#each product.Images}}
             <div class="image-item">
               <img src="/product-images/{{this}}"  style="width:100px;height:auto" alt="" >
-              {{!-- <button type="button" class="btn btn-danger delete-image-button" onclick="deleteImage(this)">Delete</button> --}}
+              
             </div>
             {{/each}}
           </div>
@@ -121,24 +122,35 @@
     </div>
   </div>
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-  function validateForm() {
-    
-     const form = document.getElementById('product-form');
+$(document).ready(function() {
+    $("#editProductForm").submit(function(event) {
+        if (!validateForm()) {
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    });
+});
+
+
+</script>
+
+<script>
+    function validateForm() {
         const productNameInput = document.getElementById('product_name');
         const categoryInput = document.getElementById('category_name');
         const productPriceInput = document.getElementById('product_price');
         const productDescriptionInput = document.getElementById('product_description');
         const stockInput = document.getElementById('stock');
-        const imageInput = document.getElementById('product_image');
+        const imageInput = document.getElementById('Images');
 
         const nameError = document.getElementById('nameError');
         const categoryError = document.getElementById('categoryError');
         const priceError = document.getElementById('priceError');
         const descriptionError = document.getElementById('descriptionError');
         const stockError = document.getElementById('stockError');
-        const imageError = document.getElementById('imageError');
+        {{!-- const imageError = document.getElementById('imageError');  // Fixed the ID here --}}
 
         // Reset error messages
         nameError.textContent = '';
@@ -146,16 +158,27 @@
         priceError.textContent = '';
         descriptionError.textContent = '';
         stockError.textContent = '';
-        imageError.textContent = '';
+        {{!-- imageError.textContent = '';  // Fixed the line here --}}
 
-        
+        const disallowedSymbols = /[!@#$%^&*()_+={}\[\]:;<>,.?~\\/-]/;
+
         if (productNameInput.value.trim() === '') {
             nameError.textContent = 'Product name cannot be empty.';
             return false;
         }
 
+        if (disallowedSymbols.test(productNameInput.value)) {
+            nameError.textContent = 'Product name cannot contain symbols.';
+            return false;
+        }
+
         if (categoryInput.value.trim() === '') {
             categoryError.textContent = 'Category cannot be empty.';
+            return false;
+        }
+
+        if (disallowedSymbols.test(categoryInput.value)) {
+            categoryError.textContent = 'Category cannot contain symbols.';
             return false;
         }
 
@@ -166,6 +189,11 @@
 
         if (productDescriptionInput.value.trim() === '') {
             descriptionError.textContent = 'Product description cannot be empty.';
+            return false;
+        }
+
+        if (disallowedSymbols.test(productDescriptionInput.value)) {
+            descriptionError.textContent = 'Product description cannot contain symbols.';
             return false;
         }
 
@@ -183,59 +211,11 @@
             return false;
         }
 
-   
         return true;
     }
-  
 </script>
 
-<script>
-  function viewImage(event) {
-    const imageContainer = document.getElementById('image-container');
 
-    // Check if this is a new image upload or an update of an existing one
-    if (event.target.files) {
-      for (const file of event.target.files) {
-        // Validate the image file
-        if (validateImageFile(file)) {
-          const imageItem = document.createElement('div');
-          imageItem.className = 'image-item';
-
-          const img = document.createElement('img');
-          img.src = URL.createObjectURL(file);
-          img.style.width = '100px';
-          img.style.height = 'auto';
-          imageItem.appendChild(img);
-
-          const deleteButton = document.createElement('button');
-          deleteButton.type = 'button';
-          deleteButton.className = 'btn btn-danger delete-image-button';
-          deleteButton.textContent = 'Delete';
-          deleteButton.onclick = function () {
-            deleteImage(this);
-          };
-          imageItem.appendChild(deleteButton);
-
-          imageContainer.appendChild(imageItem);
-        } else {
-          alert('Please select a valid image file (JPEG, PNG, or GIF).');
-          event.target.value = ''; // Clear the input field
-        }
-      }
-    }
-  }
-
-  function validateImageFile(file) {
-    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-    const fileExtension = file.name.split('.').pop().toLowerCase();
-    return allowedExtensions.includes(fileExtension);
-  }
-
-  function deleteImage(button) {
-    const imageItem = button.parentNode; // Get the parent element containing the image and button
-    imageItem.remove(); // Remove the entire image item from the container
-  }
-</script>
 
 
 

@@ -33,10 +33,11 @@ router.get('/productList', auth.isLogin,userController.productListing)
 router.get('/logout',auth.isLogin,userController.logout)
 
 router.get('/productdetails/:id', userController.getProductDetails)
-// router.post('/resetpassword',varificationController.resetUserPassword)
-// router.get ('/forgetPassword',varificationController.forgotPassword)
-// router.get('/reset-password/:token',varificationController.resetPassword)
-// router.get('/resetpassword',varificationController.resetPassword)
+
+router.get('/forgotPassword',varificationController.forgotPassword)
+router.get('/reset-password/:token',varificationController.resetPassword)
+router.get('/reset-password',varificationController.resetPassword)
+router.post('/reset-password',varificationController.resetUserPassword)
 
 
 

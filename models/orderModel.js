@@ -10,21 +10,19 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
- 
+
   products: [
     {
-      item: {                
+      item: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-      }, 
+      },
       quantity: {
         type: Number,
-        
+
       }
     }
   ],
-    
-  
   reason: {
     type: String,
     default: 'N/A',
@@ -32,7 +30,7 @@ const orderSchema = new mongoose.Schema({
   userId: {
     required: true,
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Assuming 'User' is the name of your user schema
+    ref: 'User',
   },
   payment: {
     required: true,

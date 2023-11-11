@@ -170,6 +170,26 @@ const fetchPrimaryAddress = async (userId) => {
         });
     });
   };
+
+  const updatePassword = async (userPassword, email) => {
+    try {
+      const hashedPassword = await bcrypt.hash(userPassword, 10);
+      const user = await User.findOne({ email: email });
+  
+      if (user) {
+        user.password = hashedPassword; // Update the password field
+        await user.save(); // Save the changes
+        console.log('Password updated successfully');
+        return true;
+      } else {
+        console.log('User not found');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error updating password:', error);
+      throw error;
+    }
+  }
   
 
 
@@ -184,6 +204,7 @@ module.exports = {
  deleteAddress,
  changePrimaryAddress,
  fetchPrimaryAddress,
+ updatePassword
 
 }
 
