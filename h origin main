@@ -1,0 +1,78 @@
+[33mcommit 3a72c9f09e1f52f98925c71b791803f0dbfe6860[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Sat Mar 23 19:07:46 2024 +0530
+
+    Add versal.json configuration file
+
+[33mcommit e24cf9f4bd3aff05f85216ffc0f76bb5ff19c4f7[m[33m ([m[1;31morigin/main[m[33m)[m
+Merge: 9e77908 5820948
+Author: robin <robinshaji888@gmail.com>
+Date:   Sat Nov 11 11:41:59 2023 +0530
+
+    Merge branch 'main' of https://github.com/Robin-8/pixelCart
+
+[33mcommit 9e77908dccfaa793c5da35cdcf20480774a7d4f9[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Sat Nov 11 11:31:50 2023 +0530
+
+    before hosting
+
+[33mcommit 5820948f45bb4b135c719aa8cfd35747c1c5dd80[m
+Author: Ubuntu <ubuntu@ip-172-31-40-53.ap-south-1.compute.internal>
+Date:   Fri Nov 3 14:37:01 2023 +0000
+
+    this is from ec2
+
+[33mcommit 1bf6fbd51ce1f6a5cdfafcdc203e2271d0188425[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Fri Nov 3 19:55:22 2023 +0530
+
+    final commit
+
+[33mcommit ec53475f2fe16b84b8fecb0678edf1a84e4ece6b[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Fri Nov 3 16:59:32 2023 +0530
+
+    bug fix
+
+[33mcommit 0f427e6564c95039d4757d18e0aa667ca47cc896[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Tue Oct 31 14:19:35 2023 +0530
+
+    database url changed
+
+[33mcommit 54ad34116c84fb7e3c7c7ab38ce9fb1f665673a7[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Mon Oct 30 14:13:58 2023 +0530
+
+    hosting
+
+[33mcommit 8d2765d4cc387e24b0cd2a38d8defd23b6310084[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Wed Oct 25 17:59:56 2023 +0530
+
+    searching filter
+
+[33mcommit c81caabaa38aeb4889f7e3b256eee6c32bf7bb01[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Tue Oct 24 18:14:50 2023 +0530
+
+    first commit
+
+[33mcommit 0c74bc654c43df99178eb366af2425a3c0ce7e21[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Mon Oct 2 15:47:42 2023 +0530
+
+    second commit
+
+[33mcommit 9699488cc6be704737df059bfca4ca964e31e442[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Sun Sep 24 13:03:04 2023 +0530
+
+    doing coupon pendings are there
+
+[33mcommit b91c92992caa26c3018ad31d9c0b4583cfe11822[m
+Author: robin <robinshaji888@gmail.com>
+Date:   Thu Aug 24 09:41:21 2023 +0530
+
+    first commit
