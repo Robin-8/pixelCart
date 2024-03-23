@@ -137,7 +137,7 @@ const userApplayCoupon = async(req,res)=>{
         const couponCode = req.body.couponCode
       
         const userId = req.session.user._id
-        console.log(req.session.user._id);
+       
         let cartTotal = await cartHelper.getTotal(userId)
      
        

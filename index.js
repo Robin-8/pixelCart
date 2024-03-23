@@ -14,6 +14,7 @@ const mongooseDb = require('./config/connection');
 
 mongooseDb();
 
+
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 app.set('users', path.join(__dirname, 'views/user'))
@@ -121,7 +122,9 @@ hbs.registerHelper('calculateDiscountedPrice', function (product) {
 
 
 // For user routes
+
 const userRoute = require('./routes/index');
+
 app.use('/', userRoute);
 
 // For admin routes

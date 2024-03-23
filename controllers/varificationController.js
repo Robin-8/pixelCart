@@ -45,7 +45,7 @@ const mailOptions = {
   from: 'robinshaji888@gmail.com',
   to: useremail,
   subject: 'Password Reset',
-  text:  `Click the following link to reset your password: http://localhost:3000/reset-password/${token}`
+  text:  `Click the following link to reset your password: https://robinshaji.online/reset-password/${token}`
 };
 
 transporter.sendMail(mailOptions, (error, info) => {
