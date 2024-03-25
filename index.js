@@ -8,6 +8,7 @@ const nocache = require('nocache');
 const dotenv = require('dotenv').config();
 const exphbs = require('express-handlebars');
 const helpers = require('./helpers/handleBarHelper');
+const MongoStore = require('connect-mongo')
 
 const config = require("./config/config");
 const mongooseDb = require('./config/connection');
@@ -22,7 +23,17 @@ app.set('admin', path.join(__dirname, 'views/admin'))
 
 // app.use(express.static(path.join(__dirname, 'views/partials')))
 hbs.registerPartials(__dirname + '/views/partials');
-app.use(session({ secret: config.sessionSecret, saveUninitialized: true, resave: false }));
+// app.use(session({ secret: config.sessionSecret, saveUninitialized: true, resave: false }));
+
+app.use(session({
+  secret: process.env.SESSION_KEY,
+  saveUninitialized: false,
+  resave: false,
+  store: MongoStore.create({
+      mongoUrl: process.env.DATABASE_URI,
+      touchAfter: 24 * 3600
+  })
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
