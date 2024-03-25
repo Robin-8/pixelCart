@@ -7,7 +7,7 @@ const session = require("express-session");
 const nocache = require('nocache');
 const dotenv = require('dotenv').config();
 const exphbs = require('express-handlebars');
-const helpers = require('./helpers/handleBarHelper'); // Include the helpers module
+const helpers = require('./helpers/handleBarHelper');
 
 const config = require("./config/config");
 const mongooseDb = require('./config/connection');
